@@ -835,6 +835,15 @@
                         <li><strong>Applications:</strong> Image compression, noise reduction, visualization, preprocessing</li>
                     </ul>
                 </div>
+
+                <h4 style="margin-top: 30px;">Wavelet Transforms</h4>
+                <p>
+                    Wavelet transforms offer an alternative to PCA for dimensionality reduction. Using a hierarchical pyramid algorithm, wavelets decompose signals by repeatedly halving the data, achieving better lossy compression than Discrete Fourier Transforms (DFT). Popular wavelet families include Haar-2, Daubechies-4, and Daubechies-6.
+                </p>
+
+                <button class="demo-button" onclick="showDemo('wavelet')">
+                    ► View Wavelet Transform Demonstration
+                </button>
             </div>
 
             <!-- Technique 4: Numerosity Reduction -->
@@ -863,8 +872,21 @@
                 </ul>
 
                 <button class="demo-button" onclick="showDemo('numerosity')">
-                    ► View Interactive Demonstration
+                    ► View Interactive Demonstration (Basic)
                 </button>
+
+                <h4 style="margin-top: 30px;">Advanced Numerosity Reduction Demonstrations</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+                    <button class="demo-button" onclick="showDemo('samplingMethods')" style="margin: 0;">
+                        ► Sampling Methods Comparison
+                    </button>
+                    <button class="demo-button" onclick="showDemo('histogramTypes')" style="margin: 0;">
+                        ► Histogram Types (Equal-Width/Frequency)
+                    </button>
+                    <button class="demo-button" onclick="showDemo('regression')" style="margin: 0;">
+                        ► Regression Models
+                    </button>
+                </div>
 
                 <div class="key-points-box">
                     <h4>Key Considerations</h4>
@@ -1238,6 +1260,216 @@
                         <li><strong>Equal-Frequency:</strong> Creates bins containing approximately the same number of values. Better for skewed distributions.</li>
                         <li><strong>Entropy-Based:</strong> Uses class information to minimize entropy, optimal for classification tasks.</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wavelet Transform Modal -->
+        <div id="waveletModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Interactive Demonstration: Wavelet Transforms</h2>
+                    <span class="close" onclick="closeModal('waveletModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Concept Illustration</h3>
+                    <p>
+                        Wavelet transforms compress data by hierarchically decomposing signals. The Haar wavelet method (shown here) reduces data size by 50% at each level while preserving the overall signal structure. This is a lossy compression technique.
+                    </p>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="applyHaarWavelet()">Apply Haar Wavelet Decomposition</button>
+                        <button class="control-btn" onclick="resetWavelet()">Reset to Original</button>
+                    </div>
+
+                    <div class="visualization-container">
+                        <div class="viz-title">Hierarchical Data Compression</div>
+                        <div id="waveletViz"></div>
+                    </div>
+
+                    <h4>Wavelet Transform Process</h4>
+                    <ul>
+                        <li><strong>Level 0 (Original):</strong> 32 data points</li>
+                        <li><strong>Level 1:</strong> Average pairs → 16 coefficients (50% reduction)</li>
+                        <li><strong>Level 2:</strong> Average pairs → 8 coefficients (75% reduction)</li>
+                        <li><strong>Level 3:</strong> Average pairs → 4 coefficients (87.5% reduction)</li>
+                        <li><strong>Level 4:</strong> Average pairs → 2 coefficients (93.75% reduction)</li>
+                    </ul>
+
+                    <div class="key-points-box">
+                        <h4>Advantages of Wavelet Transforms</h4>
+                        <ul>
+                            <li>Better compression than Discrete Fourier Transform (DFT)</li>
+                            <li>Preserves local detail while reducing storage</li>
+                            <li>Popular families: Haar-2, Daubechies-4, Daubechies-6</li>
+                            <li>Used in JPEG 2000 image compression, signal processing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Sampling Methods Modal -->
+        <div id="samplingMethodsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Interactive Demonstration: Sampling Methods Comparison</h2>
+                    <span class="close" onclick="closeModal('samplingMethodsModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Concept Illustration</h3>
+                    <p>
+                        Sampling is a numerosity reduction technique that creates a representative subset of data. Different sampling methods have different characteristics and are suitable for different scenarios.
+                    </p>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="applySRSWOR()">SRSWOR</button>
+                        <button class="control-btn primary" onclick="applySRSWR()">SRSWR</button>
+                        <button class="control-btn primary" onclick="applyStratified()">Stratified Sample</button>
+                        <button class="control-btn primary" onclick="applyCluster()">Cluster Sample</button>
+                        <button class="control-btn" onclick="resetSamplingMethods()">Reset</button>
+                    </div>
+
+                    <div class="visualization-container">
+                        <div class="viz-title">Sampling Methods Demonstration</div>
+                        <div class="numerosity-grid">
+                            <div id="samplingPopulation"></div>
+                            <div id="samplingResult"></div>
+                        </div>
+                    </div>
+
+                    <h4>Sampling Method Details</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Description</th>
+                                <th>Advantage</th>
+                                <th>Best Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SRSWOR</td>
+                                <td>Simple Random Sample Without Replacement</td>
+                                <td>Unbiased, each item selected once</td>
+                                <td>General purpose sampling</td>
+                            </tr>
+                            <tr>
+                                <td>SRSWR</td>
+                                <td>Simple Random Sample With Replacement</td>
+                                <td>Allows bootstrap methods</td>
+                                <td>Statistical estimation</td>
+                            </tr>
+                            <tr>
+                                <td>Stratified</td>
+                                <td>Sample proportionally from subgroups</td>
+                                <td>Ensures representation</td>
+                                <td>Skewed or heterogeneous data</td>
+                            </tr>
+                            <tr>
+                                <td>Cluster</td>
+                                <td>Select entire groups (e.g., database pages)</td>
+                                <td>More efficient I/O</td>
+                                <td>Large distributed databases</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="key-points-box">
+                        <h4>Key Sampling Principles</h4>
+                        <ul>
+                            <li>Typically 10% sample is sufficient for large datasets (N > 10,000)</li>
+                            <li>Sample must maintain population distribution characteristics</li>
+                            <li>Stratified sampling best for ensuring representation of all groups</li>
+                            <li>Cluster sampling efficient for large databases stored on multiple pages</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Histogram Types Modal -->
+        <div id="histogramTypesModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Interactive Demonstration: Histogram Types</h2>
+                    <span class="close" onclick="closeModal('histogramTypesModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Concept Illustration</h3>
+                    <p>
+                        Histograms partition data into bins, replacing many individual values with summary statistics. This is a popular form of numerosity reduction that maintains data distribution characteristics.
+                    </p>
+
+                    <div class="visualization-container">
+                        <div class="viz-title">Histogram Types Comparison</div>
+                        <div id="histogramComparison"></div>
+                    </div>
+
+                    <h4>Histogram Partitioning Rules</h4>
+                    <ul>
+                        <li><strong>Equal-Width (Distance):</strong> Divide range into N intervals of uniform width. Simple but can have empty bins or outlier-dominated bins.</li>
+                        <li><strong>Equal-Frequency (Depth):</strong> Each bin contains approximately same number of values. Better for skewed distributions.</li>
+                        <li><strong>V-Optimal:</strong> Minimize variance across all buckets. Computationally intensive but optimal.</li>
+                        <li><strong>MaxDiff:</strong> Place boundaries at the β-1 largest differences between consecutive values.</li>
+                    </ul>
+
+                    <div class="key-points-box">
+                        <h4>Histogram Best Practices</h4>
+                        <ul>
+                            <li>Typical number of bins: √N or log₂(N), where N is number of values</li>
+                            <li>Too few bins lose detail; too many bins defeat reduction purpose</li>
+                            <li>Equal-frequency often works best for skewed data distributions</li>
+                            <li>Histograms maintain approximate data distribution for mining</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Regression Modal -->
+        <div id="regressionModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Interactive Demonstration: Regression for Data Reduction</h2>
+                    <span class="close" onclick="closeModal('regressionModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Concept Illustration</h3>
+                    <p>
+                        Regression is a parametric method for numerosity reduction. Instead of storing all data points, we store only the model parameters (slope and intercept for linear regression). This provides massive data reduction with predictable accuracy.
+                    </p>
+
+                    <div class="visualization-container">
+                        <div class="viz-title">Linear Regression Model</div>
+                        <div id="regressionViz"></div>
+                    </div>
+
+                    <h4>Parametric Methods for Numerosity Reduction</h4>
+                    <ul>
+                        <li><strong>Linear Regression:</strong> y = mx + b (2 parameters)</li>
+                        <li><strong>Multiple Linear Regression:</strong> y = b₀ + b₁x₁ + b₂x₂ + ... (k+1 parameters for k predictors)</li>
+                        <li><strong>Polynomial Regression:</strong> y = b₀ + b₁x + b₂x² + ... (degree+1 parameters)</li>
+                        <li><strong>Log-Linear Models:</strong> For discrete multidimensional probability distributions</li>
+                    </ul>
+
+                    <div class="key-points-box">
+                        <h4>Advantages of Parametric Methods</h4>
+                        <ul>
+                            <li><strong>Extreme compression:</strong> Thousands of points → Few parameters</li>
+                            <li><strong>Smoothing effect:</strong> Reduces noise in data</li>
+                            <li><strong>Predictive power:</strong> Can estimate values not in original dataset</li>
+                            <li><strong>Storage efficiency:</strong> Store only model parameters, not actual data</li>
+                        </ul>
+                    </div>
+
+                    <h4>Trade-offs</h4>
+                    <p style="color: var(--text-gray); padding: 15px; background: var(--bg-light); border-radius: 4px;">
+                        Parametric methods work best when data follows the assumed model (e.g., linear relationship).
+                        For complex non-linear patterns, non-parametric methods (sampling, clustering, histograms) may be more appropriate.
+                        Always validate model accuracy against held-out test data.
+                    </p>
                 </div>
             </div>
         </div>

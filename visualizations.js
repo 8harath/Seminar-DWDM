@@ -31,7 +31,11 @@ function showDemo(type) {
         'attribute': 'attributeModal',
         'pca': 'pcaModal',
         'numerosity': 'numerosityModal',
-        'discretization': 'discretizationModal'
+        'discretization': 'discretizationModal',
+        'wavelet': 'waveletModal',
+        'samplingMethods': 'samplingMethodsModal',
+        'histogramTypes': 'histogramTypesModal',
+        'regression': 'regressionModal'
     };
 
     const modalId = modals[type];
@@ -43,6 +47,10 @@ function showDemo(type) {
         if (type === 'pca') initPCA();
         if (type === 'numerosity') initNumerosity();
         if (type === 'discretization') initDiscretization();
+        if (type === 'wavelet') initWavelet();
+        if (type === 'samplingMethods') initSamplingMethods();
+        if (type === 'histogramTypes') initHistogramTypes();
+        if (type === 'regression') initRegression();
     }
 }
 
@@ -741,6 +749,346 @@ function renderDiscretizedBinsSimple(bins, methodName) {
 
 function resetDiscretization() {
     initDiscretization();
+}
+
+// ===== WAVELET TRANSFORMS - DIMENSIONALITY REDUCTION =====
+let waveletData = [];
+let waveletLevel = 0;
+
+function initWavelet() {
+    // Generate sample signal with 32 data points
+    waveletData = [];
+    for (let i = 0; i < 32; i++) {
+        const signal = Math.sin(i * 0.4) * 30 + 50 + (Math.random() - 0.5) * 15;
+        waveletData.push(signal);
+    }
+    waveletLevel = 0;
+    renderWaveletViz();
+}
+
+function renderWaveletViz() {
+    const container = document.getElementById('waveletViz');
+    const max = Math.max(...waveletData);
+    const min = Math.min(...waveletData);
+    const range = max - min;
+
+    container.innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 10px;">
+                ${waveletLevel === 0 ? 'Original Data: 32 Points' : `Level ${waveletLevel}: ${waveletData.length} Coefficients`}
+            </div>
+            <div style="background: white; padding: 20px; border: 2px solid #ddd; border-radius: 4px;">
+                <svg width="100%" height="200" viewBox="0 0 700 200">
+                    <line x1="50" y1="180" x2="650" y2="180" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="20" x2="50" y2="180" stroke="#333" stroke-width="2"/>
+                    ${waveletData.map((val, i) => {
+                        const x = 50 + (i / (waveletData.length - 1)) * 600;
+                        const y = 180 - ((val - min) / range) * 150;
+                        return `
+                            <circle cx="${x}" cy="${y}" r="4" fill="#3498db" opacity="0.8"/>
+                            ${i < waveletData.length - 1 ? `
+                                <line x1="${x}" y1="${y}"
+                                      x2="${50 + ((i + 1) / (waveletData.length - 1)) * 600}"
+                                      y2="${180 - ((waveletData[i + 1] - min) / range) * 150}"
+                                      stroke="#3498db" stroke-width="2"/>
+                            ` : ''}
+                        `;
+                    }).join('')}
+                </svg>
+                <div style="text-align: center; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+                    <strong>Data Points:</strong> ${waveletData.length} |
+                    <strong>Compression:</strong> ${100 - ((waveletData.length / 32) * 100).toFixed(1)}% |
+                    <strong>Storage Saved:</strong> ${32 - waveletData.length} values
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function applyHaarWavelet() {
+    if (waveletData.length <= 2) {
+        alert('Maximum compression reached!');
+        return;
+    }
+
+    const compressed = [];
+    for (let i = 0; i < waveletData.length; i += 2) {
+        const avg = (waveletData[i] + waveletData[i + 1]) / 2;
+        compressed.push(avg);
+    }
+
+    waveletData = compressed;
+    waveletLevel++;
+    renderWaveletViz();
+}
+
+function resetWavelet() {
+    initWavelet();
+}
+
+// ===== SAMPLING METHODS - NUMEROSITY REDUCTION =====
+let population = [];
+
+function initSamplingMethods() {
+    population = [];
+    for (let i = 0; i < 100; i++) {
+        population.push({
+            id: i,
+            value: Math.random() * 100,
+            stratum: i < 33 ? 'Group A' : i < 66 ? 'Group B' : 'Group C',
+            cluster: Math.floor(i / 10)
+        });
+    }
+    renderPopulation();
+}
+
+function renderPopulation() {
+    const container = document.getElementById('samplingPopulation');
+    container.innerHTML = `
+        <div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #003366;">
+            Population: 100 Data Points
+        </div>
+        <div style="background: #f8f9fa; border: 2px solid #ddd; padding: 20px; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
+            ${population.map(p => `
+                <div class="pop-point" data-id="${p.id}" style="
+                    width: 8px; height: 8px; background: #3498db; border-radius: 50%;
+                    animation: popIn 0.2s ${p.id * 0.005}s both;
+                "></div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function applySRSWOR() {
+    const sample = [];
+    const poolCopy = [...population];
+    for (let i = 0; i < 10; i++) {
+        const idx = Math.floor(Math.random() * poolCopy.length);
+        sample.push(poolCopy[idx]);
+        poolCopy.splice(idx, 1);
+    }
+    renderSampleResult('SRSWOR - Without Replacement', sample, 'Each point has probability 1/N. Selected points removed from pool.');
+}
+
+function applySRSWR() {
+    const sample = [];
+    for (let i = 0; i < 10; i++) {
+        const idx = Math.floor(Math.random() * population.length);
+        sample.push(population[idx]);
+    }
+    renderSampleResult('SRSWR - With Replacement', sample, 'Each point has probability 1/N. Selected points remain in pool.');
+}
+
+function applyStratified() {
+    const sample = [];
+    ['Group A', 'Group B', 'Group C'].forEach(stratum => {
+        const stratumData = population.filter(p => p.stratum === stratum);
+        const sampleSize = Math.round(stratumData.length * 0.1);
+        for (let i = 0; i < sampleSize; i++) {
+            const idx = Math.floor(Math.random() * stratumData.length);
+            sample.push(stratumData[idx]);
+        }
+    });
+    renderSampleResult('Stratified Sampling', sample, 'Population divided into strata. Proportional sampling from each group.');
+}
+
+function applyCluster() {
+    const selectedClusters = [2, 5, 8];
+    const sample = population.filter(p => selectedClusters.includes(p.cluster));
+    renderSampleResult('Cluster Sampling', sample, 'Select entire clusters. 3 of 10 clusters selected (pages in database).');
+}
+
+function renderSampleResult(method, sample, description) {
+    const container = document.getElementById('samplingResult');
+    const sampleIds = new Set(sample.map(s => s.id));
+
+    container.innerHTML = `
+        <div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #27ae60;">
+            ${method}: ${sample.length} Points Selected
+        </div>
+        <div style="background: #f8f9fa; border: 2px solid #27ae60; padding: 20px; border-radius: 4px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 15px;">
+                ${population.map(p => `
+                    <div style="
+                        width: 8px; height: 8px; border-radius: 50%;
+                        background: ${sampleIds.has(p.id) ? '#27ae60' : 'rgba(52, 152, 219, 0.2)'};
+                        transform: ${sampleIds.has(p.id) ? 'scale(1.4)' : 'scale(1)'};
+                        transition: all 0.3s;
+                    "></div>
+                `).join('')}
+            </div>
+            <div style="background: white; padding: 15px; border-radius: 4px;">
+                <strong>Method:</strong> ${description}<br>
+                <strong>Sample Size:</strong> ${sample.length}/100<br>
+                <strong>Reduction:</strong> ${((1 - sample.length/100) * 100).toFixed(0)}%
+            </div>
+        </div>
+    `;
+}
+
+function resetSamplingMethods() {
+    initSamplingMethods();
+    document.getElementById('samplingResult').innerHTML = '<p style="text-align:center;color:#999;padding:40px;">Select a sampling method</p>';
+}
+
+// ===== HISTOGRAM TYPES - NUMEROSITY REDUCTION =====
+const histogramData = [1, 1, 5, 5, 5, 5, 5, 8, 8, 10, 10, 10, 10, 12, 14, 14, 14, 15, 15, 15,
+                       15, 15, 15, 18, 18, 18, 18, 18, 18, 18, 18, 20, 20, 20, 20, 20, 20, 20,
+                       21, 21, 21, 21, 25, 25, 25, 25, 25, 28, 28, 30, 30, 30];
+
+function initHistogramTypes() {
+    renderHistogramComparison();
+}
+
+function renderHistogramComparison() {
+    const container = document.getElementById('histogramComparison');
+
+    // Equal-Width (uniform width)
+    const min = Math.min(...histogramData);
+    const max = Math.max(...histogramData);
+    const binWidth = (max - min) / 3;
+    const equalWidth = [
+        { range: `${min}-${Math.round(min + binWidth)}`, count: histogramData.filter(v => v >= min && v < min + binWidth).length },
+        { range: `${Math.round(min + binWidth)}-${Math.round(min + 2*binWidth)}`, count: histogramData.filter(v => v >= min + binWidth && v < min + 2*binWidth).length },
+        { range: `${Math.round(min + 2*binWidth)}-${max}`, count: histogramData.filter(v => v >= min + 2*binWidth).length }
+    ];
+
+    // Equal-Frequency (uniform count)
+    const sorted = [...histogramData].sort((a,b) => a-b);
+    const perBin = Math.floor(sorted.length / 3);
+    const equalFreq = [
+        { range: `${sorted[0]}-${sorted[perBin-1]}`, count: perBin },
+        { range: `${sorted[perBin]}-${sorted[2*perBin-1]}`, count: perBin },
+        { range: `${sorted[2*perBin]}-${sorted[sorted.length-1]}`, count: sorted.length - 2*perBin }
+    ];
+
+    container.innerHTML = `
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            ${renderHistogramType('Equal-Width Histogram', equalWidth, 'Uniform bin width = ' + binWidth.toFixed(1), '#3498db')}
+            ${renderHistogramType('Equal-Frequency Histogram', equalFreq, 'Uniform frequency ≈ ' + perBin + ' items/bin', '#e67e22')}
+        </div>
+        <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 4px;">
+            <strong>Original Data:</strong> ${histogramData.length} values → <strong>Reduced:</strong> 3 bins<br>
+            <strong>Reduction:</strong> ${((1 - 3/histogramData.length) * 100).toFixed(1)}%
+            (${histogramData.length} → 3 values = ${histogramData.length - 3} fewer values stored)
+        </div>
+    `;
+}
+
+function renderHistogramType(title, bins, description, color) {
+    const maxCount = Math.max(...bins.map(b => b.count));
+    return `
+        <div style="border: 2px solid ${color}; padding: 20px; border-radius: 8px; background: white;">
+            <h4 style="text-align: center; color: ${color}; margin-bottom: 15px;">${title}</h4>
+            <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 200px; margin-bottom: 15px;">
+                ${bins.map((bin, i) => `
+                    <div style="text-align: center; flex: 1;">
+                        <div style="
+                            height: ${(bin.count/maxCount) * 180}px;
+                            background: linear-gradient(to top, ${color}, ${color}dd);
+                            margin: 0 10px;
+                            border-radius: 4px 4px 0 0;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: white;
+                            font-weight: bold;
+                            font-size: 1.3em;
+                            animation: growUp 0.5s ${i * 0.2}s both;
+                        ">${bin.count}</div>
+                        <div style="margin-top: 8px; font-size: 0.85em; color: #666;">${bin.range}</div>
+                    </div>
+                `).join('')}
+            </div>
+            <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 4px; font-size: 0.9em;">
+                ${description}
+            </div>
+        </div>
+    `;
+}
+
+// ===== REGRESSION - NUMEROSITY REDUCTION =====
+const regressionData = [
+    {x: 1, y: 2.5}, {x: 2, y: 3.1}, {x: 3, y: 4.2}, {x: 4, y: 5.0},
+    {x: 5, y: 6.1}, {x: 6, y: 6.8}, {x: 7, y: 8.2}, {x: 8, y: 9.0}
+];
+
+function initRegression() {
+    renderRegressionViz();
+}
+
+function renderRegressionViz() {
+    const container = document.getElementById('regressionViz');
+
+    // Calculate linear regression: y = mx + b
+    const n = regressionData.length;
+    const sumX = regressionData.reduce((s, p) => s + p.x, 0);
+    const sumY = regressionData.reduce((s, p) => s + p.y, 0);
+    const sumXY = regressionData.reduce((s, p) => s + p.x * p.y, 0);
+    const sumX2 = regressionData.reduce((s, p) => s + p.x * p.x, 0);
+
+    const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const b = (sumY - m * sumX) / n;
+
+    const minX = Math.min(...regressionData.map(p => p.x));
+    const maxX = Math.max(...regressionData.map(p => p.x));
+    const minY = Math.min(...regressionData.map(p => p.y));
+    const maxY = Math.max(...regressionData.map(p => p.y));
+
+    const x1 = minX, y1 = m * minX + b;
+    const x2 = maxX, y2 = m * maxX + b;
+
+    container.innerHTML = `
+        <div style="text-align: center; font-weight: bold; margin-bottom: 15px; color: #003366;">
+            Linear Regression: Data Reduction via Parametric Model
+        </div>
+        <div style="background: white; padding: 30px; border: 2px solid #ddd; border-radius: 4px;">
+            <svg width="100%" height="300" viewBox="0 0 700 300">
+                <!-- Axes -->
+                <line x1="80" y1="250" x2="650" y2="250" stroke="#333" stroke-width="2"/>
+                <line x1="80" y1="50" x2="80" y2="250" stroke="#333" stroke-width="2"/>
+
+                <!-- Grid -->
+                ${[1,2,3,4,5,6,7,8].map(i => `
+                    <line x1="${80 + i*70}" y1="250" x2="${80 + i*70}" y2="245" stroke="#666" stroke-width="1"/>
+                    <text x="${80 + i*70}" y="270" text-anchor="middle" font-size="12">${i}</text>
+                `).join('')}
+
+                <!-- Regression Line -->
+                <line x1="${80 + (x1-minX)/(maxX-minX)*560}"
+                      y1="${250 - (y1-minY)/(maxY-minY)*190}"
+                      x2="${80 + (x2-minX)/(maxX-minX)*560}"
+                      y2="${250 - (y2-minY)/(maxY-minY)*190}"
+                      stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"/>
+
+                <!-- Data Points -->
+                ${regressionData.map(p => {
+                    const px = 80 + (p.x-minX)/(maxX-minX)*560;
+                    const py = 250 - (p.y-minY)/(maxY-minY)*190;
+                    return `<circle cx="${px}" cy="${py}" r="6" fill="#3498db" stroke="white" stroke-width="2"/>`;
+                }).join('')}
+
+                <text x="350" y="290" text-anchor="middle" font-size="14" fill="#666">X values</text>
+                <text x="40" y="150" text-anchor="middle" font-size="14" fill="#666" transform="rotate(-90 40 150)">Y values</text>
+            </svg>
+
+            <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div style="padding: 15px; background: #e3f2fd; border-radius: 4px;">
+                    <strong>Original Data Storage:</strong><br>
+                    ${n} points × 2 values = <strong>${n * 2} values</strong>
+                </div>
+                <div style="padding: 15px; background: #ffebee; border-radius: 4px;">
+                    <strong>Regression Model Storage:</strong><br>
+                    y = ${m.toFixed(3)}x + ${b.toFixed(3)} = <strong>2 parameters</strong>
+                </div>
+            </div>
+
+            <div style="margin-top: 15px; padding: 15px; background: #c8e6c9; border-radius: 4px; text-align: center;">
+                <strong>Data Reduction:</strong> ${((1 - 2/(n*2)) * 100).toFixed(1)}%
+                (${n*2} values → 2 parameters = ${n*2 - 2} fewer values!)
+            </div>
+        </div>
+    `;
 }
 
 // Initialize

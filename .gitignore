@@ -1,0 +1,16 @@
+# PDF notes (optional - keep local for reference)
+*.pdf
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Vercel
+.vercel

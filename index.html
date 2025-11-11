@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Reduction Techniques - Visual Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #003366;
+            --secondary-blue: #0066cc;
+            --light-blue: #e6f2ff;
+            --text-dark: #1a1a1a;
+            --text-gray: #4a4a4a;
+            --border-gray: #d0d0d0;
+            --bg-light: #f8f9fa;
+            --highlight-yellow: #fffacd;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            background: #ffffff;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Header - Academic Style */
+        header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 40px 60px;
+            border-bottom: 4px solid var(--secondary-blue);
+        }
+
+        .university-info {
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            font-weight: normal;
+            margin: 15px 0;
+            letter-spacing: 1px;
+        }
+
+        .course-info {
+            font-size: 1.1em;
+            margin-top: 15px;
+            opacity: 0.95;
+            font-style: italic;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 60px;
+        }
+
+        /* Chapter/Section Headers */
+        h2 {
+            font-size: 1.8em;
+            color: var(--primary-blue);
+            margin: 40px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-blue);
+            font-weight: normal;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: var(--secondary-blue);
+            margin: 30px 0 15px 0;
+            font-weight: normal;
+        }
+
+        h4 {
+            font-size: 1.1em;
+            color: var(--text-dark);
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        /* Paragraph styling */
+        p {
+            margin: 15px 0;
+            text-align: justify;
+            color: var(--text-gray);
+        }
+
+        /* Definition Box - Textbook Style */
+        .definition-box {
+            background: var(--light-blue);
+            border-left: 5px solid var(--secondary-blue);
+            padding: 25px 30px;
+            margin: 25px 0;
+            font-size: 1.05em;
+        }
+
+        .definition-box strong {
+            color: var(--primary-blue);
+            font-size: 1.1em;
+        }
+
+        /* Objective Box */
+        .objective-box {
+            background: #fff9e6;
+            border: 2px solid #ffc107;
+            border-left: 5px solid #ffc107;
+            padding: 25px 30px;
+            margin: 25px 0;
+        }
+
+        .objective-box h4 {
+            color: #f57c00;
+            margin-bottom: 15px;
+        }
+
+        .objective-box ul {
+            margin-left: 20px;
+        }
+
+        .objective-box li {
+            margin: 8px 0;
+            color: var(--text-gray);
+        }
+
+        /* Technique Sections */
+        .technique-section {
+            margin: 50px 0;
+            padding: 30px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-gray);
+        }
+
+        .technique-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 20px 30px;
+            margin: -30px -30px 25px -30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .technique-number {
+            background: white;
+            color: var(--primary-blue);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .technique-title {
+            font-size: 1.6em;
+            font-weight: normal;
+        }
+
+        /* Interactive Demo Button - Academic Style */
+        .demo-button {
+            background: var(--secondary-blue);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            font-family: Georgia, serif;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: background 0.3s;
+        }
+
+        .demo-button:hover {
+            background: var(--primary-blue);
+        }
+
+        /* Lists */
+        ul {
+            margin: 15px 0 15px 40px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: var(--text-gray);
+        }
+
+        li strong {
+            color: var(--text-dark);
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: var(--bg-light);
+            border: 2px solid var(--border-gray);
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .toc h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+            border-bottom: 1px solid var(--border-gray);
+            padding-bottom: 10px;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            padding: 8px 0;
+            border-bottom: 1px dotted var(--border-gray);
+        }
+
+        .toc a {
+            color: var(--secondary-blue);
+            text-decoration: none;
+            font-size: 1.05em;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal - Academic Paper Style */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 30px auto;
+            max-width: 1100px;
+            border: 2px solid var(--primary-blue);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 25px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--secondary-blue);
+        }
+
+        .modal-header h2 {
+            color: white;
+            border: none;
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .close {
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+        }
+
+        .close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        /* Visualization Container */
+        .visualization-container {
+            background: white;
+            border: 2px solid var(--border-gray);
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .viz-title {
+            color: var(--primary-blue);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        /* Control Buttons */
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: white;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            padding: 10px 25px;
+            font-size: 1em;
+            font-family: Georgia, serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .control-btn.primary {
+            background: var(--secondary-blue);
+            color: white;
+            border-color: var(--secondary-blue);
+        }
+
+        .control-btn.primary:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+
+        /* Data Table - Academic */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        .data-table th {
+            background: var(--primary-blue);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: normal;
+            border: 1px solid var(--primary-blue);
+        }
+
+        .data-table td {
+            padding: 10px 12px;
+            border: 1px solid var(--border-gray);
+            color: var(--text-gray);
+        }
+
+        .data-table tr:nth-child(even) {
+            background: var(--bg-light);
+        }
+
+        .data-table tr:hover {
+            background: var(--light-blue);
+        }
+
+        /* Charts and Visualizations */
+        .bar {
+            background: var(--secondary-blue);
+            color: white;
+            padding: 10px 15px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.5s;
+            border: 1px solid var(--primary-blue);
+        }
+
+        .bar.aggregated {
+            background: var(--primary-blue);
+        }
+
+        .scatter-plot {
+            width: 100%;
+            height: 350px;
+            border: 2px solid var(--border-gray);
+            position: relative;
+            background: white;
+        }
+
+        .data-point {
+            width: 8px;
+            height: 8px;
+            background: var(--secondary-blue);
+            border-radius: 50%;
+            position: absolute;
+            transition: all 0.5s;
+        }
+
+        .data-point.reduced {
+            background: var(--primary-blue);
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 35px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-gray);
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary-blue);
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            padding-left: 15px;
+            color: white;
+            font-weight: normal;
+        }
+
+        /* Key Points Box */
+        .key-points-box {
+            background: white;
+            border: 2px solid var(--secondary-blue);
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .key-points-box h4 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .key-points-box ul {
+            margin-left: 25px;
+        }
+
+        /* Comparison Layout */
+        .comparison-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        .comparison-panel {
+            border: 2px solid var(--border-gray);
+            padding: 20px;
+            background: white;
+        }
+
+        .comparison-panel h4 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-light);
+            border-top: 3px solid var(--primary-blue);
+            padding: 40px 60px;
+            text-align: center;
+        }
+
+        footer h3 {
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content {
+                padding: 40px;
+            }
+
+            .comparison-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .numerosity-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #attributeCards {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            header, .content, footer {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .modal-content {
+                margin: 20px;
+                max-width: 95%;
+            }
+
+            .modal-body {
+                padding: 25px;
+            }
+
+            #attributeCards {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .control-btn {
+                width: 100%;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .demo-button, .control-btn, .close {
+                display: none;
+            }
+
+            .modal {
+                position: relative;
+                display: block;
+            }
+        }
+
+        /* Highlight on hover for learning */
+        .data-row {
+            transition: background 0.3s;
+        }
+
+        .data-row.highlighted {
+            background: var(--highlight-yellow) !important;
+        }
+
+        .data-row.removing {
+            opacity: 0.4;
+            text-decoration: line-through;
+        }
+
+        .data-row.removed {
+            display: none;
+        }
+
+        /* Section Numbers */
+        .section-number {
+            color: var(--secondary-blue);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Animations for Visualizations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes growUp {
+            from { height: 0; }
+            to { height: auto; }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Attribute Cards Grid */
+        #attributeCards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .attribute-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.5s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .attribute-card.irrelevant {
+            border-color: #e74c3c;
+        }
+
+        /* PCA Containers */
+        .pca-container {
+            margin: 20px 0;
+        }
+
+        /* Numerosity Comparison */
+        .numerosity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <div class="university-info">
+                JAIN UNIVERSITY<br>
+                DEPARTMENT OF COMPUTER SCIENCE & INFORMATION TECHNOLOGY
+            </div>
+            <h1>Data Reduction Techniques</h1>
+            <div class="course-info">
+                Module 3: Data Preprocessing | BCA - Data Analytics | 5th Semester
+            </div>
+            <div id="timer" style="position: absolute; top: 20px; right: 40px; background: white; color: var(--primary-blue); padding: 10px 20px; border: 2px solid var(--primary-blue); font-family: 'Courier New', monospace; font-size: 1.2em; font-weight: bold;">00:00</div>
+        </header>
+
+        <div class="content">
+            <!-- Abstract/Introduction -->
+            <section>
+                <h2><span class="section-number">1.</span> Introduction</h2>
+
+                <div class="definition-box">
+                    <strong>Definition:</strong> Data reduction obtains a reduced representation of the dataset that is much smaller in volume, yet closely maintains the integrity of the original data. Mining on the reduced data set should be more efficient yet produce the same (or almost the same) analytical results.
+                </div>
+
+                <p>
+                    In the era of big data, organizations generate and collect massive volumes of data daily. Modern datasets often contain millions to billions of records with hundreds or thousands of attributes. Processing such enormous datasets requires substantial computational resources, time, and storage capacity. Data reduction techniques address these challenges by transforming large datasets into smaller, more manageable representations while preserving the essential information needed for analysis and mining.
+                </p>
+
+                <h3>1.1 Motivation for Data Reduction</h3>
+                <p>
+                    The necessity for data reduction arises from several fundamental challenges in data mining:
+                </p>
+
+                <ul>
+                    <li><strong>Computational Complexity:</strong> Many data mining algorithms have time complexity that increases exponentially with the size of the dataset or the number of dimensions.</li>
+                    <li><strong>Storage Constraints:</strong> Large datasets require significant storage infrastructure, increasing costs and management overhead.</li>
+                    <li><strong>The Curse of Dimensionality:</strong> As the number of dimensions increases, the volume of the space increases exponentially, making data sparse and distance measures less meaningful.</li>
+                    <li><strong>Visualization Challenges:</strong> High-dimensional data cannot be directly visualized, limiting exploratory data analysis.</li>
+                </ul>
+
+                <div class="objective-box">
+                    <h4>Learning Objectives</h4>
+                    <p>After studying this module, you will be able to:</p>
+                    <ul>
+                        <li>Understand the fundamental principles of data reduction</li>
+                        <li>Identify appropriate reduction techniques for different data types and mining goals</li>
+                        <li>Apply five core data reduction strategies with practical examples</li>
+                        <li>Evaluate the trade-offs between data reduction and information preservation</li>
+                        <li>Implement basic reduction algorithms for real-world datasets</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h3>Contents</h3>
+                <ul>
+                    <li><a href="#section1">1. Introduction to Data Reduction</a></li>
+                    <li><a href="#section2">2. Data Cube Aggregation</a></li>
+                    <li><a href="#section3">3. Attribute Subset Selection</a></li>
+                    <li><a href="#section4">4. Dimensionality Reduction (PCA)</a></li>
+                    <li><a href="#section5">5. Numerosity Reduction</a></li>
+                    <li><a href="#section6">6. Discretization and Concept Hierarchy</a></li>
+                    <li><a href="#summary">Summary and Key Takeaways</a></li>
+                </ul>
+            </div>
+
+            <!-- Five Techniques -->
+            <h2><span class="section-number">2.</span> Five Core Data Reduction Strategies</h2>
+
+            <p>
+                Data reduction strategies can be categorized into five primary approaches, each suited to different types of data and analytical objectives. The following sections provide detailed explanations and interactive demonstrations of each technique.
+            </p>
+
+            <!-- Technique 1: Data Cube Aggregation -->
+            <div class="technique-section" id="section2">
+                <div class="technique-header">
+                    <div class="technique-title">2.1 Data Cube Aggregation</div>
+                    <div class="technique-number">1</div>
+                </div>
+
+                <h4>Overview</h4>
+                <p>
+                    Data cube aggregation applies summary operations to combine detailed, low-level data into higher-level summaries. This technique is fundamental to Online Analytical Processing (OLAP) and business intelligence applications.
+                </p>
+
+                <h4>Methodology</h4>
+                <p>
+                    Common aggregation operations include SUM, AVERAGE, COUNT, MIN, and MAX. These operations can be applied across different dimensions and hierarchies. For example, daily sales data can be aggregated to monthly totals, which can then be further aggregated to quarterly or annual summaries.
+                </p>
+
+                <h4>Applications</h4>
+                <ul>
+                    <li>Business dashboards and reporting systems</li>
+                    <li>Data warehouse star and snowflake schemas</li>
+                    <li>Time-series data summarization</li>
+                    <li>Geographic data aggregation (city → state → country)</li>
+                </ul>
+
+                <button class="demo-button" onclick="showDemo('datacube')">
+                    ► View Interactive Demonstration
+                </button>
+
+                <div class="key-points-box">
+                    <h4>Key Considerations</h4>
+                    <ul>
+                        <li><strong>Information Loss:</strong> Detail-level information is permanently lost after aggregation</li>
+                        <li><strong>Query Performance:</strong> Pre-aggregated data enables significantly faster query responses</li>
+                        <li><strong>Storage Trade-off:</strong> Maintaining multiple aggregation levels requires additional storage</li>
+                        <li><strong>Typical Reduction:</strong> 10x to 100x reduction in data volume</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Technique 2: Attribute Selection -->
+            <div class="technique-section" id="section3">
+                <div class="technique-header">
+                    <div class="technique-title">2.2 Attribute Subset Selection (Feature Selection)</div>
+                    <div class="technique-number">2</div>
+                </div>
+
+                <h4>Overview</h4>
+                <p>
+                    Attribute subset selection reduces the data set size by removing irrelevant, weakly relevant, or redundant attributes. The goal is to find a minimum set of attributes such that the resulting probability distribution of the data classes is as close as possible to the original distribution using all attributes.
+                </p>
+
+                <h4>Selection Methods</h4>
+                <ul>
+                    <li><strong>Correlation Analysis:</strong> Pearson's correlation coefficient for numerical attributes</li>
+                    <li><strong>Chi-Square Test:</strong> Statistical test for categorical attributes</li>
+                    <li><strong>Information Gain:</strong> Entropy-based measure from decision tree algorithms</li>
+                    <li><strong>Forward Selection:</strong> Start with empty set, iteratively add best attributes</li>
+                    <li><strong>Backward Elimination:</strong> Start with all attributes, iteratively remove worst</li>
+                </ul>
+
+                <h4>Benefits</h4>
+                <p>
+                    Reducing the number of attributes provides multiple advantages: faster training of machine learning models, reduced overfitting, improved model interpretability, and easier data visualization.
+                </p>
+
+                <button class="demo-button" onclick="showDemo('attribute')">
+                    ► View Interactive Demonstration
+                </button>
+
+                <div class="key-points-box">
+                    <h4>Key Considerations</h4>
+                    <ul>
+                        <li><strong>Threshold Selection:</strong> Typically retain attributes with |correlation| > 0.3</li>
+                        <li><strong>Domain Knowledge:</strong> Subject matter expertise crucial for feature selection</li>
+                        <li><strong>Interaction Effects:</strong> Some features may be weak individually but strong in combination</li>
+                        <li><strong>Typical Reduction:</strong> 50% to 90% reduction in number of features</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Technique 3: PCA -->
+            <div class="technique-section" id="section4">
+                <div class="technique-header">
+                    <div class="technique-title">2.3 Dimensionality Reduction: Principal Component Analysis</div>
+                    <div class="technique-number">3</div>
+                </div>
+
+                <h4>Overview</h4>
+                <p>
+                    Principal Component Analysis (PCA) is a statistical technique that transforms high-dimensional data into a lower-dimensional space by finding orthogonal directions (principal components) that capture maximum variance in the data. Unlike attribute selection, PCA creates new composite features rather than selecting from existing ones.
+                </p>
+
+                <h4>Mathematical Foundation</h4>
+                <p>
+                    PCA works by computing the covariance matrix of the normalized data, then finding its eigenvectors and eigenvalues. The eigenvectors with the largest eigenvalues become the principal components, representing the directions of maximum variance.
+                </p>
+
+                <h4>Algorithm Steps</h4>
+                <ol>
+                    <li>Normalize the input data (mean = 0, standard deviation = 1)</li>
+                    <li>Compute the covariance matrix</li>
+                    <li>Calculate eigenvectors and eigenvalues</li>
+                    <li>Sort eigenvectors by eigenvalues in descending order</li>
+                    <li>Select top k eigenvectors (where k is desired dimensionality)</li>
+                    <li>Project original data onto the k principal components</li>
+                </ol>
+
+                <button class="demo-button" onclick="showDemo('pca')">
+                    ► View Interactive Demonstration
+                </button>
+
+                <div class="key-points-box">
+                    <h4>Key Considerations</h4>
+                    <ul>
+                        <li><strong>Variance Retention:</strong> Typically retain 85-95% of variance with far fewer dimensions</li>
+                        <li><strong>Interpretability Loss:</strong> Principal components are linear combinations, not original features</li>
+                        <li><strong>Linearity Assumption:</strong> PCA captures only linear relationships</li>
+                        <li><strong>Applications:</strong> Image compression, noise reduction, visualization, preprocessing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Technique 4: Numerosity Reduction -->
+            <div class="technique-section" id="section5">
+                <div class="technique-header">
+                    <div class="technique-title">2.4 Numerosity Reduction</div>
+                    <div class="technique-number">4</div>
+                </div>
+
+                <h4>Overview</h4>
+                <p>
+                    Numerosity reduction replaces the original data with alternative, smaller representations. This can be achieved through parametric models (storing only model parameters) or non-parametric methods (sampling, histograms, clustering).
+                </p>
+
+                <h4>Parametric Methods</h4>
+                <ul>
+                    <li><strong>Regression Models:</strong> Fit data to linear or polynomial functions, store only coefficients</li>
+                    <li><strong>Log-Linear Models:</strong> For discrete multidimensional probability distributions</li>
+                </ul>
+
+                <h4>Non-Parametric Methods</h4>
+                <ul>
+                    <li><strong>Sampling:</strong> Random sampling (SRSWOR, SRSWR), stratified sampling, cluster sampling</li>
+                    <li><strong>Histograms:</strong> Equal-width, equal-frequency, V-optimal, MaxDiff binning</li>
+                    <li><strong>Clustering:</strong> Replace data points with cluster centroids</li>
+                </ul>
+
+                <button class="demo-button" onclick="showDemo('numerosity')">
+                    ► View Interactive Demonstration
+                </button>
+
+                <div class="key-points-box">
+                    <h4>Key Considerations</h4>
+                    <ul>
+                        <li><strong>Sampling Rate:</strong> 10% sample typically sufficient for large datasets</li>
+                        <li><strong>Statistical Validity:</strong> Ensure sample maintains population distribution</li>
+                        <li><strong>Histogram Bins:</strong> Too few bins lose detail, too many defeat purpose</li>
+                        <li><strong>Typical Reduction:</strong> 90-99% reduction in data volume</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Technique 5: Discretization -->
+            <div class="technique-section" id="section6">
+                <div class="technique-header">
+                    <div class="technique-title">2.5 Discretization and Concept Hierarchy Generation</div>
+                    <div class="technique-number">5</div>
+                </div>
+
+                <h4>Overview</h4>
+                <p>
+                    Discretization transforms continuous numerical attributes into discrete intervals or categories. This process reduces the number of distinct values while enabling categorical analysis techniques and improving interpretability.
+                </p>
+
+                <h4>Discretization Methods</h4>
+                <ul>
+                    <li><strong>Equal-Width (Distance) Binning:</strong> Divide attribute range into N intervals of equal size</li>
+                    <li><strong>Equal-Frequency (Depth) Binning:</strong> Divide so each interval contains approximately same number of values</li>
+                    <li><strong>Entropy-Based Discretization:</strong> Minimize information loss, optimal for classification tasks</li>
+                    <li><strong>Clustering-Based:</strong> Use clustering algorithms to identify natural breakpoints</li>
+                </ul>
+
+                <h4>Concept Hierarchies</h4>
+                <p>
+                    Discretization can be performed recursively to create hierarchical categorizations. For example, age can be discretized at multiple levels: detailed bins (0-10, 11-20, ...) → broader categories (Youth, Adult, Senior) → binary (Young, Old).
+                </p>
+
+                <button class="demo-button" onclick="showDemo('discretization')">
+                    ► View Interactive Demonstration
+                </button>
+
+                <div class="key-points-box">
+                    <h4>Key Considerations</h4>
+                    <ul>
+                        <li><strong>Number of Bins:</strong> Balance between granularity and simplicity</li>
+                        <li><strong>Domain Knowledge:</strong> Natural breakpoints (e.g., age groups) often preferred</li>
+                        <li><strong>Reversibility:</strong> Discretization is lossy, original values cannot be recovered</li>
+                        <li><strong>Applications:</strong> Association rule mining, decision trees, data visualization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Summary Section -->
+            <section id="summary">
+                <h2><span class="section-number">3.</span> Summary and Guidelines</h2>
+
+                <h3>3.1 Technique Selection Guidelines</h3>
+                <p>
+                    Selecting the appropriate data reduction technique depends on several factors:
+                </p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Recommended Technique</th>
+                            <th>Rationale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>High-dimensional dataset (100+ attributes)</td>
+                            <td>PCA or Attribute Selection</td>
+                            <td>Addresses curse of dimensionality</td>
+                        </tr>
+                        <tr>
+                            <td>Need interpretable results</td>
+                            <td>Attribute Selection or Discretization</td>
+                            <td>Preserves original features</td>
+                        </tr>
+                        <tr>
+                            <td>Time-series or sequential data</td>
+                            <td>Aggregation or Wavelet Transforms</td>
+                            <td>Maintains temporal patterns</td>
+                        </tr>
+                        <tr>
+                            <td>Very large dataset (millions of records)</td>
+                            <td>Sampling or Clustering</td>
+                            <td>Provides representative subset</td>
+                        </tr>
+                        <tr>
+                            <td>Business intelligence dashboards</td>
+                            <td>Data Cube Aggregation</td>
+                            <td>Enables OLAP operations</td>
+                        </tr>
+                        <tr>
+                            <td>Continuous attributes for rule mining</td>
+                            <td>Discretization</td>
+                            <td>Enables categorical analysis</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>3.2 Key Principles</h3>
+                <div class="definition-box">
+                    <p>
+                        <strong>Fundamental Principle:</strong> The effectiveness of data reduction is measured by the degree to which it reduces data volume while maintaining the integrity needed for the intended analytical task. There is always a trade-off between reduction and information preservation.
+                    </p>
+                </div>
+
+                <ul>
+                    <li><strong>Validate Results:</strong> Always compare mining results on reduced vs. original data</li>
+                    <li><strong>Domain Expertise:</strong> Incorporate subject matter knowledge when selecting techniques</li>
+                    <li><strong>Combine Techniques:</strong> Multiple reduction methods can be applied sequentially</li>
+                    <li><strong>Document Decisions:</strong> Maintain clear records of reduction parameters and rationale</li>
+                </ul>
+
+                <h3>3.3 Practical Considerations</h3>
+                <p>
+                    When implementing data reduction in real-world scenarios, consider the following:
+                </p>
+
+                <ul>
+                    <li>Start with exploratory data analysis to understand data characteristics</li>
+                    <li>Test multiple reduction techniques and compare results</li>
+                    <li>Monitor computational savings vs. accuracy trade-offs</li>
+                    <li>Update reduction strategies as data evolves over time</li>
+                    <li>Consider the end-user's needs for interpretability and granularity</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- Modals for Interactive Demos -->
+
+        <!-- Data Cube Modal -->
+        <div id="datacubeModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Interactive Demonstration: Data Cube Aggregation</h2>
+                    <span class="close" onclick="closeModal('datacubeModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Concept Illustration</h3>
+                    <p>
+                        This demonstration shows how detailed daily sales data is progressively aggregated into higher-level summaries. Observe how the number of data points decreases while preserving the total sales information.
+                    </p>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="aggregateDaily()">Step 1: Aggregate Daily → Monthly</button>
+                        <button class="control-btn primary" onclick="aggregateMonthly()">Step 2: Aggregate Monthly → Yearly</button>
+                        <button class="control-btn" onclick="resetDataCube()">Reset to Daily Data</button>
+                    </div>
+
+                    <div class="visualization-container">
+                        <div class="viz-title">Sales Data Visualization</div>
+                        <div id="datacubeChart"></div>
+                    </div>
+
+                    <h4>Observations</h4>
+                    <ul>
+                        <li>Daily data: 21 records → Monthly data: 3 records (85% reduction)</li>
+                        <li>Monthly data: 3 records → Yearly data: 1 record (97% total reduction)</li>
+                        <li>Total sales value remains constant across all aggregation levels</li>
+                        <li>Query performance improves dramatically with aggregated data</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attribute Selection Modal -->
+        <div id="attributeModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Interactive Demonstration: Attribute Selection</h2>
+                    <span class="close" onclick="closeModal('attributeModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Concept Illustration</h3>
+                    <p>
+                        This demonstration analyzes a customer dataset with 10 features. Features are evaluated based on their correlation with the target variable. The standard threshold for retention is |correlation| ≥ 0.30.
+                    </p>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="calculateCorrelation()">Step 1: Analyze Correlations</button>
+                        <button class="control-btn primary" onclick="removeIrrelevant()">Step 2: Remove Irrelevant Features</button>
+                        <button class="control-btn" onclick="resetAttributes()">Reset Features</button>
+                    </div>
+
+                    <div class="visualization-container">
+                        <div class="viz-title">Feature Correlation Analysis - Interactive Cards</div>
+                        <div id="attributeCards"></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="attributeProgress" style="width: 0%">0% Removed</div>
+                        </div>
+                    </div>
+
+                    <h4>Selection Criteria</h4>
+                    <ul>
+                        <li><strong>High Correlation (|r| ≥ 0.70):</strong> Strong predictors, definitely retain</li>
+                        <li><strong>Moderate Correlation (0.30 ≤ |r| < 0.70):</strong> Useful features, consider retaining</li>
+                        <li><strong>Low Correlation (|r| < 0.30):</strong> Weak predictors, candidates for removal</li>
+                        <li><strong>Zero Correlation (|r| ≈ 0):</strong> No linear relationship, remove unless domain knowledge suggests otherwise</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- PCA Modal -->
+        <div id="pcaModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Interactive Demonstration: Principal Component Analysis</h2>
+                    <span class="close" onclick="closeModal('pcaModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Concept Illustration</h3>
+                    <p>
+                        This demonstration simulates reducing a 100-dimensional dataset to 2 dimensions using PCA. The algorithm identifies the two directions (principal components) that capture the maximum variance in the data.
+                    </p>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="generatePCAData()">Step 1: Generate Sample Data (100D)</button>
+                        <button class="control-btn primary" onclick="applyPCA()">Step 2: Apply PCA (100D → 2D)</button>
+                        <button class="control-btn" onclick="resetPCA()">Reset</button>
+                    </div>
+
+                    <div class="visualization-container">
+                        <div class="viz-title">Dimensionality Reduction: Visual Transformation</div>
+                        <div class="comparison-layout">
+                            <div class="comparison-panel pca-container">
+                                <h4>Before PCA: High-Dimensional Data</h4>
+                                <div id="pcaDimensions" style="min-height: 250px;"></div>
+                            </div>
+                            <div class="comparison-panel pca-container">
+                                <h4>After PCA: 2D Projection</h4>
+                                <div id="pcaReduced" style="min-height: 250px;"></div>
+                                <p style="margin-top: 15px; text-align: center; color: var(--primary-blue); font-weight: bold;">
+                                    Variance Retained: <span id="varianceRetained" style="font-size: 1.3em; color: #27ae60;">0%</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>PCA Process</h4>
+                    <ol>
+                        <li>Normalize data to zero mean and unit variance</li>
+                        <li>Compute covariance matrix (100×100 for 100D data)</li>
+                        <li>Calculate eigenvectors and eigenvalues of covariance matrix</li>
+                        <li>Sort eigenvectors by eigenvalues (descending)</li>
+                        <li>Select top k=2 eigenvectors as principal components</li>
+                        <li>Project original 100D data onto 2D space defined by these components</li>
+                    </ol>
+
+                    <h4>Interpretation</h4>
+                    <p>
+                        Retaining 90-95% of variance with only 2 dimensions demonstrates PCA's effectiveness. The first principal component captures the direction of maximum variance, the second captures the direction of maximum remaining variance orthogonal to the first.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Numerosity Modal -->
+        <div id="numerosityModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Interactive Demonstration: Numerosity Reduction</h2>
+                    <span class="close" onclick="closeModal('numerosityModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Concept Illustration</h3>
+                    <p>
+                        This demonstration compares three non-parametric numerosity reduction methods on a dataset of 1,000 points. Each method creates a smaller representation while preserving statistical properties.
+                    </p>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="showSampling()">Method 1: Random Sampling (10%)</button>
+                        <button class="control-btn primary" onclick="showHistogram()">Method 2: Histogram Binning</button>
+                        <button class="control-btn primary" onclick="showClustering()">Method 3: Clustering (50 centroids)</button>
+                        <button class="control-btn" onclick="resetNumerosity()">Reset</button>
+                    </div>
+
+                    <div class="visualization-container">
+                        <div class="viz-title">Data Points Reduction Comparison</div>
+                        <div class="numerosity-grid">
+                            <div id="numerosityOriginal"></div>
+                            <div id="numerosityReduced"></div>
+                        </div>
+                        <div id="reductionStats"></div>
+                    </div>
+
+                    <h4>Method Comparison</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Reduction</th>
+                                <th>Advantages</th>
+                                <th>Disadvantages</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Random Sampling</td>
+                                <td>90%</td>
+                                <td>Simple, maintains distribution</td>
+                                <td>May miss rare patterns</td>
+                            </tr>
+                            <tr>
+                                <td>Histogram</td>
+                                <td>~75-90%</td>
+                                <td>Preserves distribution shape</td>
+                                <td>Loses individual points</td>
+                            </tr>
+                            <tr>
+                                <td>Clustering</td>
+                                <td>95%</td>
+                                <td>Identifies natural groups</td>
+                                <td>Computationally intensive</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discretization Modal -->
+        <div id="discretizationModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Interactive Demonstration: Discretization</h2>
+                    <span class="close" onclick="closeModal('discretizationModal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <h3>Concept Illustration</h3>
+                    <p>
+                        This demonstration discretizes a continuous attribute (Age) into categorical bins using three different methods. Each method produces different interval boundaries based on its optimization criteria.
+                    </p>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="discretizeEqualWidth()">Method 1: Equal-Width Binning</button>
+                        <button class="control-btn primary" onclick="discretizeEqualFreq()">Method 2: Equal-Frequency Binning</button>
+                        <button class="control-btn primary" onclick="discretizeEntropy()">Method 3: Entropy-Based</button>
+                        <button class="control-btn" onclick="resetDiscretization()">Reset</button>
+                    </div>
+
+                    <div class="visualization-container">
+                        <div class="viz-title">Age Discretization: Continuous → Discrete Transformation</div>
+                        <div id="discretizationViz"></div>
+                    </div>
+
+                    <h4>Concept Hierarchy Example</h4>
+                    <div style="background: var(--bg-light); padding: 25px; border: 1px solid var(--border-gray); margin: 20px 0;">
+                        <div style="text-align: center;">
+                            <div style="padding: 15px; background: white; border: 2px solid var(--border-gray); margin: 10px 0;">
+                                <strong>Level 0 (Most Detailed):</strong> Individual ages (18, 19, 20, ..., 70, 71)
+                            </div>
+                            <div style="font-size: 24px; color: var(--primary-blue);">↓</div>
+                            <div style="padding: 15px; background: var(--light-blue); border: 2px solid var(--secondary-blue); margin: 10px 0;">
+                                <strong>Level 1 (Intermediate):</strong> Youth (18-25) | Adult (26-60) | Senior (61+)
+                            </div>
+                            <div style="font-size: 24px; color: var(--primary-blue);">↓</div>
+                            <div style="padding: 15px; background: var(--primary-blue); color: white; margin: 10px 0;">
+                                <strong>Level 2 (Most General):</strong> Young (18-40) | Old (41+)
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Method Descriptions</h4>
+                    <ul>
+                        <li><strong>Equal-Width:</strong> Divides the range (max - min) into N intervals of equal size. Simple but can be skewed by outliers.</li>
+                        <li><strong>Equal-Frequency:</strong> Creates bins containing approximately the same number of values. Better for skewed distributions.</li>
+                        <li><strong>Entropy-Based:</strong> Uses class information to minimize entropy, optimal for classification tasks.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <h3>References and Further Reading</h3>
+            <p style="margin: 15px 0; color: var(--text-gray);">
+                Han, J., Kamber, M., & Pei, J. (2011). <em>Data Mining: Concepts and Techniques</em> (3rd ed.). Morgan Kaufmann.<br>
+                Jolliffe, I. T. (2002). <em>Principal Component Analysis</em> (2nd ed.). Springer.<br>
+                Liu, H., & Motoda, H. (2007). <em>Computational Methods of Feature Selection</em>. Chapman & Hall/CRC.
+            </p>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--border-gray);">
+                <p style="color: var(--text-gray); font-size: 0.95em;">
+                    <strong>Course:</strong> Data Warehousing and Data Mining (23BCA5C01 / 23BCA5D01)<br>
+                    <strong>Module:</strong> 3 - Data Preprocessing<br>
+                    <strong>Institution:</strong> JAIN University, Department of Computer Science & IT<br>
+                    <strong>Academic Year:</strong> 2025-2026 (Odd Semester)
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="visualizations.js"></script>
+</body>
+</html>

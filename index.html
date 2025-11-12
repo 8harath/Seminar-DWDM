@@ -1305,23 +1305,157 @@
                 <div class="modal-body">
                     <h3>Concept Illustration</h3>
                     <p>
-                        This demonstration discretizes a continuous attribute (Age) into categorical bins using three different methods. Each method produces different interval boundaries based on its optimization criteria.
+                        Discretization transforms continuous numerical attributes into discrete intervals or categories. This demonstration shows how different binning methods create different interval boundaries and why method selection matters.
                     </p>
 
-                    <div class="controls">
-                        <button class="control-btn primary" onclick="discretizeEqualWidth()">Method 1: Equal-Width Binning</button>
-                        <button class="control-btn primary" onclick="discretizeEqualFreq()">Method 2: Equal-Frequency Binning</button>
-                        <button class="control-btn primary" onclick="discretizeEntropy()">Method 3: Entropy-Based</button>
-                        <button class="control-btn" onclick="resetDiscretization()">Reset</button>
+                    <!-- Method Selection Tabs -->
+                    <div style="display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd;">
+                        <button onclick="showDiscretizationMethod('equalwidth')" id="equalWidthTab" style="flex: 1; padding: 12px; background: #003366; color: white; border: none; cursor: pointer; font-weight: bold;">Equal-Width Binning</button>
+                        <button onclick="showDiscretizationMethod('equalfreq')" id="equalFreqTab" style="flex: 1; padding: 12px; background: #e0e0e0; color: #666; border: none; cursor: pointer;">Equal-Frequency Binning</button>
+                        <button onclick="showDiscretizationMethod('entropy')" id="entropyTab" style="flex: 1; padding: 12px; background: #e0e0e0; color: #666; border: none; cursor: pointer;">Entropy-Based</button>
+                        <button onclick="showDiscretizationMethod('comparison')" id="comparisonTab" style="flex: 1; padding: 12px; background: #e0e0e0; color: #666; border: none; cursor: pointer;">Compare All</button>
                     </div>
 
-                    <div class="visualization-container">
-                        <div class="viz-title">Age Discretization: Continuous → Discrete Transformation</div>
-                        <div id="discretizationViz"></div>
+                    <!-- Equal-Width Method -->
+                    <div id="equalWidthMethod" style="display: block;">
+                        <h4 style="color: #003366;">Method 1: Equal-Width (Distance) Binning</h4>
+                        <p><strong>Strategy:</strong> Divide the range (max - min) into N intervals of equal width</p>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="stepEqualWidth()">▶ Apply Equal-Width Binning</button>
+                            <button class="control-btn" onclick="resetDiscretizationMethod('equalwidth')">↻ Reset</button>
+                        </div>
+
+                        <div class="visualization-container">
+                            <div id="equalWidthViz"></div>
+                        </div>
+
+                        <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                            <h4 style="color: #003366;">How It Works:</h4>
+                            <ol style="color: #666; line-height: 1.8;">
+                                <li>Find <strong>min</strong> and <strong>max</strong> values in the data</li>
+                                <li>Calculate <strong>range</strong> = max - min</li>
+                                <li>Calculate <strong>bin width</strong> = range / N (where N = number of bins)</li>
+                                <li>Create N bins: [min, min+width), [min+width, min+2*width), ...</li>
+                                <li>Assign each value to its corresponding bin</li>
+                            </ol>
+                            <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #3498db; border-radius: 4px;">
+                                <strong>⚠ Limitation:</strong> Can create unbalanced bins if data is skewed or has outliers
+                            </div>
+                        </div>
                     </div>
 
-                    <h4>Concept Hierarchy Example</h4>
-                    <div style="background: var(--bg-light); padding: 25px; border: 1px solid var(--border-gray); margin: 20px 0;">
+                    <!-- Equal-Frequency Method -->
+                    <div id="equalFreqMethod" style="display: none;">
+                        <h4 style="color: #003366;">Method 2: Equal-Frequency (Depth) Binning</h4>
+                        <p><strong>Strategy:</strong> Create bins containing approximately the same number of values</p>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="stepEqualFreq()">▶ Apply Equal-Frequency Binning</button>
+                            <button class="control-btn" onclick="resetDiscretizationMethod('equalfreq')">↻ Reset</button>
+                        </div>
+
+                        <div class="visualization-container">
+                            <div id="equalFreqViz"></div>
+                        </div>
+
+                        <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                            <h4 style="color: #003366;">How It Works:</h4>
+                            <ol style="color: #666; line-height: 1.8;">
+                                <li><strong>Sort</strong> all values in ascending order</li>
+                                <li>Calculate <strong>bin size</strong> = total values / N</li>
+                                <li>Assign first 'bin size' values to Bin 1</li>
+                                <li>Assign next 'bin size' values to Bin 2</li>
+                                <li>Continue until all values are assigned</li>
+                            </ol>
+                            <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
+                                <strong>✓ Advantage:</strong> Handles skewed distributions well by ensuring balanced bins
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Entropy-Based Method -->
+                    <div id="entropyMethod" style="display: none;">
+                        <h4 style="color: #003366;">Method 3: Entropy-Based Discretization</h4>
+                        <p><strong>Strategy:</strong> Use class labels to find optimal split points that minimize entropy</p>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="stepEntropy()">▶ Apply Entropy-Based Binning</button>
+                            <button class="control-btn" onclick="resetDiscretizationMethod('entropy')">↻ Reset</button>
+                        </div>
+
+                        <div class="visualization-container">
+                            <div id="entropyViz"></div>
+                        </div>
+
+                        <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                            <h4 style="color: #003366;">How It Works:</h4>
+                            <ol style="color: #666; line-height: 1.8;">
+                                <li>Consider <strong>class labels</strong> (target variable) for each value</li>
+                                <li>Calculate <strong>entropy</strong> for each possible split point</li>
+                                <li>Choose split points that <strong>maximize information gain</strong></li>
+                                <li>Recursively split until stopping criterion met</li>
+                                <li>Results in bins with <strong>low entropy</strong> (high class purity)</li>
+                            </ol>
+                            <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #9b59b6; border-radius: 4px;">
+                                <strong>✓ Best For:</strong> Classification tasks where class labels are available
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison View -->
+                    <div id="comparisonMethod" style="display: none;">
+                        <h4 style="color: #003366;">Side-by-Side Method Comparison</h4>
+                        <p>Compare how different methods bin the same continuous data</p>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="compareAllMethods()">▶ Generate Comparison</button>
+                            <button class="control-btn" onclick="resetDiscretizationMethod('comparison')">↻ Reset</button>
+                        </div>
+
+                        <div class="visualization-container">
+                            <div id="comparisonViz"></div>
+                        </div>
+
+                        <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                            <h4 style="color: #003366;">Method Comparison Summary</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Method</th>
+                                        <th>Bin Creation</th>
+                                        <th>Best Use Case</th>
+                                        <th>Weakness</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Equal-Width</td>
+                                        <td>Uniform interval width</td>
+                                        <td>Uniformly distributed data</td>
+                                        <td>Sensitive to outliers</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Equal-Frequency</td>
+                                        <td>Uniform bin counts</td>
+                                        <td>Skewed distributions</td>
+                                        <td>Bins may span large ranges</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Entropy-Based</td>
+                                        <td>Information gain optimization</td>
+                                        <td>Classification with labels</td>
+                                        <td>Requires class information</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Concept Hierarchy Section -->
+                    <div style="margin-top: 30px; background: var(--bg-light); padding: 25px; border: 2px solid var(--border-gray); border-radius: 8px;">
+                        <h4 style="color: #003366; margin-bottom: 15px;">Concept Hierarchy Generation</h4>
+                        <p style="color: #666; margin-bottom: 15px;">Discretization can be performed recursively to create multi-level hierarchies:</p>
                         <div style="text-align: center;">
                             <div style="padding: 15px; background: white; border: 2px solid var(--border-gray); margin: 10px 0;">
                                 <strong>Level 0 (Most Detailed):</strong> Individual ages (18, 19, 20, ..., 70, 71)
@@ -1336,13 +1470,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <h4>Method Descriptions</h4>
-                    <ul>
-                        <li><strong>Equal-Width:</strong> Divides the range (max - min) into N intervals of equal size. Simple but can be skewed by outliers.</li>
-                        <li><strong>Equal-Frequency:</strong> Creates bins containing approximately the same number of values. Better for skewed distributions.</li>
-                        <li><strong>Entropy-Based:</strong> Uses class information to minimize entropy, optimal for classification tasks.</li>
-                    </ul>
                 </div>
             </div>
         </div>

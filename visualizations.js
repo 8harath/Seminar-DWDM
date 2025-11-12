@@ -1340,6 +1340,287 @@ function resetDiscretization() {
     initDiscretization();
 }
 
+// ===== ENHANCED DISCRETIZATION WITH TABS =====
+function showDiscretizationMethod(method) {
+    // Hide all methods
+    document.getElementById('equalWidthMethod').style.display = 'none';
+    document.getElementById('equalFreqMethod').style.display = 'none';
+    document.getElementById('entropyMethod').style.display = 'none';
+    document.getElementById('comparisonMethod').style.display = 'none';
+
+    // Reset all tab styles
+    const tabs = ['equalWidthTab', 'equalFreqTab', 'entropyTab', 'comparisonTab'];
+    tabs.forEach(tab => {
+        document.getElementById(tab).style.background = '#e0e0e0';
+        document.getElementById(tab).style.color = '#666';
+    });
+
+    // Show selected method and highlight tab
+    if (method === 'equalwidth') {
+        document.getElementById('equalWidthMethod').style.display = 'block';
+        document.getElementById('equalWidthTab').style.background = '#003366';
+        document.getElementById('equalWidthTab').style.color = 'white';
+        initEqualWidthDemo();
+    } else if (method === 'equalfreq') {
+        document.getElementById('equalFreqMethod').style.display = 'block';
+        document.getElementById('equalFreqTab').style.background = '#003366';
+        document.getElementById('equalFreqTab').style.color = 'white';
+        initEqualFreqDemo();
+    } else if (method === 'entropy') {
+        document.getElementById('entropyMethod').style.display = 'block';
+        document.getElementById('entropyTab').style.background = '#003366';
+        document.getElementById('entropyTab').style.color = 'white';
+        initEntropyDemo();
+    } else if (method === 'comparison') {
+        document.getElementById('comparisonMethod').style.display = 'block';
+        document.getElementById('comparisonTab').style.background = '#003366';
+        document.getElementById('comparisonTab').style.color = 'white';
+        initComparisonDemo();
+    }
+}
+
+function initEqualWidthDemo() {
+    const container = document.getElementById('equalWidthViz');
+    renderContinuousDataForMethod(container, 'Equal-Width');
+}
+
+function initEqualFreqDemo() {
+    const container = document.getElementById('equalFreqViz');
+    renderContinuousDataForMethod(container, 'Equal-Frequency');
+}
+
+function initEntropyDemo() {
+    const container = document.getElementById('entropyViz');
+    renderContinuousDataForMethod(container, 'Entropy-Based');
+}
+
+function initComparisonDemo() {
+    const container = document.getElementById('comparisonViz');
+    container.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">Click "Generate Comparison" to see all three methods side-by-side</p>';
+}
+
+function renderContinuousDataForMethod(container, methodName) {
+    container.innerHTML = `
+        <div style="margin-bottom: 20px;">
+            <h4 style="text-align: center; color: #003366; margin-bottom: 15px;">Step 1: Continuous Age Data (30 values)</h4>
+            <div style="background: #f8f9fa; padding: 20px; border: 2px solid #ddd; border-radius: 8px;">
+                <div style="display: flex; align-items: flex-end; justify-content: center; height: 180px; gap: 3px;">
+                    ${ageData.map((age, idx) => `
+                        <div style="
+                            width: 15px;
+                            height: ${(age / 75) * 100}%;
+                            background: linear-gradient(to top, #3498db, #5dade2);
+                            border-radius: 2px 2px 0 0;
+                            position: relative;
+                            animation: growUp 0.5s ${idx * 0.02}s both;
+                        " title="${age} years">
+                            <div style="position: absolute; bottom: -18px; font-size: 0.6em; color: #666; left: 50%; transform: translateX(-50%) rotate(-45deg); width: 25px; white-space: nowrap;">${age}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="margin-top: 25px; text-align: center; color: #666;">
+                    <strong>Range:</strong> ${Math.min(...ageData)} - ${Math.max(...ageData)} years |
+                    <strong>Count:</strong> ${ageData.length} values
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 15px; color: #666;">
+                👇 Click the button above to apply ${methodName} binning
+            </div>
+        </div>
+    `;
+}
+
+function stepEqualWidth() {
+    discretizeEqualWidth();
+    const container = document.getElementById('equalWidthViz');
+    const min = Math.min(...ageData);
+    const max = Math.max(...ageData);
+    const binWidth = (max - min) / 3;
+
+    const bins = [
+        { label: 'Bin 1: Youth', min: min, max: min + binWidth, color: '#3498db', count: 0, range: `${min.toFixed(0)}-${(min + binWidth).toFixed(0)}` },
+        { label: 'Bin 2: Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#e67e22', count: 0, range: `${(min + binWidth).toFixed(0)}-${(min + 2 * binWidth).toFixed(0)}` },
+        { label: 'Bin 3: Senior', min: min + 2 * binWidth, max: max, color: '#9b59b6', count: 0, range: `${(min + 2 * binWidth).toFixed(0)}-${max.toFixed(0)}` }
+    ];
+
+    ageData.forEach(age => {
+        bins.forEach(bin => {
+            if (age >= bin.min && age <= bin.max) bin.count++;
+        });
+    });
+
+    renderEnhancedDiscretization(container, bins, 'Equal-Width', binWidth.toFixed(1));
+}
+
+function stepEqualFreq() {
+    discretizeEqualFreq();
+    const sorted = [...ageData].sort((a, b) => a - b);
+    const binSize = Math.floor(sorted.length / 3);
+
+    const bins = [
+        { label: 'Bin 1: Low Range', color: '#3498db', count: binSize, range: `${sorted[0]}-${sorted[binSize - 1]}` },
+        { label: 'Bin 2: Mid Range', color: '#e67e22', count: binSize, range: `${sorted[binSize]}-${sorted[2 * binSize - 1]}` },
+        { label: 'Bin 3: High Range', color: '#9b59b6', count: sorted.length - 2 * binSize, range: `${sorted[2 * binSize]}-${sorted[sorted.length - 1]}` }
+    ];
+
+    const container = document.getElementById('equalFreqViz');
+    renderEnhancedDiscretization(container, bins, 'Equal-Frequency', binSize);
+}
+
+function stepEntropy() {
+    discretizeEntropy();
+    const bins = [
+        { label: 'Bin 1: Youth (≤25)', color: '#3498db', count: ageData.filter(a => a <= 25).length, range: '≤25' },
+        { label: 'Bin 2: Adult (26-60)', color: '#e67e22', count: ageData.filter(a => a > 25 && a <= 60).length, range: '26-60' },
+        { label: 'Bin 3: Senior (>60)', color: '#9b59b6', count: ageData.filter(a => a > 60).length, range: '>60' }
+    ];
+
+    const container = document.getElementById('entropyViz');
+    renderEnhancedDiscretization(container, bins, 'Entropy-Based', 'Optimized');
+}
+
+function renderEnhancedDiscretization(container, bins, methodName, param) {
+    const maxCount = Math.max(...bins.map(b => b.count));
+
+    container.innerHTML = `
+        <div style="margin-bottom: 20px;">
+            <h4 style="text-align: center; color: #27ae60; margin-bottom: 15px;">✓ Step 2: Discretized Data (3 bins)</h4>
+            <div style="background: #f8f9fa; padding: 30px; border: 2px solid #27ae60; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 250px; gap: 20px; margin-bottom: 20px;">
+                    ${bins.map((bin, index) => `
+                        <div style="flex: 1; text-align: center; animation: scaleIn ${0.5 + index * 0.2}s both;">
+                            <div style="
+                                height: ${(bin.count / maxCount) * 220}px;
+                                background: linear-gradient(to top, ${bin.color}, ${bin.color}dd);
+                                border-radius: 8px;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                color: white;
+                                margin-bottom: 10px;
+                                position: relative;
+                                animation: growUp 0.6s ${index * 0.2}s both;
+                                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                            ">
+                                <div style="font-size: 2em; font-weight: bold;">${bin.count}</div>
+                                <div style="font-size: 0.9em; opacity: 0.9;">values</div>
+                            </div>
+                            <div style="font-weight: bold; color: #003366; margin-bottom: 5px;">${bin.label}</div>
+                            <div style="font-size: 0.9em; color: #666;">${bin.range} years</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
+                    <div style="text-align: center; padding: 15px; background: white; border-radius: 4px;">
+                        <div style="font-size: 0.85em; color: #666;">Original Values</div>
+                        <div style="font-size: 1.3em; font-weight: bold; color: #3498db;">${ageData.length}</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: white; border-radius: 4px;">
+                        <div style="font-size: 0.85em; color: #666;">Bins Created</div>
+                        <div style="font-size: 1.3em; font-weight: bold; color: #27ae60;">${bins.length}</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: white; border-radius: 4px;">
+                        <div style="font-size: 0.85em; color: #666;">Parameter</div>
+                        <div style="font-size: 1.3em; font-weight: bold; color: #9b59b6;">${param}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function compareAllMethods() {
+    const container = document.getElementById('comparisonViz');
+
+    // Calculate all three methods
+    const min = Math.min(...ageData);
+    const max = Math.max(...ageData);
+    const binWidth = (max - min) / 3;
+
+    // Equal-Width
+    const equalWidthBins = [
+        { label: 'Youth', min: min, max: min + binWidth, color: '#3498db', count: 0 },
+        { label: 'Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#e67e22', count: 0 },
+        { label: 'Senior', min: min + 2 * binWidth, max: max, color: '#9b59b6', count: 0 }
+    ];
+    ageData.forEach(age => {
+        equalWidthBins.forEach(bin => {
+            if (age >= bin.min && age <= bin.max) bin.count++;
+        });
+    });
+
+    // Equal-Frequency
+    const sorted = [...ageData].sort((a, b) => a - b);
+    const binSize = Math.floor(sorted.length / 3);
+    const equalFreqBins = [
+        { label: 'Group 1', color: '#3498db', count: binSize },
+        { label: 'Group 2', color: '#e67e22', count: binSize },
+        { label: 'Group 3', color: '#9b59b6', count: sorted.length - 2 * binSize }
+    ];
+
+    // Entropy-Based
+    const entropyBins = [
+        { label: 'Youth', color: '#3498db', count: ageData.filter(a => a <= 25).length },
+        { label: 'Adult', color: '#e67e22', count: ageData.filter(a => a > 25 && a <= 60).length },
+        { label: 'Senior', color: '#9b59b6', count: ageData.filter(a => a > 60).length }
+    ];
+
+    container.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0;">
+            ${renderComparisonMethod('Equal-Width', equalWidthBins, 'Uniform width bins')}
+            ${renderComparisonMethod('Equal-Frequency', equalFreqBins, 'Uniform frequency bins')}
+            ${renderComparisonMethod('Entropy-Based', entropyBins, 'Optimized for classification')}
+        </div>
+        <div style="margin-top: 20px; padding: 20px; background: #e3f2fd; border-radius: 8px;">
+            <h4 style="color: #003366; margin-bottom: 10px;">Key Observations:</h4>
+            <ul style="color: #666; line-height: 1.8;">
+                <li><strong>Equal-Width</strong> creates bins with different counts (${equalWidthBins.map(b => b.count).join(', ')})</li>
+                <li><strong>Equal-Frequency</strong> balances bin counts (${equalFreqBins.map(b => b.count).join(', ')})</li>
+                <li><strong>Entropy-Based</strong> optimizes for class separation (${entropyBins.map(b => b.count).join(', ')})</li>
+                <li>All methods reduce ${ageData.length} continuous values to just 3 discrete categories</li>
+            </ul>
+        </div>
+    `;
+}
+
+function renderComparisonMethod(name, bins, description) {
+    const maxCount = Math.max(...bins.map(b => b.count));
+    return `
+        <div style="border: 2px solid #ddd; padding: 20px; border-radius: 8px; background: white;">
+            <h4 style="text-align: center; color: #003366; margin-bottom: 10px;">${name}</h4>
+            <p style="text-align: center; font-size: 0.85em; color: #666; margin-bottom: 15px;">${description}</p>
+            <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 150px; gap: 10px;">
+                ${bins.map(bin => `
+                    <div style="flex: 1; text-align: center;">
+                        <div style="
+                            height: ${(bin.count / maxCount) * 130}px;
+                            background: linear-gradient(to top, ${bin.color}, ${bin.color}dd);
+                            border-radius: 4px 4px 0 0;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: white;
+                            font-weight: bold;
+                            font-size: 1.2em;
+                            animation: growUp 0.5s;
+                        ">${bin.count}</div>
+                        <div style="font-size: 0.75em; color: #666; margin-top: 5px;">${bin.label}</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function resetDiscretizationMethod(method) {
+    if (method === 'equalwidth') initEqualWidthDemo();
+    else if (method === 'equalfreq') initEqualFreqDemo();
+    else if (method === 'entropy') initEntropyDemo();
+    else if (method === 'comparison') initComparisonDemo();
+}
+
 // ===== WAVELET TRANSFORMS - DIMENSIONALITY REDUCTION =====
 let waveletData = [];
 let waveletLevel = 0;

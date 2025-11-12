@@ -354,20 +354,57 @@ function resetDataCube() {
 
 // ===== ATTRIBUTE SELECTION - CREATIVE CARD VISUALIZATION =====
 let attributeData = [
-    { name: 'Customer Age', correlation: 0.72, variance: 145.2, status: 'Relevant' },
-    { name: 'Annual Income', correlation: 0.85, variance: 2341.5, status: 'Relevant' },
-    { name: 'Customer ID', correlation: 0.02, variance: 98123.4, status: 'Irrelevant' },
-    { name: 'Purchase Frequency', correlation: 0.68, variance: 23.4, status: 'Relevant' },
-    { name: 'Account Creation Date', correlation: 0.15, variance: 1234.1, status: 'Irrelevant' },
-    { name: 'Credit Score', correlation: 0.79, variance: 1234.5, status: 'Relevant' },
-    { name: 'Random UUID', correlation: 0.01, variance: 99999.9, status: 'Irrelevant' },
-    { name: 'Product Category', correlation: 0.61, variance: 12.3, status: 'Relevant' },
-    { name: 'Zip Code', correlation: 0.12, variance: 4567.8, status: 'Irrelevant' },
-    { name: 'Last Purchase Days', correlation: 0.58, variance: 234.5, status: 'Relevant' }
+    { name: 'Customer Age', correlation: 0.72, variance: 145.2, status: 'unknown', selected: false },
+    { name: 'Annual Income', correlation: 0.85, variance: 2341.5, status: 'unknown', selected: false },
+    { name: 'Customer ID', correlation: 0.02, variance: 98123.4, status: 'unknown', selected: false },
+    { name: 'Purchase Frequency', correlation: 0.68, variance: 23.4, status: 'unknown', selected: false },
+    { name: 'Account Creation Date', correlation: 0.15, variance: 1234.1, status: 'unknown', selected: false },
+    { name: 'Credit Score', correlation: 0.79, variance: 1234.5, status: 'unknown', selected: false },
+    { name: 'Random UUID', correlation: 0.01, variance: 99999.9, status: 'unknown', selected: false },
+    { name: 'Product Category', correlation: 0.61, variance: 12.3, status: 'unknown', selected: false },
+    { name: 'Zip Code', correlation: 0.12, variance: 4567.8, status: 'unknown', selected: false },
+    { name: 'Last Purchase Days', correlation: 0.58, variance: 234.5, status: 'unknown', selected: false }
 ];
+
+let forwardSelectionStep = 0;
+let backwardEliminationStep = 0;
+let selectedAttributes = [];
+let removedAttributes = [];
 
 function initAttributes() {
     renderAttributeCards();
+}
+
+function showAttributeMethod(method) {
+    // Hide all methods
+    document.getElementById('basicMethod').style.display = 'none';
+    document.getElementById('forwardMethod').style.display = 'none';
+    document.getElementById('backwardMethod').style.display = 'none';
+
+    // Reset all tab styles
+    document.getElementById('basicTab').style.background = '#e0e0e0';
+    document.getElementById('basicTab').style.color = '#666';
+    document.getElementById('forwardTab').style.background = '#e0e0e0';
+    document.getElementById('forwardTab').style.color = '#666';
+    document.getElementById('backwardTab').style.background = '#e0e0e0';
+    document.getElementById('backwardTab').style.color = '#666';
+
+    // Show selected method
+    if (method === 'basic') {
+        document.getElementById('basicMethod').style.display = 'block';
+        document.getElementById('basicTab').style.background = '#003366';
+        document.getElementById('basicTab').style.color = 'white';
+    } else if (method === 'forward') {
+        document.getElementById('forwardMethod').style.display = 'block';
+        document.getElementById('forwardTab').style.background = '#003366';
+        document.getElementById('forwardTab').style.color = 'white';
+        initForwardSelection();
+    } else if (method === 'backward') {
+        document.getElementById('backwardMethod').style.display = 'block';
+        document.getElementById('backwardTab').style.background = '#003366';
+        document.getElementById('backwardTab').style.color = 'white';
+        initBackwardElimination();
+    }
 }
 
 function renderAttributeCards() {
@@ -450,9 +487,395 @@ function updateAttributeProgress() {
 }
 
 function resetAttributes() {
+    attributeData.forEach(attr => {
+        attr.status = 'unknown';
+        attr.selected = false;
+    });
     initAttributes();
     document.getElementById('attributeProgress').style.width = '0%';
     document.getElementById('attributeProgress').textContent = '0% Removed';
+}
+
+// ===== FORWARD SELECTION METHOD =====
+function initForwardSelection() {
+    forwardSelectionStep = 0;
+    selectedAttributes = [];
+    attributeData.forEach(attr => {
+        attr.selected = false;
+        attr.status = 'unknown';
+    });
+    renderForwardSelection();
+}
+
+function renderForwardSelection() {
+    const container = document.getElementById('forwardSelectionViz');
+
+    // Sort attributes by correlation (descending) to show selection order
+    const sortedAttrs = [...attributeData].sort((a, b) => Math.abs(b.correlation) - Math.abs(a.correlation));
+
+    const selectedCount = selectedAttributes.length;
+    const remaining = attributeData.length - selectedCount;
+
+    container.innerHTML = `
+        <div style="margin-bottom: 20px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h3 style="color: #003366; margin: 0;">Forward Selection Process</h3>
+                <p style="color: #666; margin-top: 10px;">
+                    Start with <strong>empty set</strong> → Iteratively add <strong>best attribute</strong> → Repeat until threshold met
+                </p>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 8px; display: inline-block;">
+                    <strong>Current Step ${forwardSelectionStep}:</strong>
+                    Selected: <span style="color: #27ae60; font-size: 1.2em; font-weight: bold;">${selectedCount}</span> |
+                    Remaining: <span style="color: #666; font-size: 1.2em; font-weight: bold;">${remaining}</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <!-- Available Attributes Pool -->
+                <div style="background: #fff; border: 3px solid #ddd; border-radius: 12px; padding: 20px;">
+                    <h4 style="text-align: center; color: #666; margin-bottom: 15px;">
+                        📋 Available Attributes Pool
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px;">
+                        ${sortedAttrs.map((attr, idx) => {
+                            if (attr.selected) return '';
+                            const corrAbs = Math.abs(attr.correlation);
+                            const isNext = forwardSelectionStep > 0 && idx === sortedAttrs.findIndex(a => !a.selected);
+
+                            return `
+                                <div style="
+                                    background: ${isNext ? 'linear-gradient(135deg, #fff3cd, #ffeaa7)' : 'white'};
+                                    border: 2px solid ${isNext ? '#f39c12' : '#e0e0e0'};
+                                    padding: 12px;
+                                    border-radius: 8px;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    animation: ${isNext ? 'pulse 1.5s infinite' : 'fadeIn 0.5s'};
+                                    box-shadow: ${isNext ? '0 4px 15px rgba(243, 156, 18, 0.3)' : 'none'};
+                                ">
+                                    <div>
+                                        <div style="font-weight: bold; color: #003366;">${attr.name}</div>
+                                        <div style="font-size: 0.85em; color: #666;">|r| = ${corrAbs.toFixed(3)}</div>
+                                    </div>
+                                    <div style="
+                                        background: ${corrAbs >= 0.7 ? '#27ae60' : corrAbs >= 0.3 ? '#f39c12' : '#e74c3c'};
+                                        color: white;
+                                        padding: 5px 12px;
+                                        border-radius: 20px;
+                                        font-size: 0.85em;
+                                        font-weight: bold;
+                                    ">
+                                        ${corrAbs >= 0.7 ? 'Strong' : corrAbs >= 0.3 ? 'Moderate' : 'Weak'}
+                                    </div>
+                                    ${isNext ? '<div style="position: absolute; right: -30px; font-size: 2em;">👉</div>' : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <!-- Selected Attributes Set -->
+                <div style="background: #d4edda; border: 3px solid #27ae60; border-radius: 12px; padding: 20px;">
+                    <h4 style="text-align: center; color: #27ae60; margin-bottom: 15px;">
+                        ✅ Selected Attributes Set
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px;">
+                        ${selectedCount === 0 ? `
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-style: italic;">
+                                Empty Set - Start by adding best attribute
+                            </div>
+                        ` : ''}
+                        ${selectedAttributes.map((attr, idx) => {
+                            const corrAbs = Math.abs(attr.correlation);
+                            return `
+                                <div style="
+                                    background: linear-gradient(135deg, #27ae60, #2ecc71);
+                                    border: 2px solid #229954;
+                                    padding: 12px;
+                                    border-radius: 8px;
+                                    color: white;
+                                    animation: scaleIn 0.5s;
+                                    box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+                                ">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-weight: bold; font-size: 1.05em;">
+                                                #${idx + 1} ${attr.name}
+                                            </div>
+                                            <div style="font-size: 0.85em; opacity: 0.9;">|r| = ${corrAbs.toFixed(3)}</div>
+                                        </div>
+                                        <div style="
+                                            background: rgba(255,255,255,0.3);
+                                            padding: 5px 12px;
+                                            border-radius: 20px;
+                                            font-size: 0.85em;
+                                            font-weight: bold;
+                                        ">
+                                            Step ${idx + 1}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                <h4 style="color: #003366; margin-bottom: 10px;">Selection Strategy:</h4>
+                <ol style="color: #666; line-height: 1.8;">
+                    <li>Start with <strong>empty set</strong> of selected attributes</li>
+                    <li>Evaluate all <strong>remaining attributes</strong> by their correlation with target</li>
+                    <li>Select the attribute with <strong>highest |correlation|</strong></li>
+                    <li>Add to selected set and remove from available pool</li>
+                    <li>Repeat until threshold is met or desired number reached</li>
+                </ol>
+                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #3498db; border-radius: 4px;">
+                    <strong>Current Rule:</strong> Select attributes with |correlation| ≥ 0.30
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function stepForwardSelection() {
+    // Find next best unselected attribute
+    const unselected = attributeData.filter(attr => !attr.selected);
+    if (unselected.length === 0) {
+        alert('All attributes have been evaluated!');
+        return;
+    }
+
+    // Sort by absolute correlation (descending)
+    unselected.sort((a, b) => Math.abs(b.correlation) - Math.abs(a.correlation));
+
+    // Select the best one
+    const best = unselected[0];
+    best.selected = true;
+    best.status = 'selected';
+    selectedAttributes.push(best);
+    forwardSelectionStep++;
+
+    renderForwardSelection();
+}
+
+function autoForwardSelection() {
+    // Auto-select all attributes with |correlation| >= 0.3
+    const threshold = 0.3;
+    const sorted = [...attributeData].sort((a, b) => Math.abs(b.correlation) - Math.abs(a.correlation));
+
+    let step = 0;
+    const interval = setInterval(() => {
+        const unselected = sorted.filter(attr => !attr.selected);
+        if (unselected.length === 0 || Math.abs(unselected[0].correlation) < threshold) {
+            clearInterval(interval);
+            return;
+        }
+
+        const best = unselected[0];
+        best.selected = true;
+        best.status = 'selected';
+        selectedAttributes.push(best);
+        forwardSelectionStep++;
+        renderForwardSelection();
+        step++;
+    }, 800);
+}
+
+function resetForwardSelection() {
+    initForwardSelection();
+}
+
+// ===== BACKWARD ELIMINATION METHOD =====
+function initBackwardElimination() {
+    backwardEliminationStep = 0;
+    removedAttributes = [];
+    attributeData.forEach(attr => {
+        attr.selected = true; // Start with all selected
+        attr.status = 'selected';
+    });
+    renderBackwardElimination();
+}
+
+function renderBackwardElimination() {
+    const container = document.getElementById('backwardEliminationViz');
+
+    // Sort attributes by correlation (ascending) to show removal order
+    const sortedAttrs = [...attributeData].sort((a, b) => Math.abs(a.correlation) - Math.abs(b.correlation));
+
+    const remainingCount = attributeData.filter(a => a.selected).length;
+    const removedCount = removedAttributes.length;
+
+    container.innerHTML = `
+        <div style="margin-bottom: 20px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h3 style="color: #003366; margin: 0;">Backward Elimination Process</h3>
+                <p style="color: #666; margin-top: 10px;">
+                    Start with <strong>all attributes</strong> → Iteratively remove <strong>worst attribute</strong> → Repeat until optimal set remains
+                </p>
+                <div style="margin-top: 15px; padding: 15px; background: #ffebee; border-radius: 8px; display: inline-block;">
+                    <strong>Current Step ${backwardEliminationStep}:</strong>
+                    Remaining: <span style="color: #27ae60; font-size: 1.2em; font-weight: bold;">${remainingCount}</span> |
+                    Removed: <span style="color: #e74c3c; font-size: 1.2em; font-weight: bold;">${removedCount}</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <!-- Current Feature Set -->
+                <div style="background: #d4edda; border: 3px solid #27ae60; border-radius: 12px; padding: 20px;">
+                    <h4 style="text-align: center; color: #27ae60; margin-bottom: 15px;">
+                        ✅ Current Feature Set
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px;">
+                        ${sortedAttrs.map((attr, idx) => {
+                            if (!attr.selected) return '';
+                            const corrAbs = Math.abs(attr.correlation);
+                            const isWorst = backwardEliminationStep > 0 && idx === sortedAttrs.findIndex(a => a.selected);
+
+                            return `
+                                <div style="
+                                    background: ${isWorst ? 'linear-gradient(135deg, #ffebee, #ffcdd2)' : 'white'};
+                                    border: 2px solid ${isWorst ? '#e74c3c' : '#27ae60'};
+                                    padding: 12px;
+                                    border-radius: 8px;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    animation: ${isWorst ? 'pulse 1.5s infinite' : 'fadeIn 0.5s'};
+                                    box-shadow: ${isWorst ? '0 4px 15px rgba(231, 76, 60, 0.3)' : 'none'};
+                                ">
+                                    <div>
+                                        <div style="font-weight: bold; color: #003366;">${attr.name}</div>
+                                        <div style="font-size: 0.85em; color: #666;">|r| = ${corrAbs.toFixed(3)}</div>
+                                    </div>
+                                    <div style="
+                                        background: ${corrAbs >= 0.7 ? '#27ae60' : corrAbs >= 0.3 ? '#f39c12' : '#e74c3c'};
+                                        color: white;
+                                        padding: 5px 12px;
+                                        border-radius: 20px;
+                                        font-size: 0.85em;
+                                        font-weight: bold;
+                                    ">
+                                        ${corrAbs >= 0.7 ? 'Strong' : corrAbs >= 0.3 ? 'Moderate' : 'Weak'}
+                                    </div>
+                                    ${isWorst ? '<div style="position: absolute; right: -30px; font-size: 2em;">👉</div>' : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <!-- Removed Attributes -->
+                <div style="background: #fff; border: 3px solid #e74c3c; border-radius: 12px; padding: 20px;">
+                    <h4 style="text-align: center; color: #e74c3c; margin-bottom: 15px;">
+                        🗑️ Removed Attributes
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px;">
+                        ${removedCount === 0 ? `
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-style: italic;">
+                                No attributes removed yet
+                            </div>
+                        ` : ''}
+                        ${removedAttributes.map((attr, idx) => {
+                            const corrAbs = Math.abs(attr.correlation);
+                            return `
+                                <div style="
+                                    background: linear-gradient(135deg, #e74c3c, #c0392b);
+                                    border: 2px solid #a93226;
+                                    padding: 12px;
+                                    border-radius: 8px;
+                                    color: white;
+                                    animation: scaleIn 0.5s;
+                                    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+                                    opacity: 0.9;
+                                ">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-weight: bold; font-size: 1.05em; text-decoration: line-through;">
+                                                ${attr.name}
+                                            </div>
+                                            <div style="font-size: 0.85em; opacity: 0.9;">|r| = ${corrAbs.toFixed(3)}</div>
+                                        </div>
+                                        <div style="
+                                            background: rgba(255,255,255,0.3);
+                                            padding: 5px 12px;
+                                            border-radius: 20px;
+                                            font-size: 0.85em;
+                                            font-weight: bold;
+                                        ">
+                                            Step ${idx + 1}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                <h4 style="color: #003366; margin-bottom: 10px;">Elimination Strategy:</h4>
+                <ol style="color: #666; line-height: 1.8;">
+                    <li>Start with <strong>all attributes</strong> selected</li>
+                    <li>Evaluate all <strong>current attributes</strong> by their correlation with target</li>
+                    <li>Remove the attribute with <strong>lowest |correlation|</strong></li>
+                    <li>Move to removed set and continue</li>
+                    <li>Repeat until only strong predictors remain (|correlation| ≥ 0.30)</li>
+                </ol>
+                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #e74c3c; border-radius: 4px;">
+                    <strong>Current Rule:</strong> Remove attributes with |correlation| < 0.30
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function stepBackwardElimination() {
+    // Find worst selected attribute
+    const selected = attributeData.filter(attr => attr.selected);
+    if (selected.length === 0) {
+        alert('No attributes remaining!');
+        return;
+    }
+
+    // Sort by absolute correlation (ascending)
+    selected.sort((a, b) => Math.abs(a.correlation) - Math.abs(b.correlation));
+
+    // Remove the worst one
+    const worst = selected[0];
+    worst.selected = false;
+    worst.status = 'removed';
+    removedAttributes.push(worst);
+    backwardEliminationStep++;
+
+    renderBackwardElimination();
+}
+
+function autoBackwardElimination() {
+    // Auto-remove all attributes with |correlation| < 0.3
+    const threshold = 0.3;
+
+    const interval = setInterval(() => {
+        const selected = attributeData.filter(attr => attr.selected);
+        const sorted = selected.sort((a, b) => Math.abs(a.correlation) - Math.abs(b.correlation));
+
+        if (sorted.length === 0 || Math.abs(sorted[0].correlation) >= threshold) {
+            clearInterval(interval);
+            return;
+        }
+
+        const worst = sorted[0];
+        worst.selected = false;
+        worst.status = 'removed';
+        removedAttributes.push(worst);
+        backwardEliminationStep++;
+        renderBackwardElimination();
+    }, 800);
+}
+
+function resetBackwardElimination() {
+    initBackwardElimination();
 }
 
 // ===== PCA - CREATIVE DIMENSION COLLAPSE VISUALIZATION =====

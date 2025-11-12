@@ -1069,30 +1069,110 @@
                 <div class="modal-body">
                     <h3>Concept Illustration</h3>
                     <p>
-                        This demonstration analyzes a customer dataset with 10 features. Features are evaluated based on their correlation with the target variable. The standard threshold for retention is |correlation| ≥ 0.30.
+                        Attribute Subset Selection (Feature Selection) reduces the dataset size by removing irrelevant, weakly relevant, or redundant attributes. This demonstration shows three different methods for selecting the optimal feature subset.
                     </p>
 
-                    <div class="controls">
-                        <button class="control-btn primary" onclick="calculateCorrelation()">Step 1: Analyze Correlations</button>
-                        <button class="control-btn primary" onclick="removeIrrelevant()">Step 2: Remove Irrelevant Features</button>
-                        <button class="control-btn" onclick="resetAttributes()">Reset Features</button>
+                    <!-- Method Selection Tabs -->
+                    <div style="display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd;">
+                        <button onclick="showAttributeMethod('basic')" id="basicTab" style="flex: 1; padding: 12px; background: #003366; color: white; border: none; cursor: pointer; font-weight: bold;">Basic Correlation Analysis</button>
+                        <button onclick="showAttributeMethod('forward')" id="forwardTab" style="flex: 1; padding: 12px; background: #e0e0e0; color: #666; border: none; cursor: pointer;">Forward Selection</button>
+                        <button onclick="showAttributeMethod('backward')" id="backwardTab" style="flex: 1; padding: 12px; background: #e0e0e0; color: #666; border: none; cursor: pointer;">Backward Elimination</button>
                     </div>
 
-                    <div class="visualization-container">
-                        <div class="viz-title">Feature Correlation Analysis - Interactive Cards</div>
-                        <div id="attributeCards"></div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="attributeProgress" style="width: 0%">0% Removed</div>
+                    <!-- Basic Correlation Analysis -->
+                    <div id="basicMethod" style="display: block;">
+                        <h4 style="color: #003366;">Method 1: Correlation-Based Selection</h4>
+                        <p>Evaluate all features by their correlation with the target variable and remove those below threshold.</p>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="calculateCorrelation()">Step 1: Analyze Correlations</button>
+                            <button class="control-btn primary" onclick="removeIrrelevant()">Step 2: Remove Irrelevant Features</button>
+                            <button class="control-btn" onclick="resetAttributes()">Reset Features</button>
+                        </div>
+
+                        <div class="visualization-container">
+                            <div class="viz-title">Feature Correlation Analysis - Interactive Cards</div>
+                            <div id="attributeCards"></div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="attributeProgress" style="width: 0%">0% Removed</div>
+                            </div>
+                        </div>
+
+                        <h4>Selection Criteria</h4>
+                        <ul>
+                            <li><strong>High Correlation (|r| ≥ 0.70):</strong> Strong predictors, definitely retain</li>
+                            <li><strong>Moderate Correlation (0.30 ≤ |r| < 0.70):</strong> Useful features, consider retaining</li>
+                            <li><strong>Low Correlation (|r| < 0.30):</strong> Weak predictors, candidates for removal</li>
+                            <li><strong>Zero Correlation (|r| ≈ 0):</strong> No linear relationship, remove unless domain knowledge suggests otherwise</li>
+                        </ul>
+                    </div>
+
+                    <!-- Forward Selection Method -->
+                    <div id="forwardMethod" style="display: none;">
+                        <h4 style="color: #003366;">Method 2: Forward Selection (Greedy Algorithm)</h4>
+                        <p><strong>Strategy:</strong> Start with an empty set and iteratively add the best attribute at each step.</p>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="stepForwardSelection()">▶ Add Next Best Attribute</button>
+                            <button class="control-btn primary" onclick="autoForwardSelection()">⏩ Auto-Select All (|r| ≥ 0.30)</button>
+                            <button class="control-btn" onclick="resetForwardSelection()">↻ Reset</button>
+                        </div>
+
+                        <div class="visualization-container">
+                            <div id="forwardSelectionViz"></div>
                         </div>
                     </div>
 
-                    <h4>Selection Criteria</h4>
-                    <ul>
-                        <li><strong>High Correlation (|r| ≥ 0.70):</strong> Strong predictors, definitely retain</li>
-                        <li><strong>Moderate Correlation (0.30 ≤ |r| < 0.70):</strong> Useful features, consider retaining</li>
-                        <li><strong>Low Correlation (|r| < 0.30):</strong> Weak predictors, candidates for removal</li>
-                        <li><strong>Zero Correlation (|r| ≈ 0):</strong> No linear relationship, remove unless domain knowledge suggests otherwise</li>
-                    </ul>
+                    <!-- Backward Elimination Method -->
+                    <div id="backwardMethod" style="display: none;">
+                        <h4 style="color: #003366;">Method 3: Backward Elimination (Greedy Algorithm)</h4>
+                        <p><strong>Strategy:</strong> Start with all attributes and iteratively remove the worst attribute at each step.</p>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="stepBackwardElimination()">▶ Remove Worst Attribute</button>
+                            <button class="control-btn primary" onclick="autoBackwardElimination()">⏩ Auto-Remove All (|r| < 0.30)</button>
+                            <button class="control-btn" onclick="resetBackwardElimination()">↻ Reset</button>
+                        </div>
+
+                        <div class="visualization-container">
+                            <div id="backwardEliminationViz"></div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Section -->
+                    <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                        <h4 style="color: #003366;">Method Comparison</h4>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Starting Point</th>
+                                    <th>Strategy</th>
+                                    <th>Best For</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Correlation Analysis</td>
+                                    <td>All features</td>
+                                    <td>Evaluate all, remove weak</td>
+                                    <td>Quick filtering</td>
+                                </tr>
+                                <tr>
+                                    <td>Forward Selection</td>
+                                    <td>Empty set</td>
+                                    <td>Iteratively add best</td>
+                                    <td>Finding small optimal set</td>
+                                </tr>
+                                <tr>
+                                    <td>Backward Elimination</td>
+                                    <td>All features</td>
+                                    <td>Iteratively remove worst</td>
+                                    <td>Large feature sets</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

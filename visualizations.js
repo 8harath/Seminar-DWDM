@@ -67,29 +67,30 @@ window.onclick = function(event) {
 
 // ===== DATA CUBE AGGREGATION - CREATIVE FUNNEL VISUALIZATION =====
 let dataCubeState = 'daily';
-const dailySalesData = [
-    { date: 'Jan 1', sales: 1200 },
-    { date: 'Jan 2', sales: 1500 },
-    { date: 'Jan 3', sales: 1100 },
-    { date: 'Jan 4', sales: 1800 },
-    { date: 'Jan 5', sales: 1600 },
-    { date: 'Jan 6', sales: 2100 },
-    { date: 'Jan 7', sales: 1900 },
-    { date: 'Feb 1', sales: 1300 },
-    { date: 'Feb 2', sales: 1700 },
-    { date: 'Feb 3', sales: 1400 },
-    { date: 'Feb 4', sales: 1900 },
-    { date: 'Feb 5', sales: 2000 },
-    { date: 'Feb 6', sales: 2200 },
-    { date: 'Feb 7', sales: 1800 },
-    { date: 'Mar 1', sales: 1600 },
-    { date: 'Mar 2', sales: 1900 },
-    { date: 'Mar 3', sales: 1700 },
-    { date: 'Mar 4', sales: 2100 },
-    { date: 'Mar 5', sales: 2300 },
-    { date: 'Mar 6', sales: 2400 },
-    { date: 'Mar 7', sales: 2000 }
-];
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+// Generate 365 daily data points for a full year
+const dailySalesData = [];
+let dayCounter = 0;
+for (let month = 0; month < 12; month++) {
+    for (let day = 1; day <= daysInMonth[month]; day++) {
+        // Create realistic sales data with seasonal variation and weekly patterns
+        const seasonalFactor = 1 + Math.sin((month / 12) * Math.PI * 2) * 0.3;
+        const weekdayFactor = (dayCounter % 7 < 5) ? 1.2 : 0.8; // Higher on weekdays
+        const baseSales = 1500;
+        const randomVariation = (Math.random() - 0.5) * 400;
+        const sales = Math.round(baseSales * seasonalFactor * weekdayFactor + randomVariation);
+
+        dailySalesData.push({
+            date: `${monthNames[month]} ${day}`,
+            month: month,
+            quarter: Math.floor(month / 3),
+            sales: sales
+        });
+        dayCounter++;
+    }
+}
 
 function initDataCube() {
     dataCubeState = 'daily';
@@ -99,71 +100,180 @@ function initDataCube() {
 function renderDataCubeFunnel(level) {
     const container = document.getElementById('datacubeChart');
     container.innerHTML = '';
+    const totalSales = dailySalesData.reduce((sum, d) => sum + d.sales, 0);
 
     if (level === 'daily') {
-        // Show daily data as small blocks in a grid
+        // Show 365 daily data points as a heatmap-style visualization
         container.innerHTML = `
             <div style="text-align: center; margin-bottom: 20px;">
                 <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 10px;">
-                    DAILY LEVEL: 21 Records
+                    DAILY LEVEL: 365 Records (Full Year)
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; max-width: 700px; margin: 0 auto;">
-                    ${dailySalesData.map(d => `
-                        <div class="data-block daily-block" style="background: #3498db; padding: 8px; border-radius: 4px; color: white; font-size: 0.75em; text-align: center; animation: fadeIn 0.5s;">
-                            <div style="font-weight: bold;">${d.date}</div>
-                            <div>$${(d.sales/1000).toFixed(1)}k</div>
-                        </div>
-                    `).join('')}
+                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #ddd; border-radius: 8px; max-width: 900px; margin: 0 auto;">
+                    <div style="display: grid; grid-template-columns: repeat(53, 1fr); gap: 2px; margin-bottom: 15px;">
+                        ${dailySalesData.map((d, idx) => {
+                            const intensity = Math.min(255, Math.max(0, (d.sales - 1000) / 1000 * 255));
+                            const color = `rgb(52, ${Math.floor(152 - intensity * 0.3)}, ${Math.floor(219 - intensity * 0.4)})`;
+                            return `<div title="${d.date}: $${d.sales.toLocaleString()}" style="
+                                width: 100%;
+                                aspect-ratio: 1;
+                                background: ${color};
+                                border-radius: 2px;
+                                animation: popIn 0.3s ${idx * 0.001}s both;
+                            "></div>`;
+                        }).join('')}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.85em; color: #666; margin-top: 10px;">
+                        <span>Week 1</span>
+                        <span>Week 26</span>
+                        <span>Week 52</span>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 4px;">
+                        <strong>Color Legend:</strong> Lighter = Lower Sales | Darker = Higher Sales
+                    </div>
                 </div>
                 <div style="margin-top: 20px; font-size: 1.1em; color: #27ae60; font-weight: bold;">
-                    Total: $${dailySalesData.reduce((sum, d) => sum + d.sales, 0).toLocaleString()}
+                    Total Annual Sales: $${totalSales.toLocaleString()}
                 </div>
             </div>
         `;
     } else if (level === 'monthly') {
-        const monthlyData = [
-            { date: 'January', sales: dailySalesData.slice(0, 7).reduce((sum, d) => sum + d.sales, 0) },
-            { date: 'February', sales: dailySalesData.slice(7, 14).reduce((sum, d) => sum + d.sales, 0) },
-            { date: 'March', sales: dailySalesData.slice(14).reduce((sum, d) => sum + d.sales, 0) }
-        ];
+        // Aggregate to 12 months
+        const monthlyData = [];
+        for (let m = 0; m < 12; m++) {
+            const monthSales = dailySalesData.filter(d => d.month === m).reduce((sum, d) => sum + d.sales, 0);
+            monthlyData.push({
+                month: monthNames[m],
+                sales: monthSales,
+                days: daysInMonth[m]
+            });
+        }
+        const reduction = ((1 - 12/365) * 100).toFixed(1);
 
         container.innerHTML = `
             <div style="text-align: center; margin-bottom: 20px;">
                 <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 10px;">
-                    MONTHLY LEVEL: 3 Records (85% Reduction)
+                    MONTHLY LEVEL: 12 Records (${reduction}% Reduction)
                 </div>
-                <div style="display: flex; justify-content: center; gap: 20px; max-width: 700px; margin: 0 auto;">
-                    ${monthlyData.map(d => `
-                        <div class="data-block monthly-block" style="background: #2c3e50; padding: 25px; border-radius: 8px; color: white; flex: 1; text-align: center; animation: scaleIn 0.6s;">
-                            <div style="font-size: 1.3em; font-weight: bold; margin-bottom: 10px;">${d.date}</div>
-                            <div style="font-size: 1.5em; color: #3498db;">$${(d.sales/1000).toFixed(1)}k</div>
-                            <div style="font-size: 0.9em; margin-top: 8px; opacity: 0.8;">Aggregated from 7 days</div>
-                        </div>
-                    `).join('')}
-                </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #27ae60; font-weight: bold;">
-                    Total: $${monthlyData.reduce((sum, d) => sum + d.sales, 0).toLocaleString()}
-                </div>
-            </div>
-        `;
-    } else if (level === 'yearly') {
-        const totalSales = dailySalesData.reduce((sum, d) => sum + d.sales, 0);
-
-        container.innerHTML = `
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 20px;">
-                    YEARLY LEVEL: 1 Record (97% Reduction)
-                </div>
-                <div style="display: flex; justify-content: center; max-width: 700px; margin: 0 auto;">
-                    <div class="data-block yearly-block" style="background: #27ae60; padding: 40px 60px; border-radius: 12px; color: white; text-align: center; animation: scaleIn 0.8s;">
-                        <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 15px;">Q1 2024</div>
-                        <div style="font-size: 2.5em; font-weight: bold; color: #fff;">$${(totalSales/1000).toFixed(1)}k</div>
-                        <div style="font-size: 1em; margin-top: 15px; opacity: 0.9;">Aggregated from 21 days</div>
-                        <div style="font-size: 1em; margin-top: 5px; opacity: 0.9;">Across 3 months</div>
+                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #2c3e50; border-radius: 8px; max-width: 900px; margin: 0 auto;">
+                    <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 250px; gap: 8px;">
+                        ${monthlyData.map((d, idx) => {
+                            const maxSales = Math.max(...monthlyData.map(m => m.sales));
+                            const height = (d.sales / maxSales) * 100;
+                            return `
+                                <div style="flex: 1; text-align: center; animation: scaleIn ${0.5 + idx * 0.05}s both;">
+                                    <div style="
+                                        height: ${height}%;
+                                        background: linear-gradient(to top, #2c3e50, #34495e);
+                                        border-radius: 4px 4px 0 0;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        color: white;
+                                        font-size: 0.85em;
+                                        font-weight: bold;
+                                        min-height: 40px;
+                                        position: relative;
+                                        animation: growUp 0.6s ${idx * 0.05}s both;
+                                    " title="${d.month}: $${d.sales.toLocaleString()}">
+                                        $${(d.sales/1000).toFixed(0)}k
+                                    </div>
+                                    <div style="font-size: 0.75em; margin-top: 5px; font-weight: bold;">${d.month}</div>
+                                    <div style="font-size: 0.7em; color: #666;">${d.days} days</div>
+                                </div>
+                            `;
+                        }).join('')}
                     </div>
                 </div>
                 <div style="margin-top: 20px; font-size: 1.1em; color: #27ae60; font-weight: bold;">
                     Total Preserved: $${totalSales.toLocaleString()}
+                </div>
+                <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
+                    365 daily records → 12 monthly records
+                </div>
+            </div>
+        `;
+    } else if (level === 'quarterly') {
+        // Aggregate to 4 quarters
+        const quarterlyData = [];
+        const quarterNames = ['Q1 (Jan-Mar)', 'Q2 (Apr-Jun)', 'Q3 (Jul-Sep)', 'Q4 (Oct-Dec)'];
+        for (let q = 0; q < 4; q++) {
+            const quarterSales = dailySalesData.filter(d => d.quarter === q).reduce((sum, d) => sum + d.sales, 0);
+            const quarterDays = dailySalesData.filter(d => d.quarter === q).length;
+            quarterlyData.push({
+                quarter: quarterNames[q],
+                sales: quarterSales,
+                days: quarterDays
+            });
+        }
+        const reduction = ((1 - 4/365) * 100).toFixed(1);
+
+        container.innerHTML = `
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 10px;">
+                    QUARTERLY LEVEL: 4 Records (${reduction}% Reduction)
+                </div>
+                <div style="background: #f8f9fa; padding: 30px; border: 2px solid #8e44ad; border-radius: 8px; max-width: 900px; margin: 0 auto;">
+                    <div style="display: flex; justify-content: center; gap: 20px;">
+                        ${quarterlyData.map((d, idx) => `
+                            <div style="flex: 1; max-width: 200px; animation: scaleIn ${0.6 + idx * 0.15}s both;">
+                                <div style="
+                                    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+                                    padding: 30px 20px;
+                                    border-radius: 12px;
+                                    color: white;
+                                    text-align: center;
+                                    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+                                ">
+                                    <div style="font-size: 1.3em; font-weight: bold; margin-bottom: 15px;">${d.quarter}</div>
+                                    <div style="font-size: 2em; font-weight: bold; color: #fff;">$${(d.sales/1000).toFixed(0)}k</div>
+                                    <div style="font-size: 0.9em; margin-top: 15px; opacity: 0.9;">${d.days} days</div>
+                                    <div style="font-size: 0.85em; margin-top: 5px; opacity: 0.8;">~3 months</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div style="margin-top: 20px; font-size: 1.1em; color: #27ae60; font-weight: bold;">
+                    Total Preserved: $${totalSales.toLocaleString()}
+                </div>
+                <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
+                    365 daily → 12 monthly → 4 quarterly records
+                </div>
+            </div>
+        `;
+    } else if (level === 'yearly') {
+        const reduction = ((1 - 1/365) * 100).toFixed(2);
+
+        container.innerHTML = `
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 20px;">
+                    YEARLY LEVEL: 1 Record (${reduction}% Reduction)
+                </div>
+                <div style="display: flex; justify-content: center; max-width: 900px; margin: 0 auto;">
+                    <div style="
+                        background: linear-gradient(135deg, #27ae60, #229954);
+                        padding: 50px 80px;
+                        border-radius: 16px;
+                        color: white;
+                        text-align: center;
+                        box-shadow: 0 8px 30px rgba(39, 174, 96, 0.4);
+                        animation: scaleIn 0.8s;
+                    ">
+                        <div style="font-size: 1.8em; font-weight: bold; margin-bottom: 20px;">YEAR 2024</div>
+                        <div style="font-size: 3.5em; font-weight: bold; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+                            $${(totalSales/1000).toFixed(0)}k
+                        </div>
+                        <div style="font-size: 1.1em; margin-top: 20px; opacity: 0.95;">Aggregated from 365 days</div>
+                        <div style="font-size: 1.1em; margin-top: 8px; opacity: 0.95;">Across 12 months</div>
+                        <div style="font-size: 1.1em; margin-top: 8px; opacity: 0.95;">4 quarters</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; font-size: 1.1em; color: #27ae60; font-weight: bold;">
+                    Total Preserved: $${totalSales.toLocaleString()}
+                </div>
+                <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
+                    Complete aggregation pipeline: 365 → 12 → 4 → 1 record
                 </div>
             </div>
         `;
@@ -178,6 +288,12 @@ function aggregateDaily() {
 
 function aggregateMonthly() {
     if (dataCubeState !== 'monthly') return;
+    dataCubeState = 'quarterly';
+    renderDataCubeFunnel('quarterly');
+}
+
+function aggregateQuarterly() {
+    if (dataCubeState !== 'quarterly') return;
     dataCubeState = 'yearly';
     renderDataCubeFunnel('yearly');
 }

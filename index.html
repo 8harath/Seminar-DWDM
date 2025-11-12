@@ -1031,26 +1031,29 @@
                 <div class="modal-body">
                     <h3>Concept Illustration</h3>
                     <p>
-                        This demonstration shows how detailed daily sales data is progressively aggregated into higher-level summaries. Observe how the number of data points decreases while preserving the total sales information.
+                        This demonstration shows how a full year of detailed daily sales data (365 records) is progressively aggregated into higher-level summaries through multiple levels: monthly, quarterly, and yearly. Observe how the number of data points decreases dramatically while preserving the total sales information at each level.
                     </p>
 
                     <div class="controls">
-                        <button class="control-btn primary" onclick="aggregateDaily()">Step 1: Aggregate Daily → Monthly</button>
-                        <button class="control-btn primary" onclick="aggregateMonthly()">Step 2: Aggregate Monthly → Yearly</button>
+                        <button class="control-btn primary" onclick="aggregateDaily()">Step 1: Daily → Monthly (365 → 12)</button>
+                        <button class="control-btn primary" onclick="aggregateMonthly()">Step 2: Monthly → Quarterly (12 → 4)</button>
+                        <button class="control-btn primary" onclick="aggregateQuarterly()">Step 3: Quarterly → Yearly (4 → 1)</button>
                         <button class="control-btn" onclick="resetDataCube()">Reset to Daily Data</button>
                     </div>
 
                     <div class="visualization-container">
-                        <div class="viz-title">Sales Data Visualization</div>
+                        <div class="viz-title">Sales Data Visualization - Progressive Aggregation</div>
                         <div id="datacubeChart"></div>
                     </div>
 
                     <h4>Observations</h4>
                     <ul>
-                        <li>Daily data: 21 records → Monthly data: 3 records (85% reduction)</li>
-                        <li>Monthly data: 3 records → Yearly data: 1 record (97% total reduction)</li>
+                        <li><strong>Daily data:</strong> 365 records → <strong>Monthly data:</strong> 12 records (96.7% reduction)</li>
+                        <li><strong>Monthly data:</strong> 12 records → <strong>Quarterly data:</strong> 4 records (98.9% reduction from original)</li>
+                        <li><strong>Quarterly data:</strong> 4 records → <strong>Yearly data:</strong> 1 record (99.73% total reduction)</li>
                         <li>Total sales value remains constant across all aggregation levels</li>
-                        <li>Query performance improves dramatically with aggregated data</li>
+                        <li>Query performance improves dramatically at each aggregation level</li>
+                        <li>Storage requirements reduced from 365 records to just 1 summary record</li>
                     </ul>
                 </div>
             </div>

@@ -103,37 +103,87 @@ function renderDataCubeFunnel(level) {
     const totalSales = dailySalesData.reduce((sum, d) => sum + d.sales, 0);
 
     if (level === 'daily') {
-        // Show 365 daily data points as a heatmap-style visualization
-        container.innerHTML = `
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 10px;">
-                    DAILY LEVEL: 365 Records (Full Year)
-                </div>
-                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #ddd; border-radius: 8px; max-width: 900px; margin: 0 auto;">
-                    <div style="display: grid; grid-template-columns: repeat(53, 1fr); gap: 2px; margin-bottom: 15px;">
-                        ${dailySalesData.map((d, idx) => {
-                            const intensity = Math.min(255, Math.max(0, (d.sales - 1000) / 1000 * 255));
-                            const color = `rgb(52, ${Math.floor(152 - intensity * 0.3)}, ${Math.floor(219 - intensity * 0.4)})`;
+        // Show all 365 daily data points organized by month
+        let monthlyBlocks = '';
+        let startIdx = 0;
+
+        for (let m = 0; m < 12; m++) {
+            const monthData = dailySalesData.filter(d => d.month === m);
+            const monthTotal = monthData.reduce((sum, d) => sum + d.sales, 0);
+
+            monthlyBlocks += `
+                <div style="margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; border: 2px solid #e0e0e0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <div style="font-weight: bold; color: #003366; font-size: 1.1em;">${monthNames[m]} 2024</div>
+                        <div style="color: #666; font-size: 0.9em;">${daysInMonth[m]} days | Total: $${(monthTotal/1000).toFixed(1)}k</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(${Math.min(31, daysInMonth[m])}, 1fr); gap: 3px;">
+                        ${monthData.map((d, idx) => {
+                            const intensity = Math.min(1, Math.max(0, (d.sales - 1000) / 1000));
+                            const blue = Math.floor(219 - intensity * 60);
+                            const color = `rgb(52, 152, ${blue})`;
                             return `<div title="${d.date}: $${d.sales.toLocaleString()}" style="
-                                width: 100%;
                                 aspect-ratio: 1;
                                 background: ${color};
-                                border-radius: 2px;
-                                animation: popIn 0.3s ${idx * 0.001}s both;
-                            "></div>`;
+                                border-radius: 3px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 0.65em;
+                                color: white;
+                                font-weight: bold;
+                                text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+                                animation: popIn 0.3s ${(startIdx + idx) * 0.001}s both;
+                                cursor: pointer;
+                                transition: transform 0.2s;
+                            " onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">${idx + 1}</div>`;
                         }).join('')}
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.85em; color: #666; margin-top: 10px;">
-                        <span>Week 1</span>
-                        <span>Week 26</span>
-                        <span>Week 52</span>
+                </div>
+            `;
+            startIdx += monthData.length;
+        }
+
+        container.innerHTML = `
+            <div style="margin-bottom: 20px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 1.3em; color: #003366; font-weight: bold; margin-bottom: 5px;">
+                        DAILY LEVEL: 365 Individual Records
                     </div>
-                    <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 4px;">
-                        <strong>Color Legend:</strong> Lighter = Lower Sales | Darker = Higher Sales
+                    <div style="font-size: 0.95em; color: #666;">
+                        Full Year 2024 | ${dailySalesData.length} Daily Data Points
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #27ae60; font-weight: bold;">
-                    Total Annual Sales: $${totalSales.toLocaleString()}
+                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #3498db; border-radius: 8px; max-width: 900px; margin: 0 auto; max-height: 600px; overflow-y: auto;">
+                    ${monthlyBlocks}
+                    <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 4px; text-align: center;">
+                        <strong>Color Legend:</strong>
+                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(52, 152, 219); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Lower Sales
+                        →
+                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(52, 152, 159); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Higher Sales
+                        <div style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                            Hover over any day to see exact sales amount
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <div style="font-size: 1.2em; color: #27ae60; font-weight: bold;">
+                        Total Annual Sales: $${totalSales.toLocaleString()}
+                    </div>
+                    <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 600px; margin: 15px auto 0;">
+                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #ddd;">
+                            <div style="font-size: 0.85em; color: #666;">Data Points</div>
+                            <div style="font-size: 1.3em; font-weight: bold; color: #003366;">365</div>
+                        </div>
+                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #ddd;">
+                            <div style="font-size: 0.85em; color: #666;">Months</div>
+                            <div style="font-size: 1.3em; font-weight: bold; color: #003366;">12</div>
+                        </div>
+                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #ddd;">
+                            <div style="font-size: 0.85em; color: #666;">Avg/Day</div>
+                            <div style="font-size: 1.3em; font-weight: bold; color: #003366;">$${Math.round(totalSales/365).toLocaleString()}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;

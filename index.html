@@ -1197,9 +1197,21 @@
                         <p>Evaluate all features by their correlation with the target variable and remove those below threshold.</p>
 
                         <div class="controls">
+                            <button class="control-btn primary" onclick="showCorrelationMatrix()">📊 View Correlation Matrix</button>
                             <button class="control-btn primary" onclick="calculateCorrelation()">Step 1: Analyze Correlations</button>
                             <button class="control-btn primary" onclick="removeIrrelevant()">Step 2: Remove Irrelevant Features</button>
                             <button class="control-btn" onclick="resetAttributes()">Reset Features</button>
+                        </div>
+
+                        <!-- Correlation Matrix Heatmap -->
+                        <div id="correlationMatrixContainer" style="display: none; margin: 20px 0;">
+                            <div class="visualization-container">
+                                <div class="viz-title">Correlation Heatmap: Feature vs Apartment Choice</div>
+                                <div id="correlationMatrix"></div>
+                                <div style="margin-top: 15px; text-align: center; font-size: 0.9em; color: #666;">
+                                    💡 Darker colors indicate stronger correlations
+                                </div>
+                            </div>
                         </div>
 
                         <div class="visualization-container">

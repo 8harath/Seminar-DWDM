@@ -105,6 +105,47 @@ function renderDataCubeFunnel(level) {
     container.innerHTML = '';
     const totalSales = dailySalesData.reduce((sum, d) => sum + d.sales, 0);
 
+    // Add breadcrumb navigation
+    const breadcrumb = `
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid #6B2C91;">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <div style="font-weight: bold; color: #6B2C91;">📍 Current Level:</div>
+                <button onclick="dataCubeState='yearly'; renderDataCubeFunnel('yearly');"
+                    style="padding: 8px 16px; background: ${level === 'yearly' ? '#6B2C91' : 'white'};
+                    color: ${level === 'yearly' ? 'white' : '#6B2C91'}; border: 2px solid #6B2C91;
+                    border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                    Yearly (1)
+                </button>
+                <span style="color: #00A676;">→</span>
+                <button onclick="dataCubeState='quarterly'; renderDataCubeFunnel('quarterly');"
+                    style="padding: 8px 16px; background: ${level === 'quarterly' ? '#6B2C91' : 'white'};
+                    color: ${level === 'quarterly' ? 'white' : '#6B2C91'}; border: 2px solid #6B2C91;
+                    border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                    Quarterly (4)
+                </button>
+                <span style="color: #00A676;">→</span>
+                <button onclick="dataCubeState='monthly'; renderDataCubeFunnel('monthly');"
+                    style="padding: 8px 16px; background: ${level === 'monthly' ? '#6B2C91' : 'white'};
+                    color: ${level === 'monthly' ? 'white' : '#6B2C91'}; border: 2px solid #6B2C91;
+                    border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                    Monthly (12)
+                </button>
+                <span style="color: #00A676;">→</span>
+                <button onclick="dataCubeState='daily'; renderDataCubeFunnel('daily');"
+                    style="padding: 8px 16px; background: ${level === 'daily' ? '#6B2C91' : 'white'};
+                    color: ${level === 'daily' ? 'white' : '#6B2C91'}; border: 2px solid #6B2C91;
+                    border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                    Daily (365)
+                </button>
+            </div>
+            <div style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #666;">
+                💡 Click any level to drill down or roll up
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = breadcrumb;
+
     if (level === 'daily') {
         // Show all 365 daily data points organized by month
         let monthlyBlocks = '';
@@ -147,10 +188,10 @@ function renderDataCubeFunnel(level) {
             startIdx += monthData.length;
         }
 
-        container.innerHTML = `
+        container.innerHTML += `
             <div style="margin-bottom: 20px;">
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="font-size: 1.3em; color: #003366; font-weight: bold; margin-bottom: 5px;">
+                    <div style="font-size: 1.3em; color: #6B2C91; font-weight: bold; margin-bottom: 5px;">
                         DAILY LEVEL: 365 Individual Records
                     </div>
                     <div style="font-size: 0.95em; color: #666;">
@@ -203,9 +244,9 @@ function renderDataCubeFunnel(level) {
         }
         const reduction = ((1 - 12/365) * 100).toFixed(1);
 
-        container.innerHTML = `
+        container.innerHTML += `
             <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 10px;">
+                <div style="font-size: 1.2em; color: #6B2C91; font-weight: bold; margin-bottom: 10px;">
                     MONTHLY LEVEL: 12 Records (${reduction}% Reduction)
                 </div>
                 <div style="background: #f8f9fa; padding: 20px; border: 2px solid #2c3e50; border-radius: 8px; max-width: 900px; margin: 0 auto;">
@@ -261,9 +302,9 @@ function renderDataCubeFunnel(level) {
         }
         const reduction = ((1 - 4/365) * 100).toFixed(1);
 
-        container.innerHTML = `
+        container.innerHTML += `
             <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 10px;">
+                <div style="font-size: 1.2em; color: #6B2C91; font-weight: bold; margin-bottom: 10px;">
                     QUARTERLY LEVEL: 4 Records (${reduction}% Reduction)
                 </div>
                 <div style="background: #f8f9fa; padding: 30px; border: 2px solid #8e44ad; border-radius: 8px; max-width: 900px; margin: 0 auto;">
@@ -298,9 +339,9 @@ function renderDataCubeFunnel(level) {
     } else if (level === 'yearly') {
         const reduction = ((1 - 1/365) * 100).toFixed(2);
 
-        container.innerHTML = `
+        container.innerHTML += `
             <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 20px;">
+                <div style="font-size: 1.2em; color: #6B2C91; font-weight: bold; margin-bottom: 20px;">
                     YEARLY LEVEL: 1 Record (${reduction}% Reduction)
                 </div>
                 <div style="display: flex; justify-content: center; max-width: 900px; margin: 0 auto;">
@@ -498,6 +539,99 @@ function resetAttributes() {
     initAttributes();
     document.getElementById('attributeProgress').style.width = '0%';
     document.getElementById('attributeProgress').textContent = '0% Removed';
+}
+
+function showCorrelationMatrix() {
+    const container = document.getElementById('correlationMatrix');
+    const matrixContainer = document.getElementById('correlationMatrixContainer');
+
+    // Toggle visibility
+    if (matrixContainer.style.display === 'none') {
+        matrixContainer.style.display = 'block';
+
+        // Create correlation matrix heatmap
+        let html = '<div style="display: grid; grid-template-columns: repeat(11, 1fr); gap: 4px; max-width: 100%; overflow-x: auto;">';
+
+        // Header row
+        html += '<div style="padding: 8px; font-weight: bold; font-size: 0.75em; text-align: center;"></div>';
+        attributeData.forEach((attr) => {
+            const shortName = attr.name.substring(0, 3);
+            html += `<div style="padding: 8px; font-weight: bold; font-size: 0.75em; text-align: center; writing-mode: vertical-rl; transform: rotate(180deg);" title="${attr.name}">${shortName}</div>`;
+        });
+
+        // Data rows
+        attributeData.forEach((attrRow, i) => {
+            // Row label
+            html += `<div style="padding: 8px; font-weight: bold; font-size: 0.75em; text-align: right;" title="${attrRow.name}">${attrRow.name.substring(0, 20)}...</div>`;
+
+            // Correlation cells
+            attributeData.forEach((attrCol, j) => {
+                let correlation;
+                if (i === j) {
+                    correlation = 1.0; // Self-correlation
+                } else {
+                    // Simulate correlations based on actual correlation values
+                    correlation = Math.min(Math.abs(attrRow.correlation), Math.abs(attrCol.correlation)) * (Math.random() * 0.4 + 0.6);
+                }
+
+                const absCorr = Math.abs(correlation);
+                const intensity = Math.floor(absCorr * 100);
+
+                // Color scheme: green for high correlation, yellow for medium, red for low
+                let bgColor;
+                if (absCorr >= 0.7) {
+                    bgColor = `rgb(39, ${174 - intensity/2}, 96)`; // Green
+                } else if (absCorr >= 0.3) {
+                    bgColor = `rgb(243, ${156 + intensity/3}, 18)`; // Yellow
+                } else {
+                    bgColor = `rgb(231, ${76 + intensity}, 60)`; // Red
+                }
+
+                html += `<div style="
+                    padding: 8px;
+                    background: ${bgColor};
+                    color: white;
+                    text-align: center;
+                    font-size: 0.7em;
+                    font-weight: bold;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                    animation: popIn ${(i + j) * 0.02}s both;
+                " onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"
+                title="${attrRow.name} ↔ ${attrCol.name}: ${correlation.toFixed(2)}">
+                    ${correlation.toFixed(2)}
+                </div>`;
+            });
+        });
+
+        html += '</div>';
+
+        // Add legend
+        html += `
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+                <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">Correlation Strength Legend</div>
+                <div style="display: flex; justify-content: center; gap: 15px; align-items: center; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span style="width: 20px; height: 20px; background: rgb(39, 174, 96); border-radius: 3px;"></span>
+                        <span>Strong (≥0.70)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span style="width: 20px; height: 20px; background: rgb(243, 156, 18); border-radius: 3px;"></span>
+                        <span>Medium (0.30-0.69)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span style="width: 20px; height: 20px; background: rgb(231, 76, 60); border-radius: 3px;"></span>
+                        <span>Weak (<0.30)</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+    } else {
+        matrixContainer.style.display = 'none';
+    }
 }
 
 // ===== FORWARD SELECTION METHOD =====

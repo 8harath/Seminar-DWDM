@@ -12,14 +12,21 @@
         }
 
         :root {
-            --primary-blue: #003366;
-            --secondary-blue: #0066cc;
-            --light-blue: #e6f2ff;
+            --primary-blue: #6B2C91;
+            --secondary-blue: #00A676;
+            --light-blue: #f0e6f6;
             --text-dark: #1a1a1a;
             --text-gray: #4a4a4a;
             --border-gray: #d0d0d0;
             --bg-light: #f8f9fa;
             --highlight-yellow: #fffacd;
+            --accent-orange: #FF6B35;
+            --metro-purple: #6B2C91;
+            --tech-green: #00A676;
+            --traffic-orange: #FF6B35;
+            --keep-green: #27ae60;
+            --remove-red: #e74c3c;
+            --warning-yellow: #f39c12;
         }
 
         body {
@@ -707,11 +714,77 @@
                 </ul>
             </div>
 
+            <!-- Unified Metrics Dashboard -->
+            <div style="background: linear-gradient(135deg, var(--metro-purple), var(--tech-green)); padding: 30px; border-radius: 12px; margin: 30px 0; box-shadow: 0 8px 20px rgba(107, 44, 145, 0.2);">
+                <h3 style="color: white; text-align: center; margin: 0 0 25px 0; font-size: 1.6em; border: none;">
+                    📊 Reduction Metrics Comparison Dashboard
+                </h3>
+                <div style="background: white; border-radius: 8px; overflow: hidden;">
+                    <table class="data-table" id="metricsTable" style="margin: 0;">
+                        <thead>
+                            <tr>
+                                <th>Technique</th>
+                                <th>Use Case (Bangalore)</th>
+                                <th>Before</th>
+                                <th>After</th>
+                                <th>Reduction %</th>
+                                <th>Info Loss</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Data Cube Aggregation</strong></td>
+                                <td>Namma Metro Ridership</td>
+                                <td>365 daily records</td>
+                                <td>12 monthly records</td>
+                                <td style="color: var(--tech-green); font-weight: bold;">96.7%</td>
+                                <td style="color: var(--keep-green);">0%* (lossless)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Feature Selection</strong></td>
+                                <td>Apartment Hunting</td>
+                                <td>10 features</td>
+                                <td>5 features</td>
+                                <td style="color: var(--tech-green); font-weight: bold;">50%</td>
+                                <td style="color: var(--warning-yellow);">~5%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PCA (Dimensionality)</strong></td>
+                                <td>Restaurant Recommendations</td>
+                                <td>10 dimensions</td>
+                                <td>2 dimensions</td>
+                                <td style="color: var(--tech-green); font-weight: bold;">80%</td>
+                                <td style="color: var(--warning-yellow);">~10%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sampling</strong></td>
+                                <td>ORR Traffic Speed Data</td>
+                                <td>100,000 readings</td>
+                                <td>1,000 samples</td>
+                                <td style="color: var(--tech-green); font-weight: bold;">99%</td>
+                                <td style="color: var(--warning-yellow);">~3%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Discretization</strong></td>
+                                <td>Ola/Uber Surge Pricing</td>
+                                <td>Continuous demand</td>
+                                <td>5 pricing tiers</td>
+                                <td style="color: var(--tech-green); font-weight: bold;">N/A</td>
+                                <td style="color: var(--traffic-orange);">~15%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: center; margin-top: 20px; color: white; font-size: 0.9em; opacity: 0.95;">
+                    ⭐ All use cases based on real Bangalore scenarios for better understanding
+                </div>
+            </div>
+
             <!-- Five Techniques -->
             <h2><span class="section-number">2.</span> Five Core Data Reduction Strategies</h2>
 
             <p>
-                Data reduction strategies can be categorized into five primary approaches, each suited to different types of data and analytical objectives. The following sections provide detailed explanations and interactive demonstrations of each technique.
+                Data reduction strategies can be categorized into five primary approaches, each suited to different types of data and analytical objectives. The following sections provide detailed explanations and interactive demonstrations of each technique using real-world Bangalore examples.
             </p>
 
             <!-- Technique 1: Data Cube Aggregation -->
@@ -721,23 +794,23 @@
                     <div class="technique-number">1</div>
                 </div>
 
-                <h4>Overview</h4>
+                <h4>Real-World Use Case: Namma Metro Ridership Analysis 🚇</h4>
                 <p>
-                    Data cube aggregation applies summary operations to combine detailed, low-level data into higher-level summaries. This technique is fundamental to Online Analytical Processing (OLAP) and business intelligence applications.
+                    <strong>Scenario:</strong> Bangalore Metro Rail Corporation (BMRCL) collects ridership data for all stations across the Purple and Green lines. Every day, detailed passenger counts are recorded for each station. Analyzing 365 days of raw data for multiple stations is computationally expensive. Data cube aggregation helps by creating summary views at different time granularities.
                 </p>
+
+                <h4>Why This Matters in Bangalore</h4>
+                <ul>
+                    <li><strong>Peak Hour Planning:</strong> Understanding daily vs monthly patterns helps optimize metro frequency during office rush hours (8-10 AM, 5-8 PM)</li>
+                    <li><strong>Seasonal Trends:</strong> Identify reduced ridership during festivals (Dasara, Diwali) when people travel out of Bangalore</li>
+                    <li><strong>Infrastructure Planning:</strong> Quarterly aggregates help BMRCL decide where to add new lines or extend existing ones</li>
+                    <li><strong>Storage Efficiency:</strong> Instead of storing 365 daily records, store 12 monthly summaries (96.7% reduction)</li>
+                </ul>
 
                 <h4>Methodology</h4>
                 <p>
-                    Common aggregation operations include SUM, AVERAGE, COUNT, MIN, and MAX. These operations can be applied across different dimensions and hierarchies. For example, daily sales data can be aggregated to monthly totals, which can then be further aggregated to quarterly or annual summaries.
+                    Common aggregation operations include SUM (total riders), AVERAGE (avg daily riders), COUNT (number of days), MIN/MAX (peak identification). These operations can be applied across different time dimensions: Daily → Monthly → Quarterly → Yearly.
                 </p>
-
-                <h4>Applications</h4>
-                <ul>
-                    <li>Business dashboards and reporting systems</li>
-                    <li>Data warehouse star and snowflake schemas</li>
-                    <li>Time-series data summarization</li>
-                    <li>Geographic data aggregation (city → state → country)</li>
-                </ul>
 
                 <button class="demo-button" onclick="showDemo('datacube')">
                     ► View Interactive Demonstration
@@ -761,24 +834,30 @@
                     <div class="technique-number">2</div>
                 </div>
 
-                <h4>Overview</h4>
+                <h4>Real-World Use Case: Apartment Hunting in Bangalore 🏠</h4>
                 <p>
-                    Attribute subset selection reduces the data set size by removing irrelevant, weakly relevant, or redundant attributes. The goal is to find a minimum set of attributes such that the resulting probability distribution of the data classes is as close as possible to the original distribution using all attributes.
+                    <strong>Scenario:</strong> You're searching for an apartment in Bangalore using platforms like 99acres or MagicBricks. The website shows 50+ features for each property, but which ones actually matter for your decision? Feature selection helps identify the most relevant attributes while eliminating noise.
                 </p>
+
+                <h4>Why This Matters in Bangalore</h4>
+                <ul>
+                    <li><strong>Simplify Choices:</strong> Instead of comparing 50 features across 100 apartments, focus on the 5-7 that truly influence your decision</li>
+                    <li><strong>Faster Search:</strong> Filtering by only relevant features (Metro proximity, IT park distance) speeds up apartment discovery</li>
+                    <li><strong>Better Models:</strong> Property price prediction models work better with relevant features, avoiding overfitting</li>
+                    <li><strong>Interpretability:</strong> Easily explain to family: "We chose this based on Metro access, safety, and rent"</li>
+                </ul>
+
+                <h4>Feature Examples</h4>
+                <p><strong>Highly Relevant:</strong> Distance to Office/Metro (0.85 correlation), Rent Price (0.82), Safety Rating (0.65)</p>
+                <p><strong>Irrelevant:</strong> Building Paint Color (0.03), Landlord's Zodiac Sign (0.01), House Number Numerology (0.02)</p>
+                <p><strong>Redundant:</strong> Parking Space and Balcony Size (both correlated with Rent)</p>
 
                 <h4>Selection Methods</h4>
                 <ul>
-                    <li><strong>Correlation Analysis:</strong> Pearson's correlation coefficient for numerical attributes</li>
-                    <li><strong>Chi-Square Test:</strong> Statistical test for categorical attributes</li>
-                    <li><strong>Information Gain:</strong> Entropy-based measure from decision tree algorithms</li>
-                    <li><strong>Forward Selection:</strong> Start with empty set, iteratively add best attributes</li>
-                    <li><strong>Backward Elimination:</strong> Start with all attributes, iteratively remove worst</li>
+                    <li><strong>Correlation Analysis:</strong> Measure relationship between each feature and target (apartment choice)</li>
+                    <li><strong>Forward Selection:</strong> Start empty, iteratively add most impactful features (distance to Metro → then rent → then safety)</li>
+                    <li><strong>Backward Elimination:</strong> Start with all 50 features, iteratively remove least useful ones</li>
                 </ul>
-
-                <h4>Benefits</h4>
-                <p>
-                    Reducing the number of attributes provides multiple advantages: faster training of machine learning models, reduced overfitting, improved model interpretability, and easier data visualization.
-                </p>
 
                 <button class="demo-button" onclick="showDemo('attribute')">
                     ► View Interactive Demonstration
@@ -802,10 +881,22 @@
                     <div class="technique-number">3</div>
                 </div>
 
-                <h4>Overview</h4>
+                <h4>Real-World Use Case: Restaurant Recommendations (Swiggy/Zomato) 🍽️</h4>
                 <p>
-                    Principal Component Analysis (PCA) is a statistical technique that transforms high-dimensional data into a lower-dimensional space by finding orthogonal directions (principal components) that capture maximum variance in the data. Unlike attribute selection, PCA creates new composite features rather than selecting from existing ones.
+                    <strong>Scenario:</strong> Food delivery apps analyze hundreds of restaurants in Bangalore using 10+ features: Taste Rating, Price Level, Delivery Speed, Hygiene Score, Ambiance, Parking, Live Music, Outdoor Seating, Distance, Cuisine Type. To visualize restaurant similarity or create recommendation clusters, we need to reduce these 10 dimensions to 2D that can be plotted.
                 </p>
+
+                <h4>Why This Matters in Bangalore</h4>
+                <ul>
+                    <li><strong>Visual Discovery:</strong> Plot all Indiranagar restaurants on a 2D map based on "Overall Quality" vs "Experience vs Quick Service"</li>
+                    <li><strong>Smart Recommendations:</strong> "People who liked MTR also liked Vidyarthi Bhavan" - based on similarity in reduced space</li>
+                    <li><strong>Trend Analysis:</strong> Identify if Koramangala restaurants prioritize ambiance (PC1) while Whitefield prioritizes delivery speed (PC2)</li>
+                    <li><strong>Dimension Reduction:</strong> 10 features → 2 principal components retaining 90% of variance (80% reduction)</li>
+                </ul>
+
+                <h4>Principal Components Interpretation</h4>
+                <p><strong>PC1 (55% variance):</strong> "Overall Quality & Convenience" - combines Taste, Hygiene, Price, Distance</p>
+                <p><strong>PC2 (35% variance):</strong> "Experience vs Quick Service" - separates dine-in ambiance from delivery-focused restaurants</p>
 
                 <h4>Mathematical Foundation</h4>
                 <p>
@@ -814,12 +905,12 @@
 
                 <h4>Algorithm Steps</h4>
                 <ol>
-                    <li>Normalize the input data (mean = 0, standard deviation = 1)</li>
-                    <li>Compute the covariance matrix</li>
-                    <li>Calculate eigenvectors and eigenvalues</li>
-                    <li>Sort eigenvectors by eigenvalues in descending order</li>
-                    <li>Select top k eigenvectors (where k is desired dimensionality)</li>
-                    <li>Project original data onto the k principal components</li>
+                    <li>Normalize restaurant features (mean = 0, standard deviation = 1)</li>
+                    <li>Compute 10×10 covariance matrix showing feature relationships</li>
+                    <li>Calculate eigenvectors (new composite dimensions) and eigenvalues (variance captured)</li>
+                    <li>Sort eigenvectors by eigenvalues (descending) - highest variance first</li>
+                    <li>Select top 2 eigenvectors as Principal Components 1 & 2</li>
+                    <li>Project all restaurants onto this 2D space for visualization</li>
                 </ol>
 
                 <button class="demo-button" onclick="showDemo('pca')">
@@ -853,22 +944,30 @@
                     <div class="technique-number">4</div>
                 </div>
 
-                <h4>Overview</h4>
+                <h4>Real-World Use Case: ORR Traffic Speed Analysis 🚗</h4>
                 <p>
-                    Numerosity reduction replaces the original data with alternative, smaller representations. This can be achieved through parametric models (storing only model parameters) or non-parametric methods (sampling, histograms, clustering).
+                    <strong>Scenario:</strong> Google Maps/Ola Maps collect vehicle speed readings every 30 seconds on Bangalore's Outer Ring Road (ORR). Over one week, this generates 100,000+ speed measurements. Storing and analyzing all readings is expensive. Numerosity reduction creates smaller, representative datasets.
                 </p>
 
-                <h4>Parametric Methods</h4>
+                <h4>Why This Matters in Bangalore</h4>
                 <ul>
-                    <li><strong>Regression Models:</strong> Fit data to linear or polynomial functions, store only coefficients</li>
-                    <li><strong>Log-Linear Models:</strong> For discrete multidimensional probability distributions</li>
+                    <li><strong>Traffic Prediction:</strong> Use 1,000 sampled readings instead of 100,000 to predict congestion patterns (99% reduction, ~3% accuracy loss)</li>
+                    <li><strong>Route Optimization:</strong> Quickly estimate average ORR speed during office hours using histogram bins (Morning: 25 km/h, Afternoon: 45 km/h, Evening: 15 km/h)</li>
+                    <li><strong>Trend Modeling:</strong> Fit regression model "Speed = f(Time of Day)" using just 2 parameters instead of 100,000 data points</li>
+                    <li><strong>Storage Savings:</strong> Historical traffic data compressed by 90-99% while maintaining useful insights</li>
                 </ul>
 
                 <h4>Non-Parametric Methods</h4>
                 <ul>
-                    <li><strong>Sampling:</strong> Random sampling (SRSWOR, SRSWR), stratified sampling, cluster sampling</li>
-                    <li><strong>Histograms:</strong> Equal-width, equal-frequency, V-optimal, MaxDiff binning</li>
-                    <li><strong>Clustering:</strong> Replace data points with cluster centroids</li>
+                    <li><strong>Random Sampling (10%):</strong> Select 1,000 random speed readings from 100,000 - maintains distribution, 90% reduction</li>
+                    <li><strong>Stratified Sampling:</strong> Sample proportionally from time periods (25% morning rush, 25% afternoon, 25% evening rush, 25% night) - ensures all periods represented</li>
+                    <li><strong>Histograms:</strong> Group speeds into bins (0-20 km/h, 21-40 km/h, 41-60 km/h, 61+ km/h) with counts - preserves distribution shape</li>
+                </ul>
+
+                <h4>Parametric Methods</h4>
+                <ul>
+                    <li><strong>Regression Models:</strong> Speed = 50 - 35 × sin(hour/24 × 2π) - captures daily pattern with just 2 parameters</li>
+                    <li><strong>Time Series Models:</strong> ARIMA/SARIMA models storing only coefficients instead of raw readings</li>
                 </ul>
 
                 <button class="demo-button" onclick="showDemo('numerosity')">
@@ -906,22 +1005,35 @@
                     <div class="technique-number">5</div>
                 </div>
 
-                <h4>Overview</h4>
+                <h4>Real-World Use Case: Ola/Uber Surge Pricing in Bangalore 🚕</h4>
                 <p>
-                    Discretization transforms continuous numerical attributes into discrete intervals or categories. This process reduces the number of distinct values while enabling categorical analysis techniques and improving interpretability.
+                    <strong>Scenario:</strong> Ride-sharing apps monitor continuous demand data (ride requests per minute) in areas like Koramangala, Whitefield, Electronic City. Instead of using raw continuous demand values, they discretize into pricing tiers. This makes dynamic pricing easier to implement and explain to users.
                 </p>
+
+                <h4>Why This Matters in Bangalore</h4>
+                <ul>
+                    <li><strong>Transparent Pricing:</strong> Users understand "₹1.0× (No Surge)", "₹1.5× (Surge)", "₹2.5× (High Demand)" better than continuous multipliers like 1.37× or 1.89×</li>
+                    <li><strong>Quick Decision Rules:</strong> "If requests > 75/min in Koramangala → High Demand tier" - faster than complex continuous formulas</li>
+                    <li><strong>Pattern Analysis:</strong> Identify "MG Road is in High Demand 18% of the time (6-8 PM)" using discrete time bins</li>
+                    <li><strong>Fair Thresholds:</strong> Entropy-based binning creates optimal boundaries that balance revenue with user satisfaction</li>
+                </ul>
+
+                <h4>Example: Koramangala Hourly Demand</h4>
+                <p><strong>Continuous Data:</strong> 5:00 AM (2 requests), 8:00 AM (87 requests), 6:00 PM (142 requests), 10:00 PM (34 requests)</p>
+                <p><strong>Equal-Width Bins:</strong> 0-50 → ₹1.0×, 51-100 → ₹1.5×, 101-150 → ₹2.0×</p>
+                <p><strong>Equal-Frequency Bins:</strong> 0-15 → ₹1.0× (33% hours), 16-40 → ₹1.5× (33%), 41+ → ₹2.0× (33%)</p>
+                <p><strong>Entropy-Based:</strong> 0-25 → ₹1.0×, 26-75 → ₹1.5×, 76+ → ₹2.5× (optimized for demand classification)</p>
 
                 <h4>Discretization Methods</h4>
                 <ul>
-                    <li><strong>Equal-Width (Distance) Binning:</strong> Divide attribute range into N intervals of equal size</li>
-                    <li><strong>Equal-Frequency (Depth) Binning:</strong> Divide so each interval contains approximately same number of values</li>
-                    <li><strong>Entropy-Based Discretization:</strong> Minimize information loss, optimal for classification tasks</li>
-                    <li><strong>Clustering-Based:</strong> Use clustering algorithms to identify natural breakpoints</li>
+                    <li><strong>Equal-Width:</strong> Uniform intervals - simple but sensitive to outliers (e.g., festivals with 300+ requests)</li>
+                    <li><strong>Equal-Frequency:</strong> Balanced demand distribution - ensures each tier has similar time coverage</li>
+                    <li><strong>Entropy-Based:</strong> Minimizes information loss - finds optimal split points based on actual demand patterns</li>
                 </ul>
 
                 <h4>Concept Hierarchies</h4>
                 <p>
-                    Discretization can be performed recursively to create hierarchical categorizations. For example, age can be discretized at multiple levels: detailed bins (0-10, 11-20, ...) → broader categories (Youth, Adult, Senior) → binary (Young, Old).
+                    Discretization can be performed at multiple levels: Fine-grained (10 tiers: ₹1.0×, ₹1.1×, ..., ₹2.0×) → Medium (5 tiers) → Coarse (3 tiers: No Surge, Surge, High Surge). Higher levels useful for reporting, lower levels for precise pricing.
                 </p>
 
                 <button class="demo-button" onclick="showDemo('discretization')">

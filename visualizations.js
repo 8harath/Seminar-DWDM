@@ -65,28 +65,31 @@ window.onclick = function(event) {
     }
 }
 
-// ===== DATA CUBE AGGREGATION - CREATIVE FUNNEL VISUALIZATION =====
+// ===== DATA CUBE AGGREGATION - NAMMA METRO RIDERSHIP VISUALIZATION =====
 let dataCubeState = 'daily';
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-// Generate 365 daily data points for a full year
-const dailySalesData = [];
+// Generate 365 daily Namma Metro ridership data points for a full year
+const dailySalesData = []; // Keeping variable name for compatibility, but represents ridership
 let dayCounter = 0;
 for (let month = 0; month < 12; month++) {
     for (let day = 1; day <= daysInMonth[month]; day++) {
-        // Create realistic sales data with seasonal variation and weekly patterns
-        const seasonalFactor = 1 + Math.sin((month / 12) * Math.PI * 2) * 0.3;
-        const weekdayFactor = (dayCounter % 7 < 5) ? 1.2 : 0.8; // Higher on weekdays
-        const baseSales = 1500;
-        const randomVariation = (Math.random() - 0.5) * 400;
-        const sales = Math.round(baseSales * seasonalFactor * weekdayFactor + randomVariation);
+        // Create realistic metro ridership data with seasonal variation and weekly patterns
+        // Higher on weekdays (office commute), lower on weekends
+        // Festival months (Oct-Nov) show slight dips as people travel out of Bangalore
+        const seasonalFactor = 1 + Math.sin((month / 12) * Math.PI * 2) * 0.2;
+        const festivalDip = (month >= 9 && month <= 10) ? 0.85 : 1.0; // Dasara, Diwali
+        const weekdayFactor = (dayCounter % 7 < 5) ? 1.4 : 0.6; // Much higher weekday usage
+        const baseRidership = 45000; // Base daily ridership across all stations
+        const randomVariation = (Math.random() - 0.5) * 8000;
+        const ridership = Math.round(baseRidership * seasonalFactor * weekdayFactor * festivalDip + randomVariation);
 
         dailySalesData.push({
             date: `${monthNames[month]} ${day}`,
             month: month,
             quarter: Math.floor(month / 3),
-            sales: sales
+            sales: ridership // Keeping 'sales' key for compatibility, represents ridership
         });
         dayCounter++;
     }
@@ -114,15 +117,15 @@ function renderDataCubeFunnel(level) {
             monthlyBlocks += `
                 <div style="margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; border: 2px solid #e0e0e0;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <div style="font-weight: bold; color: #003366; font-size: 1.1em;">${monthNames[m]} 2024</div>
-                        <div style="color: #666; font-size: 0.9em;">${daysInMonth[m]} days | Total: $${(monthTotal/1000).toFixed(1)}k</div>
+                        <div style="font-weight: bold; color: #6B2C91; font-size: 1.1em;">🚇 ${monthNames[m]} 2024</div>
+                        <div style="color: #666; font-size: 0.9em;">${daysInMonth[m]} days | Total: ${(monthTotal/1000).toFixed(0)}k riders</div>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(${Math.min(31, daysInMonth[m])}, 1fr); gap: 3px;">
                         ${monthData.map((d, idx) => {
-                            const intensity = Math.min(1, Math.max(0, (d.sales - 1000) / 1000));
-                            const blue = Math.floor(219 - intensity * 60);
-                            const color = `rgb(52, 152, ${blue})`;
-                            return `<div title="${d.date}: $${d.sales.toLocaleString()}" style="
+                            const intensity = Math.min(1, Math.max(0, (d.sales - 30000) / 30000));
+                            const purple = Math.floor(145 - intensity * 40);
+                            const color = `rgb(107, 44, ${purple})`; // Bangalore Metro Purple gradient
+                            return `<div title="${d.date}: ${d.sales.toLocaleString()} riders" style="
                                 aspect-ratio: 1;
                                 background: ${color};
                                 border-radius: 3px;
@@ -156,32 +159,32 @@ function renderDataCubeFunnel(level) {
                 </div>
                 <div style="background: #f8f9fa; padding: 20px; border: 2px solid #3498db; border-radius: 8px; max-width: 900px; margin: 0 auto; max-height: 600px; overflow-y: auto;">
                     ${monthlyBlocks}
-                    <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 4px; text-align: center;">
+                    <div style="margin-top: 15px; padding: 15px; background: #f0e6f6; border-radius: 4px; text-align: center;">
                         <strong>Color Legend:</strong>
-                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(52, 152, 219); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Lower Sales
+                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(107, 44, 145); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Lower Ridership
                         →
-                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(52, 152, 159); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Higher Sales
+                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(107, 44, 105); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Higher Ridership
                         <div style="margin-top: 10px; font-size: 0.9em; color: #666;">
-                            Hover over any day to see exact sales amount
+                            Hover over any day to see exact ridership count • 🚇 Namma Metro 2024
                         </div>
                     </div>
                 </div>
                 <div style="margin-top: 20px; text-align: center;">
-                    <div style="font-size: 1.2em; color: #27ae60; font-weight: bold;">
-                        Total Annual Sales: $${totalSales.toLocaleString()}
+                    <div style="font-size: 1.2em; color: #00A676; font-weight: bold;">
+                        Total Annual Ridership: ${totalSales.toLocaleString()} passengers
                     </div>
                     <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 600px; margin: 15px auto 0;">
-                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #ddd;">
+                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #6B2C91;">
                             <div style="font-size: 0.85em; color: #666;">Data Points</div>
-                            <div style="font-size: 1.3em; font-weight: bold; color: #003366;">365</div>
+                            <div style="font-size: 1.3em; font-weight: bold; color: #6B2C91;">365</div>
                         </div>
-                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #ddd;">
+                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #6B2C91;">
                             <div style="font-size: 0.85em; color: #666;">Months</div>
-                            <div style="font-size: 1.3em; font-weight: bold; color: #003366;">12</div>
+                            <div style="font-size: 1.3em; font-weight: bold; color: #6B2C91;">12</div>
                         </div>
-                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #ddd;">
+                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #6B2C91;">
                             <div style="font-size: 0.85em; color: #666;">Avg/Day</div>
-                            <div style="font-size: 1.3em; font-weight: bold; color: #003366;">$${Math.round(totalSales/365).toLocaleString()}</div>
+                            <div style="font-size: 1.3em; font-weight: bold; color: #6B2C91;">${Math.round(totalSales/365).toLocaleString()}</div>
                         </div>
                     </div>
                 </div>
@@ -225,8 +228,8 @@ function renderDataCubeFunnel(level) {
                                         min-height: 40px;
                                         position: relative;
                                         animation: growUp 0.6s ${idx * 0.05}s both;
-                                    " title="${d.month}: $${d.sales.toLocaleString()}">
-                                        $${(d.sales/1000).toFixed(0)}k
+                                    " title="${d.month}: ${d.sales.toLocaleString()} riders">
+                                        ${(d.sales/1000).toFixed(0)}k
                                     </div>
                                     <div style="font-size: 0.75em; margin-top: 5px; font-weight: bold;">${d.month}</div>
                                     <div style="font-size: 0.7em; color: #666;">${d.days} days</div>
@@ -235,11 +238,11 @@ function renderDataCubeFunnel(level) {
                         }).join('')}
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #27ae60; font-weight: bold;">
-                    Total Preserved: $${totalSales.toLocaleString()}
+                <div style="margin-top: 20px; font-size: 1.1em; color: #00A676; font-weight: bold;">
+                    Total Ridership Preserved: ${totalSales.toLocaleString()} passengers
                 </div>
                 <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
-                    365 daily records → 12 monthly records
+                    🚇 365 daily records → 12 monthly records (Namma Metro 2024)
                 </div>
             </div>
         `;
@@ -276,7 +279,7 @@ function renderDataCubeFunnel(level) {
                                     box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
                                 ">
                                     <div style="font-size: 1.3em; font-weight: bold; margin-bottom: 15px;">${d.quarter}</div>
-                                    <div style="font-size: 2em; font-weight: bold; color: #fff;">$${(d.sales/1000).toFixed(0)}k</div>
+                                    <div style="font-size: 2em; font-weight: bold; color: #fff;">${(d.sales/1000).toFixed(0)}k</div>
                                     <div style="font-size: 0.9em; margin-top: 15px; opacity: 0.9;">${d.days} days</div>
                                     <div style="font-size: 0.85em; margin-top: 5px; opacity: 0.8;">~3 months</div>
                                 </div>
@@ -284,11 +287,11 @@ function renderDataCubeFunnel(level) {
                         `).join('')}
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #27ae60; font-weight: bold;">
-                    Total Preserved: $${totalSales.toLocaleString()}
+                <div style="margin-top: 20px; font-size: 1.1em; color: #00A676; font-weight: bold;">
+                    Total Ridership Preserved: ${totalSales.toLocaleString()} passengers
                 </div>
                 <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
-                    365 daily → 12 monthly → 4 quarterly records
+                    🚇 365 daily → 12 monthly → 4 quarterly records (Namma Metro)
                 </div>
             </div>
         `;
@@ -310,20 +313,21 @@ function renderDataCubeFunnel(level) {
                         box-shadow: 0 8px 30px rgba(39, 174, 96, 0.4);
                         animation: scaleIn 0.8s;
                     ">
-                        <div style="font-size: 1.8em; font-weight: bold; margin-bottom: 20px;">YEAR 2024</div>
+                        <div style="font-size: 1.8em; font-weight: bold; margin-bottom: 20px;">🚇 NAMMA METRO 2024</div>
                         <div style="font-size: 3.5em; font-weight: bold; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
-                            $${(totalSales/1000).toFixed(0)}k
+                            ${(totalSales/1000).toFixed(0)}k
                         </div>
-                        <div style="font-size: 1.1em; margin-top: 20px; opacity: 0.95;">Aggregated from 365 days</div>
+                        <div style="font-size: 1.1em; margin-top: 20px; opacity: 0.95;">Total Annual Riders</div>
+                        <div style="font-size: 1.1em; margin-top: 8px; opacity: 0.95;">Aggregated from 365 days</div>
                         <div style="font-size: 1.1em; margin-top: 8px; opacity: 0.95;">Across 12 months</div>
                         <div style="font-size: 1.1em; margin-top: 8px; opacity: 0.95;">4 quarters</div>
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #27ae60; font-weight: bold;">
-                    Total Preserved: $${totalSales.toLocaleString()}
+                <div style="margin-top: 20px; font-size: 1.1em; color: #00A676; font-weight: bold;">
+                    Total Ridership Preserved: ${totalSales.toLocaleString()} passengers
                 </div>
                 <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
-                    Complete aggregation pipeline: 365 → 12 → 4 → 1 record
+                    Complete aggregation pipeline: 365 → 12 → 4 → 1 record (99.73% reduction!)
                 </div>
             </div>
         `;
@@ -352,18 +356,18 @@ function resetDataCube() {
     initDataCube();
 }
 
-// ===== ATTRIBUTE SELECTION - CREATIVE CARD VISUALIZATION =====
+// ===== ATTRIBUTE SELECTION - BANGALORE APARTMENT HUNTING =====
 let attributeData = [
-    { name: 'Customer Age', correlation: 0.72, variance: 145.2, status: 'unknown', selected: false },
-    { name: 'Annual Income', correlation: 0.85, variance: 2341.5, status: 'unknown', selected: false },
-    { name: 'Customer ID', correlation: 0.02, variance: 98123.4, status: 'unknown', selected: false },
-    { name: 'Purchase Frequency', correlation: 0.68, variance: 23.4, status: 'unknown', selected: false },
-    { name: 'Account Creation Date', correlation: 0.15, variance: 1234.1, status: 'unknown', selected: false },
-    { name: 'Credit Score', correlation: 0.79, variance: 1234.5, status: 'unknown', selected: false },
-    { name: 'Random UUID', correlation: 0.01, variance: 99999.9, status: 'unknown', selected: false },
-    { name: 'Product Category', correlation: 0.61, variance: 12.3, status: 'unknown', selected: false },
-    { name: 'Zip Code', correlation: 0.12, variance: 4567.8, status: 'unknown', selected: false },
-    { name: 'Last Purchase Days', correlation: 0.58, variance: 234.5, status: 'unknown', selected: false }
+    { name: '🏠 Distance to Office/Metro', correlation: 0.85, variance: 2.4, status: 'unknown', selected: false },
+    { name: '💰 Monthly Rent Price', correlation: 0.82, variance: 1250.5, status: 'unknown', selected: false },
+    { name: '🛡️ Safety Rating', correlation: 0.65, variance: 0.8, status: 'unknown', selected: false },
+    { name: '🍽️ Nearby Restaurants/Cafes', correlation: 0.52, variance: 15.3, status: 'unknown', selected: false },
+    { name: '🏋️ Gym/Amenities', correlation: 0.48, variance: 0.5, status: 'unknown', selected: false },
+    { name: '🎨 Building Paint Color', correlation: 0.03, variance: 999.9, status: 'unknown', selected: false },
+    { name: '⭐ Landlord Zodiac Sign', correlation: 0.01, variance: 11.1, status: 'unknown', selected: false },
+    { name: '🔢 House Number (Numerology)', correlation: 0.02, variance: 88.8, status: 'unknown', selected: false },
+    { name: '🚗 Parking Space (₹)', correlation: 0.31, variance: 450.2, status: 'unknown', selected: false },
+    { name: '🌿 Balcony Size (sq ft)', correlation: 0.28, variance: 25.5, status: 'unknown', selected: false }
 ];
 
 let forwardSelectionStep = 0;

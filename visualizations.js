@@ -15,11 +15,12 @@ setInterval(() => {
         timerElement.textContent = display;
 
         if (minutes >= 10 && minutes < 12) {
-            timerElement.style.background = '#fff3cd';
-            timerElement.style.borderColor = '#ffc107';
+            timerElement.style.background = '#FFFFFF';
+            timerElement.style.borderColor = '#000000';
         } else if (minutes >= 12) {
-            timerElement.style.background = '#f8d7da';
-            timerElement.style.borderColor = '#dc3545';
+            timerElement.style.background = '#000000';
+            timerElement.style.borderColor = '#000000';
+            timerElement.style.color = '#FFFFFF';
         }
     }
 }, 1000);
@@ -107,34 +108,34 @@ function renderDataCubeFunnel(level) {
 
     // Add breadcrumb navigation
     const breadcrumb = `
-        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid #000000;">
+        <div style="background: #FFFFFF; padding: 15px;  margin-bottom: 20px; border: 2px solid #000000;">
             <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
                 <div style="font-weight: bold; color: #000000;">📍 Current Level:</div>
                 <button onclick="dataCubeState='yearly'; renderDataCubeFunnel('yearly');"
                     style="padding: 8px 16px; background: ${level === 'yearly' ? '#000000' : 'white'};
                     color: ${level === 'yearly' ? 'white' : '#000000'}; border: 2px solid #000000;
-                    border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                     cursor: pointer; font-weight: bold; transition: all 0.3s;">
                     Yearly (1)
                 </button>
-                <span style="color: #4B5563;">→</span>
+                <span style="color: #000000;">→</span>
                 <button onclick="dataCubeState='quarterly'; renderDataCubeFunnel('quarterly');"
                     style="padding: 8px 16px; background: ${level === 'quarterly' ? '#000000' : 'white'};
                     color: ${level === 'quarterly' ? 'white' : '#000000'}; border: 2px solid #000000;
-                    border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                     cursor: pointer; font-weight: bold; transition: all 0.3s;">
                     Quarterly (4)
                 </button>
-                <span style="color: #4B5563;">→</span>
+                <span style="color: #000000;">→</span>
                 <button onclick="dataCubeState='monthly'; renderDataCubeFunnel('monthly');"
                     style="padding: 8px 16px; background: ${level === 'monthly' ? '#000000' : 'white'};
                     color: ${level === 'monthly' ? 'white' : '#000000'}; border: 2px solid #000000;
-                    border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                     cursor: pointer; font-weight: bold; transition: all 0.3s;">
                     Monthly (12)
                 </button>
-                <span style="color: #4B5563;">→</span>
+                <span style="color: #000000;">→</span>
                 <button onclick="dataCubeState='daily'; renderDataCubeFunnel('daily');"
                     style="padding: 8px 16px; background: ${level === 'daily' ? '#000000' : 'white'};
                     color: ${level === 'daily' ? 'white' : '#000000'}; border: 2px solid #000000;
-                    border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                     cursor: pointer; font-weight: bold; transition: all 0.3s;">
                     Daily (365)
                 </button>
             </div>
@@ -156,7 +157,7 @@ function renderDataCubeFunnel(level) {
             const monthTotal = monthData.reduce((sum, d) => sum + d.sales, 0);
 
             monthlyBlocks += `
-                <div style="margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; border: 2px solid #e0e0e0;">
+                <div style="margin-bottom: 20px; background: white; padding: 15px;  border: 2px solid #000000;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <div style="font-weight: bold; color: #000000; font-size: 1.1em;">🚇 ${monthNames[m]} 2024</div>
                         <div style="color: #666; font-size: 0.9em;">${daysInMonth[m]} days | Total: ${(monthTotal/1000).toFixed(0)}k riders</div>
@@ -169,7 +170,7 @@ function renderDataCubeFunnel(level) {
                             return `<div title="${d.date}: ${d.sales.toLocaleString()} riders" style="
                                 aspect-ratio: 1;
                                 background: ${color};
-                                border-radius: 3px;
+                                
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
@@ -198,32 +199,32 @@ function renderDataCubeFunnel(level) {
                         Full Year 2024 | ${dailySalesData.length} Daily Data Points
                     </div>
                 </div>
-                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #000000; border-radius: 8px; max-width: 900px; margin: 0 auto; max-height: 600px; overflow-y: auto;">
+                <div style="background: #FFFFFF; padding: 20px; border: 2px solid #000000;  max-width: 900px; margin: 0 auto; max-height: 600px; overflow-y: auto;">
                     ${monthlyBlocks}
-                    <div style="margin-top: 15px; padding: 15px; background: #f0e6f6; border-radius: 4px; text-align: center;">
+                    <div style="margin-top: 15px; padding: 15px; background: #FFFFFF;  text-align: center;">
                         <strong>Color Legend:</strong>
-                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(0, 0, 0); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Lower Ridership
+                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(0, 0, 0);  vertical-align: middle; margin: 0 5px;"></span> Lower Ridership
                         →
-                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(31, 41, 55); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Higher Ridership
+                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(31, 41, 55);  vertical-align: middle; margin: 0 5px;"></span> Higher Ridership
                         <div style="margin-top: 10px; font-size: 0.9em; color: #666;">
                             Hover over any day to see exact ridership count • 🚇 Namma Metro 2024
                         </div>
                     </div>
                 </div>
                 <div style="margin-top: 20px; text-align: center;">
-                    <div style="font-size: 1.2em; color: #4B5563; font-weight: bold;">
+                    <div style="font-size: 1.2em; color: #000000; font-weight: bold;">
                         Total Annual Ridership: ${totalSales.toLocaleString()} passengers
                     </div>
                     <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 600px; margin: 15px auto 0;">
-                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #000000;">
+                        <div style="padding: 10px; background: white;  border: 1px solid #000000;">
                             <div style="font-size: 0.85em; color: #666;">Data Points</div>
                             <div style="font-size: 1.3em; font-weight: bold; color: #000000;">365</div>
                         </div>
-                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #000000;">
+                        <div style="padding: 10px; background: white;  border: 1px solid #000000;">
                             <div style="font-size: 0.85em; color: #666;">Months</div>
                             <div style="font-size: 1.3em; font-weight: bold; color: #000000;">12</div>
                         </div>
-                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #000000;">
+                        <div style="padding: 10px; background: white;  border: 1px solid #000000;">
                             <div style="font-size: 0.85em; color: #666;">Avg/Day</div>
                             <div style="font-size: 1.3em; font-weight: bold; color: #000000;">${Math.round(totalSales/365).toLocaleString()}</div>
                         </div>
@@ -249,7 +250,7 @@ function renderDataCubeFunnel(level) {
                 <div style="font-size: 1.2em; color: #000000; font-weight: bold; margin-bottom: 10px;">
                     MONTHLY LEVEL: 12 Records (${reduction}% Reduction)
                 </div>
-                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #000000; border-radius: 8px; max-width: 900px; margin: 0 auto;">
+                <div style="background: #FFFFFF; padding: 20px; border: 2px solid #000000;  max-width: 900px; margin: 0 auto;">
                     <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 250px; gap: 8px;">
                         ${monthlyData.map((d, idx) => {
                             const maxSales = Math.max(...monthlyData.map(m => m.sales));
@@ -258,7 +259,7 @@ function renderDataCubeFunnel(level) {
                                 <div style="flex: 1; text-align: center; animation: scaleIn ${0.5 + idx * 0.05}s both;">
                                     <div style="
                                         height: ${height}%;
-                                        background: linear-gradient(to top, #000000, #4B5563);
+                                        background: linear-gradient(to top, #000000, #000000);
                                         border-radius: 4px 4px 0 0;
                                         display: flex;
                                         align-items: center;
@@ -279,7 +280,7 @@ function renderDataCubeFunnel(level) {
                         }).join('')}
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #4B5563; font-weight: bold;">
+                <div style="margin-top: 20px; font-size: 1.1em; color: #000000; font-weight: bold;">
                     Total Ridership Preserved: ${totalSales.toLocaleString()} passengers
                 </div>
                 <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
@@ -307,14 +308,14 @@ function renderDataCubeFunnel(level) {
                 <div style="font-size: 1.2em; color: #000000; font-weight: bold; margin-bottom: 10px;">
                     QUARTERLY LEVEL: 4 Records (${reduction}% Reduction)
                 </div>
-                <div style="background: #f8f9fa; padding: 30px; border: 2px solid #374151; border-radius: 8px; max-width: 900px; margin: 0 auto;">
+                <div style="background: #FFFFFF; padding: 30px; border: 2px solid #374151;  max-width: 900px; margin: 0 auto;">
                     <div style="display: flex; justify-content: center; gap: 20px;">
                         ${quarterlyData.map((d, idx) => `
                             <div style="flex: 1; max-width: 200px; animation: scaleIn ${0.6 + idx * 0.15}s both;">
                                 <div style="
                                     background: linear-gradient(135deg, #374151, #9CA3AF);
                                     padding: 30px 20px;
-                                    border-radius: 12px;
+                                    
                                     color: white;
                                     text-align: center;
                                     box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
@@ -328,7 +329,7 @@ function renderDataCubeFunnel(level) {
                         `).join('')}
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #4B5563; font-weight: bold;">
+                <div style="margin-top: 20px; font-size: 1.1em; color: #000000; font-weight: bold;">
                     Total Ridership Preserved: ${totalSales.toLocaleString()} passengers
                 </div>
                 <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
@@ -348,7 +349,7 @@ function renderDataCubeFunnel(level) {
                     <div style="
                         background: linear-gradient(135deg, #000000, #1F2937);
                         padding: 50px 80px;
-                        border-radius: 16px;
+                        
                         color: white;
                         text-align: center;
                         box-shadow: 0 8px 30px rgba(39, 174, 96, 0.4);
@@ -364,7 +365,7 @@ function renderDataCubeFunnel(level) {
                         <div style="font-size: 1.1em; margin-top: 8px; opacity: 0.95;">4 quarters</div>
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #4B5563; font-weight: bold;">
+                <div style="margin-top: 20px; font-size: 1.1em; color: #000000; font-weight: bold;">
                     Total Ridership Preserved: ${totalSales.toLocaleString()} passengers
                 </div>
                 <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
@@ -427,11 +428,11 @@ function showAttributeMethod(method) {
     document.getElementById('backwardMethod').style.display = 'none';
 
     // Reset all tab styles
-    document.getElementById('basicTab').style.background = '#e0e0e0';
+    document.getElementById('basicTab').style.background = '#000000';
     document.getElementById('basicTab').style.color = '#666';
-    document.getElementById('forwardTab').style.background = '#e0e0e0';
+    document.getElementById('forwardTab').style.background = '#000000';
     document.getElementById('forwardTab').style.color = '#666';
-    document.getElementById('backwardTab').style.background = '#e0e0e0';
+    document.getElementById('backwardTab').style.background = '#000000';
     document.getElementById('backwardTab').style.color = '#666';
 
     // Show selected method
@@ -469,12 +470,12 @@ function renderAttributeCards() {
                 </div>
                 <div style="margin: 10px 0;">
                     <div style="font-size: 0.9em; color: #666; margin-bottom: 5px;">Correlation</div>
-                    <div style="background: #e0e0e0; height: 20px; border-radius: 10px; overflow: hidden;">
+                    <div style="background: #000000; height: 20px;  overflow: hidden;">
                         <div style="
                             width: ${corrAbs * 100}%;
                             height: 100%;
                             background: ${isRelevant ? 'linear-gradient(90deg, #000000, #2ecc71)' : 'linear-gradient(90deg, #6B7280, #c0392b)'};
-                            border-radius: 10px;
+                            
                             transition: all 0.3s;
                         "></div>
                     </div>
@@ -482,7 +483,7 @@ function renderAttributeCards() {
                         ${attr.correlation.toFixed(2)}
                     </div>
                 </div>
-                <div style="text-align: center; padding: 8px; border-radius: 4px; background: ${isRelevant ? '#d5f4e6' : '#fadbd8'}; color: ${isRelevant ? '#000000' : '#6B7280'}; font-weight: bold; margin-top: 10px;">
+                <div style="text-align: center; padding: 8px;  background: ${isRelevant ? '#d5f4e6' : '#fadbd8'}; color: ${isRelevant ? '#000000' : '#6B7280'}; font-weight: bold; margin-top: 10px;">
                     ${isRelevant ? '✓ KEEP' : '✗ REMOVE'}
                 </div>
             `;
@@ -594,7 +595,7 @@ function showCorrelationMatrix() {
                     text-align: center;
                     font-size: 0.7em;
                     font-weight: bold;
-                    border-radius: 3px;
+                    
                     cursor: pointer;
                     transition: transform 0.2s;
                     animation: popIn ${(i + j) * 0.02}s both;
@@ -609,19 +610,19 @@ function showCorrelationMatrix() {
 
         // Add legend
         html += `
-            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+            <div style="margin-top: 20px; padding: 15px; background: #FFFFFF; ">
                 <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">Correlation Strength Legend</div>
                 <div style="display: flex; justify-content: center; gap: 15px; align-items: center; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 20px; height: 20px; background: rgb(0, 0, 0); border-radius: 3px;"></span>
+                        <span style="width: 20px; height: 20px; background: rgb(0, 0, 0); "></span>
                         <span>Strong (≥0.70)</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 20px; height: 20px; background: rgb(156, 163, 175); border-radius: 3px;"></span>
+                        <span style="width: 20px; height: 20px; background: rgb(156, 163, 175); "></span>
                         <span>Medium (0.30-0.69)</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 20px; height: 20px; background: rgb(107, 114, 128); border-radius: 3px;"></span>
+                        <span style="width: 20px; height: 20px; background: rgb(107, 114, 128); "></span>
                         <span>Weak (<0.30)</span>
                     </div>
                 </div>
@@ -661,7 +662,7 @@ function renderForwardSelection() {
                 <p style="color: #666; margin-top: 10px;">
                     Start with <strong>empty set</strong> → Iteratively add <strong>best attribute</strong> → Repeat until threshold met
                 </p>
-                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 8px; display: inline-block;">
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd;  display: inline-block;">
                     <strong>Current Step ${forwardSelectionStep}:</strong>
                     Selected: <span style="color: #000000; font-size: 1.2em; font-weight: bold;">${selectedCount}</span> |
                     Remaining: <span style="color: #666; font-size: 1.2em; font-weight: bold;">${remaining}</span>
@@ -670,7 +671,7 @@ function renderForwardSelection() {
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                 <!-- Available Attributes Pool -->
-                <div style="background: #fff; border: 3px solid #ddd; border-radius: 12px; padding: 20px;">
+                <div style="background: #fff; border: 3px solid #ddd;  padding: 20px;">
                     <h4 style="text-align: center; color: #666; margin-bottom: 15px;">
                         📋 Available Attributes Pool
                     </h4>
@@ -683,9 +684,9 @@ function renderForwardSelection() {
                             return `
                                 <div style="
                                     background: ${isNext ? 'linear-gradient(135deg, #fff3cd, #ffeaa7)' : 'white'};
-                                    border: 2px solid ${isNext ? '#9CA3AF' : '#e0e0e0'};
+                                    border: 2px solid ${isNext ? '#9CA3AF' : '#000000'};
                                     padding: 12px;
-                                    border-radius: 8px;
+                                    
                                     display: flex;
                                     justify-content: space-between;
                                     align-items: center;
@@ -700,7 +701,7 @@ function renderForwardSelection() {
                                         background: ${corrAbs >= 0.7 ? '#000000' : corrAbs >= 0.3 ? '#9CA3AF' : '#6B7280'};
                                         color: white;
                                         padding: 5px 12px;
-                                        border-radius: 20px;
+                                        
                                         font-size: 0.85em;
                                         font-weight: bold;
                                     ">
@@ -714,7 +715,7 @@ function renderForwardSelection() {
                 </div>
 
                 <!-- Selected Attributes Set -->
-                <div style="background: #d4edda; border: 3px solid #000000; border-radius: 12px; padding: 20px;">
+                <div style="background: #d4edda; border: 3px solid #000000;  padding: 20px;">
                     <h4 style="text-align: center; color: #000000; margin-bottom: 15px;">
                         ✅ Selected Attributes Set
                     </h4>
@@ -731,7 +732,7 @@ function renderForwardSelection() {
                                     background: linear-gradient(135deg, #000000, #2ecc71);
                                     border: 2px solid #1F2937;
                                     padding: 12px;
-                                    border-radius: 8px;
+                                    
                                     color: white;
                                     animation: scaleIn 0.5s;
                                     box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
@@ -746,7 +747,7 @@ function renderForwardSelection() {
                                         <div style="
                                             background: rgba(255,255,255,0.3);
                                             padding: 5px 12px;
-                                            border-radius: 20px;
+                                            
                                             font-size: 0.85em;
                                             font-weight: bold;
                                         ">
@@ -760,7 +761,7 @@ function renderForwardSelection() {
                 </div>
             </div>
 
-            <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <div style="margin-top: 20px; padding: 20px; background: #FFFFFF; ">
                 <h4 style="color: #003366; margin-bottom: 10px;">Selection Strategy:</h4>
                 <ol style="color: #666; line-height: 1.8;">
                     <li>Start with <strong>empty set</strong> of selected attributes</li>
@@ -769,7 +770,7 @@ function renderForwardSelection() {
                     <li>Add to selected set and remove from available pool</li>
                     <li>Repeat until threshold is met or desired number reached</li>
                 </ol>
-                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #000000; border-radius: 4px;">
+                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #000000; ">
                     <strong>Current Rule:</strong> Select attributes with |correlation| ≥ 0.30
                 </div>
             </div>
@@ -852,7 +853,7 @@ function renderBackwardElimination() {
                 <p style="color: #666; margin-top: 10px;">
                     Start with <strong>all attributes</strong> → Iteratively remove <strong>worst attribute</strong> → Repeat until optimal set remains
                 </p>
-                <div style="margin-top: 15px; padding: 15px; background: #ffebee; border-radius: 8px; display: inline-block;">
+                <div style="margin-top: 15px; padding: 15px; background: #ffebee;  display: inline-block;">
                     <strong>Current Step ${backwardEliminationStep}:</strong>
                     Remaining: <span style="color: #000000; font-size: 1.2em; font-weight: bold;">${remainingCount}</span> |
                     Removed: <span style="color: #6B7280; font-size: 1.2em; font-weight: bold;">${removedCount}</span>
@@ -861,7 +862,7 @@ function renderBackwardElimination() {
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                 <!-- Current Feature Set -->
-                <div style="background: #d4edda; border: 3px solid #000000; border-radius: 12px; padding: 20px;">
+                <div style="background: #d4edda; border: 3px solid #000000;  padding: 20px;">
                     <h4 style="text-align: center; color: #000000; margin-bottom: 15px;">
                         ✅ Current Feature Set
                     </h4>
@@ -876,7 +877,7 @@ function renderBackwardElimination() {
                                     background: ${isWorst ? 'linear-gradient(135deg, #ffebee, #ffcdd2)' : 'white'};
                                     border: 2px solid ${isWorst ? '#6B7280' : '#000000'};
                                     padding: 12px;
-                                    border-radius: 8px;
+                                    
                                     display: flex;
                                     justify-content: space-between;
                                     align-items: center;
@@ -891,7 +892,7 @@ function renderBackwardElimination() {
                                         background: ${corrAbs >= 0.7 ? '#000000' : corrAbs >= 0.3 ? '#9CA3AF' : '#6B7280'};
                                         color: white;
                                         padding: 5px 12px;
-                                        border-radius: 20px;
+                                        
                                         font-size: 0.85em;
                                         font-weight: bold;
                                     ">
@@ -905,7 +906,7 @@ function renderBackwardElimination() {
                 </div>
 
                 <!-- Removed Attributes -->
-                <div style="background: #fff; border: 3px solid #6B7280; border-radius: 12px; padding: 20px;">
+                <div style="background: #fff; border: 3px solid #6B7280;  padding: 20px;">
                     <h4 style="text-align: center; color: #6B7280; margin-bottom: 15px;">
                         🗑️ Removed Attributes
                     </h4>
@@ -922,7 +923,7 @@ function renderBackwardElimination() {
                                     background: linear-gradient(135deg, #6B7280, #c0392b);
                                     border: 2px solid #a93226;
                                     padding: 12px;
-                                    border-radius: 8px;
+                                    
                                     color: white;
                                     animation: scaleIn 0.5s;
                                     box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
@@ -938,7 +939,7 @@ function renderBackwardElimination() {
                                         <div style="
                                             background: rgba(255,255,255,0.3);
                                             padding: 5px 12px;
-                                            border-radius: 20px;
+                                            
                                             font-size: 0.85em;
                                             font-weight: bold;
                                         ">
@@ -952,7 +953,7 @@ function renderBackwardElimination() {
                 </div>
             </div>
 
-            <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <div style="margin-top: 20px; padding: 20px; background: #FFFFFF; ">
                 <h4 style="color: #003366; margin-bottom: 10px;">Elimination Strategy:</h4>
                 <ol style="color: #666; line-height: 1.8;">
                     <li>Start with <strong>all attributes</strong> selected</li>
@@ -961,7 +962,7 @@ function renderBackwardElimination() {
                     <li>Move to removed set and continue</li>
                     <li>Repeat until only strong predictors remain (|correlation| ≥ 0.30)</li>
                 </ol>
-                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #6B7280; border-radius: 4px;">
+                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #6B7280; ">
                     <strong>Current Rule:</strong> Remove attributes with |correlation| < 0.30
                 </div>
             </div>
@@ -1136,7 +1137,7 @@ function renderNumerosityOriginal() {
     container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #003366;">Original: 1,000 Data Points</div>';
 
     const canvas = document.createElement('div');
-    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #ddd; position: relative; border-radius: 4px;';
+    canvas.style.cssText = 'width: 100%; height: 250px; background: #FFFFFF; border: 2px solid #ddd; position: relative; ';
 
     // Create dense point cloud
     for (let i = 0; i < 200; i++) {
@@ -1161,7 +1162,7 @@ function showSampling() {
     container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #000000;">Random Sampling: 100 Points (10%)</div>';
 
     const canvas = document.createElement('div');
-    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #000000; position: relative; border-radius: 4px;';
+    canvas.style.cssText = 'width: 100%; height: 250px; background: #FFFFFF; border: 2px solid #000000; position: relative; ';
 
     // Sparse sampling
     for (let i = 0; i < 20; i++) {
@@ -1187,10 +1188,10 @@ function showSampling() {
 
 function showHistogram() {
     const container = document.getElementById('numerosityReduced');
-    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #4B5563;">Histogram: 25 Bins</div>';
+    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #000000;">Histogram: 25 Bins</div>';
 
     const canvas = document.createElement('div');
-    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #4B5563; position: relative; border-radius: 4px; display: flex; align-items: flex-end; padding: 10px; gap: 2px;';
+    canvas.style.cssText = 'width: 100%; height: 250px; background: #FFFFFF; border: 2px solid #000000; position: relative;  display: flex; align-items: flex-end; padding: 10px; gap: 2px;';
 
     // Create histogram bars
     for (let i = 0; i < 25; i++) {
@@ -1200,7 +1201,7 @@ function showHistogram() {
             bar.style.cssText = `
                 flex: 1;
                 height: ${height}%;
-                background: linear-gradient(to top, #4B5563, #9CA3AF);
+                background: linear-gradient(to top, #000000, #9CA3AF);
                 border-radius: 2px 2px 0 0;
                 animation: growUp 0.4s;
             `;
@@ -1217,7 +1218,7 @@ function showClustering() {
     container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #9CA3AF;">Clustering: 50 Centroids</div>';
 
     const canvas = document.createElement('div');
-    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #9CA3AF; position: relative; border-radius: 4px;';
+    canvas.style.cssText = 'width: 100%; height: 250px; background: #FFFFFF; border: 2px solid #9CA3AF; position: relative; ';
 
     // Create clusters
     for (let i = 0; i < 12; i++) {
@@ -1265,7 +1266,7 @@ function showClustering() {
 function updateNumerosityStats(method, original, reduced, percentage) {
     const stats = document.getElementById('reductionStats');
     stats.innerHTML = `
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 4px;">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; padding: 20px; background: #FFFFFF; ">
             <div style="text-align: center;">
                 <div style="font-size: 0.9em; color: #666;">Method</div>
                 <div style="font-size: 1.2em; font-weight: bold; color: #003366;">${method}</div>
@@ -1329,7 +1330,7 @@ function discretizeEqualWidth() {
 
     const bins = [
         { label: 'Youth (18-41)', min: min, max: min + binWidth, color: '#000000', count: 0 },
-        { label: 'Adult (42-59)', min: min + binWidth, max: min + 2 * binWidth, color: '#4B5563', count: 0 },
+        { label: 'Adult (42-59)', min: min + binWidth, max: min + 2 * binWidth, color: '#000000', count: 0 },
         { label: 'Senior (60+)', min: min + 2 * binWidth, max: max, color: '#9CA3AF', count: 0 }
     ];
 
@@ -1348,7 +1349,7 @@ function discretizeEqualFreq() {
 
     const bins = [
         { label: 'Group 1', color: '#000000', count: binSize, range: `${sorted[0]}-${sorted[binSize - 1]}` },
-        { label: 'Group 2', color: '#4B5563', count: binSize, range: `${sorted[binSize]}-${sorted[2 * binSize - 1]}` },
+        { label: 'Group 2', color: '#000000', count: binSize, range: `${sorted[binSize]}-${sorted[2 * binSize - 1]}` },
         { label: 'Group 3', color: '#9CA3AF', count: sorted.length - 2 * binSize, range: `${sorted[2 * binSize]}-${sorted[sorted.length - 1]}` }
     ];
 
@@ -1358,7 +1359,7 @@ function discretizeEqualFreq() {
 function discretizeEntropy() {
     const bins = [
         { label: 'Youth (≤25)', color: '#000000', count: ageData.filter(a => a <= 25).length },
-        { label: 'Adult (26-60)', color: '#4B5563', count: ageData.filter(a => a > 25 && a <= 60).length },
+        { label: 'Adult (26-60)', color: '#000000', count: ageData.filter(a => a > 25 && a <= 60).length },
         { label: 'Senior (>60)', color: '#9CA3AF', count: ageData.filter(a => a > 60).length }
     ];
 
@@ -1489,7 +1490,7 @@ function showDiscretizationMethod(method) {
     // Reset all tab styles
     const tabs = ['equalWidthTab', 'equalFreqTab', 'entropyTab', 'comparisonTab'];
     tabs.forEach(tab => {
-        document.getElementById(tab).style.background = '#e0e0e0';
+        document.getElementById(tab).style.background = '#000000';
         document.getElementById(tab).style.color = '#666';
     });
 
@@ -1541,7 +1542,7 @@ function renderContinuousDataForMethod(container, methodName) {
     container.innerHTML = `
         <div style="margin-bottom: 20px;">
             <h4 style="text-align: center; color: #003366; margin-bottom: 15px;">Step 1: Continuous Age Data (30 values)</h4>
-            <div style="background: #f8f9fa; padding: 20px; border: 2px solid #ddd; border-radius: 8px;">
+            <div style="background: #FFFFFF; padding: 20px; border: 2px solid #ddd; ">
                 <div style="display: flex; align-items: flex-end; justify-content: center; height: 180px; gap: 3px;">
                     ${ageData.map((age, idx) => `
                         <div style="
@@ -1577,7 +1578,7 @@ function stepEqualWidth() {
 
     const bins = [
         { label: 'Bin 1: Youth', min: min, max: min + binWidth, color: '#000000', count: 0, range: `${min.toFixed(0)}-${(min + binWidth).toFixed(0)}` },
-        { label: 'Bin 2: Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#4B5563', count: 0, range: `${(min + binWidth).toFixed(0)}-${(min + 2 * binWidth).toFixed(0)}` },
+        { label: 'Bin 2: Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#000000', count: 0, range: `${(min + binWidth).toFixed(0)}-${(min + 2 * binWidth).toFixed(0)}` },
         { label: 'Bin 3: Senior', min: min + 2 * binWidth, max: max, color: '#9CA3AF', count: 0, range: `${(min + 2 * binWidth).toFixed(0)}-${max.toFixed(0)}` }
     ];
 
@@ -1597,7 +1598,7 @@ function stepEqualFreq() {
 
     const bins = [
         { label: 'Bin 1: Low Range', color: '#000000', count: binSize, range: `${sorted[0]}-${sorted[binSize - 1]}` },
-        { label: 'Bin 2: Mid Range', color: '#4B5563', count: binSize, range: `${sorted[binSize]}-${sorted[2 * binSize - 1]}` },
+        { label: 'Bin 2: Mid Range', color: '#000000', count: binSize, range: `${sorted[binSize]}-${sorted[2 * binSize - 1]}` },
         { label: 'Bin 3: High Range', color: '#9CA3AF', count: sorted.length - 2 * binSize, range: `${sorted[2 * binSize]}-${sorted[sorted.length - 1]}` }
     ];
 
@@ -1609,7 +1610,7 @@ function stepEntropy() {
     discretizeEntropy();
     const bins = [
         { label: 'Bin 1: Youth (≤25)', color: '#000000', count: ageData.filter(a => a <= 25).length, range: '≤25' },
-        { label: 'Bin 2: Adult (26-60)', color: '#4B5563', count: ageData.filter(a => a > 25 && a <= 60).length, range: '26-60' },
+        { label: 'Bin 2: Adult (26-60)', color: '#000000', count: ageData.filter(a => a > 25 && a <= 60).length, range: '26-60' },
         { label: 'Bin 3: Senior (>60)', color: '#9CA3AF', count: ageData.filter(a => a > 60).length, range: '>60' }
     ];
 
@@ -1623,14 +1624,14 @@ function renderEnhancedDiscretization(container, bins, methodName, param) {
     container.innerHTML = `
         <div style="margin-bottom: 20px;">
             <h4 style="text-align: center; color: #000000; margin-bottom: 15px;">✓ Step 2: Discretized Data (3 bins)</h4>
-            <div style="background: #f8f9fa; padding: 30px; border: 2px solid #000000; border-radius: 8px;">
+            <div style="background: #FFFFFF; padding: 30px; border: 2px solid #000000; ">
                 <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 250px; gap: 20px; margin-bottom: 20px;">
                     ${bins.map((bin, index) => `
                         <div style="flex: 1; text-align: center; animation: scaleIn ${0.5 + index * 0.2}s both;">
                             <div style="
                                 height: ${(bin.count / maxCount) * 220}px;
                                 background: linear-gradient(to top, ${bin.color}, ${bin.color}dd);
-                                border-radius: 8px;
+                                
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
@@ -1651,15 +1652,15 @@ function renderEnhancedDiscretization(container, bins, methodName, param) {
                 </div>
 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
-                    <div style="text-align: center; padding: 15px; background: white; border-radius: 4px;">
+                    <div style="text-align: center; padding: 15px; background: white; ">
                         <div style="font-size: 0.85em; color: #666;">Original Values</div>
                         <div style="font-size: 1.3em; font-weight: bold; color: #000000;">${ageData.length}</div>
                     </div>
-                    <div style="text-align: center; padding: 15px; background: white; border-radius: 4px;">
+                    <div style="text-align: center; padding: 15px; background: white; ">
                         <div style="font-size: 0.85em; color: #666;">Bins Created</div>
                         <div style="font-size: 1.3em; font-weight: bold; color: #000000;">${bins.length}</div>
                     </div>
-                    <div style="text-align: center; padding: 15px; background: white; border-radius: 4px;">
+                    <div style="text-align: center; padding: 15px; background: white; ">
                         <div style="font-size: 0.85em; color: #666;">Parameter</div>
                         <div style="font-size: 1.3em; font-weight: bold; color: #9CA3AF;">${param}</div>
                     </div>
@@ -1680,7 +1681,7 @@ function compareAllMethods() {
     // Equal-Width
     const equalWidthBins = [
         { label: 'Youth', min: min, max: min + binWidth, color: '#000000', count: 0 },
-        { label: 'Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#4B5563', count: 0 },
+        { label: 'Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#000000', count: 0 },
         { label: 'Senior', min: min + 2 * binWidth, max: max, color: '#9CA3AF', count: 0 }
     ];
     ageData.forEach(age => {
@@ -1694,14 +1695,14 @@ function compareAllMethods() {
     const binSize = Math.floor(sorted.length / 3);
     const equalFreqBins = [
         { label: 'Group 1', color: '#000000', count: binSize },
-        { label: 'Group 2', color: '#4B5563', count: binSize },
+        { label: 'Group 2', color: '#000000', count: binSize },
         { label: 'Group 3', color: '#9CA3AF', count: sorted.length - 2 * binSize }
     ];
 
     // Entropy-Based
     const entropyBins = [
         { label: 'Youth', color: '#000000', count: ageData.filter(a => a <= 25).length },
-        { label: 'Adult', color: '#4B5563', count: ageData.filter(a => a > 25 && a <= 60).length },
+        { label: 'Adult', color: '#000000', count: ageData.filter(a => a > 25 && a <= 60).length },
         { label: 'Senior', color: '#9CA3AF', count: ageData.filter(a => a > 60).length }
     ];
 
@@ -1711,7 +1712,7 @@ function compareAllMethods() {
             ${renderComparisonMethod('Equal-Frequency', equalFreqBins, 'Uniform frequency bins')}
             ${renderComparisonMethod('Entropy-Based', entropyBins, 'Optimized for classification')}
         </div>
-        <div style="margin-top: 20px; padding: 20px; background: #e3f2fd; border-radius: 8px;">
+        <div style="margin-top: 20px; padding: 20px; background: #e3f2fd; ">
             <h4 style="color: #003366; margin-bottom: 10px;">Key Observations:</h4>
             <ul style="color: #666; line-height: 1.8;">
                 <li><strong>Equal-Width</strong> creates bins with different counts (${equalWidthBins.map(b => b.count).join(', ')})</li>
@@ -1726,7 +1727,7 @@ function compareAllMethods() {
 function renderComparisonMethod(name, bins, description) {
     const maxCount = Math.max(...bins.map(b => b.count));
     return `
-        <div style="border: 2px solid #ddd; padding: 20px; border-radius: 8px; background: white;">
+        <div style="border: 2px solid #ddd; padding: 20px;  background: white;">
             <h4 style="text-align: center; color: #003366; margin-bottom: 10px;">${name}</h4>
             <p style="text-align: center; font-size: 0.85em; color: #666; margin-bottom: 15px;">${description}</p>
             <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 150px; gap: 10px;">
@@ -1785,7 +1786,7 @@ function renderWaveletViz() {
             <div style="font-size: 1.2em; color: #003366; font-weight: bold; margin-bottom: 10px;">
                 ${waveletLevel === 0 ? 'Original Data: 32 Points' : `Level ${waveletLevel}: ${waveletData.length} Coefficients`}
             </div>
-            <div style="background: white; padding: 20px; border: 2px solid #ddd; border-radius: 4px;">
+            <div style="background: white; padding: 20px; border: 2px solid #ddd; ">
                 <svg width="100%" height="200" viewBox="0 0 700 200">
                     <line x1="50" y1="180" x2="650" y2="180" stroke="#333" stroke-width="2"/>
                     <line x1="50" y1="20" x2="50" y2="180" stroke="#333" stroke-width="2"/>
@@ -1803,7 +1804,7 @@ function renderWaveletViz() {
                         `;
                     }).join('')}
                 </svg>
-                <div style="text-align: center; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+                <div style="text-align: center; margin-top: 15px; padding: 15px; background: #FFFFFF; ">
                     <strong>Data Points:</strong> ${waveletData.length} |
                     <strong>Compression:</strong> ${100 - ((waveletData.length / 32) * 100).toFixed(1)}% |
                     <strong>Storage Saved:</strong> ${32 - waveletData.length} values
@@ -1856,7 +1857,7 @@ function renderPopulation() {
         <div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #003366;">
             Population: 100 Data Points
         </div>
-        <div style="background: #f8f9fa; border: 2px solid #ddd; padding: 20px; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
+        <div style="background: #FFFFFF; border: 2px solid #ddd; padding: 20px;  display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
             ${population.map(p => `
                 <div class="pop-point" data-id="${p.id}" style="
                     width: 8px; height: 8px; background: #000000; border-radius: 50%;
@@ -1914,7 +1915,7 @@ function renderSampleResult(method, sample, description) {
         <div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #000000;">
             ${method}: ${sample.length} Points Selected
         </div>
-        <div style="background: #f8f9fa; border: 2px solid #000000; padding: 20px; border-radius: 4px;">
+        <div style="background: #FFFFFF; border: 2px solid #000000; padding: 20px; ">
             <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 15px;">
                 ${population.map(p => `
                     <div style="
@@ -1925,7 +1926,7 @@ function renderSampleResult(method, sample, description) {
                     "></div>
                 `).join('')}
             </div>
-            <div style="background: white; padding: 15px; border-radius: 4px;">
+            <div style="background: white; padding: 15px; ">
                 <strong>Method:</strong> ${description}<br>
                 <strong>Sample Size:</strong> ${sample.length}/100<br>
                 <strong>Reduction:</strong> ${((1 - sample.length/100) * 100).toFixed(0)}%
@@ -1973,9 +1974,9 @@ function renderHistogramComparison() {
     container.innerHTML = `
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
             ${renderHistogramType('Equal-Width Histogram', equalWidth, 'Uniform bin width = ' + binWidth.toFixed(1), '#000000')}
-            ${renderHistogramType('Equal-Frequency Histogram', equalFreq, 'Uniform frequency ≈ ' + perBin + ' items/bin', '#4B5563')}
+            ${renderHistogramType('Equal-Frequency Histogram', equalFreq, 'Uniform frequency ≈ ' + perBin + ' items/bin', '#000000')}
         </div>
-        <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 4px;">
+        <div style="margin-top: 20px; padding: 20px; background: #FFFFFF; ">
             <strong>Original Data:</strong> ${histogramData.length} values → <strong>Reduced:</strong> 3 bins<br>
             <strong>Reduction:</strong> ${((1 - 3/histogramData.length) * 100).toFixed(1)}%
             (${histogramData.length} → 3 values = ${histogramData.length - 3} fewer values stored)
@@ -1986,7 +1987,7 @@ function renderHistogramComparison() {
 function renderHistogramType(title, bins, description, color) {
     const maxCount = Math.max(...bins.map(b => b.count));
     return `
-        <div style="border: 2px solid ${color}; padding: 20px; border-radius: 8px; background: white;">
+        <div style="border: 2px solid ${color}; padding: 20px;  background: white;">
             <h4 style="text-align: center; color: ${color}; margin-bottom: 15px;">${title}</h4>
             <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 200px; margin-bottom: 15px;">
                 ${bins.map((bin, i) => `
@@ -2008,7 +2009,7 @@ function renderHistogramType(title, bins, description, color) {
                     </div>
                 `).join('')}
             </div>
-            <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 4px; font-size: 0.9em;">
+            <div style="text-align: center; padding: 10px; background: #FFFFFF;  font-size: 0.9em;">
                 ${description}
             </div>
         </div>
@@ -2050,7 +2051,7 @@ function renderRegressionViz() {
         <div style="text-align: center; font-weight: bold; margin-bottom: 15px; color: #003366;">
             Linear Regression: Data Reduction via Parametric Model
         </div>
-        <div style="background: white; padding: 30px; border: 2px solid #ddd; border-radius: 4px;">
+        <div style="background: white; padding: 30px; border: 2px solid #ddd; ">
             <svg width="100%" height="300" viewBox="0 0 700 300">
                 <!-- Axes -->
                 <line x1="80" y1="250" x2="650" y2="250" stroke="#333" stroke-width="2"/>
@@ -2081,17 +2082,17 @@ function renderRegressionViz() {
             </svg>
 
             <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div style="padding: 15px; background: #e3f2fd; border-radius: 4px;">
+                <div style="padding: 15px; background: #e3f2fd; ">
                     <strong>Original Data Storage:</strong><br>
                     ${n} points × 2 values = <strong>${n * 2} values</strong>
                 </div>
-                <div style="padding: 15px; background: #ffebee; border-radius: 4px;">
+                <div style="padding: 15px; background: #ffebee; ">
                     <strong>Regression Model Storage:</strong><br>
                     y = ${m.toFixed(3)}x + ${b.toFixed(3)} = <strong>2 parameters</strong>
                 </div>
             </div>
 
-            <div style="margin-top: 15px; padding: 15px; background: #c8e6c9; border-radius: 4px; text-align: center;">
+            <div style="margin-top: 15px; padding: 15px; background: #c8e6c9;  text-align: center;">
                 <strong>Data Reduction:</strong> ${((1 - 2/(n*2)) * 100).toFixed(1)}%
                 (${n*2} values → 2 parameters = ${n*2 - 2} fewer values!)
             </div>

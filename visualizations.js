@@ -107,33 +107,33 @@ function renderDataCubeFunnel(level) {
 
     // Add breadcrumb navigation
     const breadcrumb = `
-        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid #6B2C91;">
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid #000000;">
             <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                <div style="font-weight: bold; color: #6B2C91;">📍 Current Level:</div>
+                <div style="font-weight: bold; color: #000000;">📍 Current Level:</div>
                 <button onclick="dataCubeState='yearly'; renderDataCubeFunnel('yearly');"
-                    style="padding: 8px 16px; background: ${level === 'yearly' ? '#6B2C91' : 'white'};
-                    color: ${level === 'yearly' ? 'white' : '#6B2C91'}; border: 2px solid #6B2C91;
+                    style="padding: 8px 16px; background: ${level === 'yearly' ? '#000000' : 'white'};
+                    color: ${level === 'yearly' ? 'white' : '#000000'}; border: 2px solid #000000;
                     border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
                     Yearly (1)
                 </button>
-                <span style="color: #00A676;">→</span>
+                <span style="color: #4B5563;">→</span>
                 <button onclick="dataCubeState='quarterly'; renderDataCubeFunnel('quarterly');"
-                    style="padding: 8px 16px; background: ${level === 'quarterly' ? '#6B2C91' : 'white'};
-                    color: ${level === 'quarterly' ? 'white' : '#6B2C91'}; border: 2px solid #6B2C91;
+                    style="padding: 8px 16px; background: ${level === 'quarterly' ? '#000000' : 'white'};
+                    color: ${level === 'quarterly' ? 'white' : '#000000'}; border: 2px solid #000000;
                     border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
                     Quarterly (4)
                 </button>
-                <span style="color: #00A676;">→</span>
+                <span style="color: #4B5563;">→</span>
                 <button onclick="dataCubeState='monthly'; renderDataCubeFunnel('monthly');"
-                    style="padding: 8px 16px; background: ${level === 'monthly' ? '#6B2C91' : 'white'};
-                    color: ${level === 'monthly' ? 'white' : '#6B2C91'}; border: 2px solid #6B2C91;
+                    style="padding: 8px 16px; background: ${level === 'monthly' ? '#000000' : 'white'};
+                    color: ${level === 'monthly' ? 'white' : '#000000'}; border: 2px solid #000000;
                     border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
                     Monthly (12)
                 </button>
-                <span style="color: #00A676;">→</span>
+                <span style="color: #4B5563;">→</span>
                 <button onclick="dataCubeState='daily'; renderDataCubeFunnel('daily');"
-                    style="padding: 8px 16px; background: ${level === 'daily' ? '#6B2C91' : 'white'};
-                    color: ${level === 'daily' ? 'white' : '#6B2C91'}; border: 2px solid #6B2C91;
+                    style="padding: 8px 16px; background: ${level === 'daily' ? '#000000' : 'white'};
+                    color: ${level === 'daily' ? 'white' : '#000000'}; border: 2px solid #000000;
                     border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s;">
                     Daily (365)
                 </button>
@@ -158,7 +158,7 @@ function renderDataCubeFunnel(level) {
             monthlyBlocks += `
                 <div style="margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; border: 2px solid #e0e0e0;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <div style="font-weight: bold; color: #6B2C91; font-size: 1.1em;">🚇 ${monthNames[m]} 2024</div>
+                        <div style="font-weight: bold; color: #000000; font-size: 1.1em;">🚇 ${monthNames[m]} 2024</div>
                         <div style="color: #666; font-size: 0.9em;">${daysInMonth[m]} days | Total: ${(monthTotal/1000).toFixed(0)}k riders</div>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(${Math.min(31, daysInMonth[m])}, 1fr); gap: 3px;">
@@ -191,41 +191,41 @@ function renderDataCubeFunnel(level) {
         container.innerHTML += `
             <div style="margin-bottom: 20px;">
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="font-size: 1.3em; color: #6B2C91; font-weight: bold; margin-bottom: 5px;">
+                    <div style="font-size: 1.3em; color: #000000; font-weight: bold; margin-bottom: 5px;">
                         DAILY LEVEL: 365 Individual Records
                     </div>
                     <div style="font-size: 0.95em; color: #666;">
                         Full Year 2024 | ${dailySalesData.length} Daily Data Points
                     </div>
                 </div>
-                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #3498db; border-radius: 8px; max-width: 900px; margin: 0 auto; max-height: 600px; overflow-y: auto;">
+                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #000000; border-radius: 8px; max-width: 900px; margin: 0 auto; max-height: 600px; overflow-y: auto;">
                     ${monthlyBlocks}
                     <div style="margin-top: 15px; padding: 15px; background: #f0e6f6; border-radius: 4px; text-align: center;">
                         <strong>Color Legend:</strong>
-                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(107, 44, 145); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Lower Ridership
+                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(0, 0, 0); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Lower Ridership
                         →
-                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(107, 44, 105); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Higher Ridership
+                        <span style="display: inline-block; width: 20px; height: 20px; background: rgb(31, 41, 55); border-radius: 3px; vertical-align: middle; margin: 0 5px;"></span> Higher Ridership
                         <div style="margin-top: 10px; font-size: 0.9em; color: #666;">
                             Hover over any day to see exact ridership count • 🚇 Namma Metro 2024
                         </div>
                     </div>
                 </div>
                 <div style="margin-top: 20px; text-align: center;">
-                    <div style="font-size: 1.2em; color: #00A676; font-weight: bold;">
+                    <div style="font-size: 1.2em; color: #4B5563; font-weight: bold;">
                         Total Annual Ridership: ${totalSales.toLocaleString()} passengers
                     </div>
                     <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 600px; margin: 15px auto 0;">
-                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #6B2C91;">
+                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #000000;">
                             <div style="font-size: 0.85em; color: #666;">Data Points</div>
-                            <div style="font-size: 1.3em; font-weight: bold; color: #6B2C91;">365</div>
+                            <div style="font-size: 1.3em; font-weight: bold; color: #000000;">365</div>
                         </div>
-                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #6B2C91;">
+                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #000000;">
                             <div style="font-size: 0.85em; color: #666;">Months</div>
-                            <div style="font-size: 1.3em; font-weight: bold; color: #6B2C91;">12</div>
+                            <div style="font-size: 1.3em; font-weight: bold; color: #000000;">12</div>
                         </div>
-                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #6B2C91;">
+                        <div style="padding: 10px; background: white; border-radius: 4px; border: 1px solid #000000;">
                             <div style="font-size: 0.85em; color: #666;">Avg/Day</div>
-                            <div style="font-size: 1.3em; font-weight: bold; color: #6B2C91;">${Math.round(totalSales/365).toLocaleString()}</div>
+                            <div style="font-size: 1.3em; font-weight: bold; color: #000000;">${Math.round(totalSales/365).toLocaleString()}</div>
                         </div>
                     </div>
                 </div>
@@ -246,10 +246,10 @@ function renderDataCubeFunnel(level) {
 
         container.innerHTML += `
             <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 1.2em; color: #6B2C91; font-weight: bold; margin-bottom: 10px;">
+                <div style="font-size: 1.2em; color: #000000; font-weight: bold; margin-bottom: 10px;">
                     MONTHLY LEVEL: 12 Records (${reduction}% Reduction)
                 </div>
-                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #2c3e50; border-radius: 8px; max-width: 900px; margin: 0 auto;">
+                <div style="background: #f8f9fa; padding: 20px; border: 2px solid #000000; border-radius: 8px; max-width: 900px; margin: 0 auto;">
                     <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 250px; gap: 8px;">
                         ${monthlyData.map((d, idx) => {
                             const maxSales = Math.max(...monthlyData.map(m => m.sales));
@@ -258,7 +258,7 @@ function renderDataCubeFunnel(level) {
                                 <div style="flex: 1; text-align: center; animation: scaleIn ${0.5 + idx * 0.05}s both;">
                                     <div style="
                                         height: ${height}%;
-                                        background: linear-gradient(to top, #2c3e50, #34495e);
+                                        background: linear-gradient(to top, #000000, #4B5563);
                                         border-radius: 4px 4px 0 0;
                                         display: flex;
                                         align-items: center;
@@ -279,7 +279,7 @@ function renderDataCubeFunnel(level) {
                         }).join('')}
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #00A676; font-weight: bold;">
+                <div style="margin-top: 20px; font-size: 1.1em; color: #4B5563; font-weight: bold;">
                     Total Ridership Preserved: ${totalSales.toLocaleString()} passengers
                 </div>
                 <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
@@ -304,15 +304,15 @@ function renderDataCubeFunnel(level) {
 
         container.innerHTML += `
             <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 1.2em; color: #6B2C91; font-weight: bold; margin-bottom: 10px;">
+                <div style="font-size: 1.2em; color: #000000; font-weight: bold; margin-bottom: 10px;">
                     QUARTERLY LEVEL: 4 Records (${reduction}% Reduction)
                 </div>
-                <div style="background: #f8f9fa; padding: 30px; border: 2px solid #8e44ad; border-radius: 8px; max-width: 900px; margin: 0 auto;">
+                <div style="background: #f8f9fa; padding: 30px; border: 2px solid #374151; border-radius: 8px; max-width: 900px; margin: 0 auto;">
                     <div style="display: flex; justify-content: center; gap: 20px;">
                         ${quarterlyData.map((d, idx) => `
                             <div style="flex: 1; max-width: 200px; animation: scaleIn ${0.6 + idx * 0.15}s both;">
                                 <div style="
-                                    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+                                    background: linear-gradient(135deg, #374151, #9CA3AF);
                                     padding: 30px 20px;
                                     border-radius: 12px;
                                     color: white;
@@ -328,7 +328,7 @@ function renderDataCubeFunnel(level) {
                         `).join('')}
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #00A676; font-weight: bold;">
+                <div style="margin-top: 20px; font-size: 1.1em; color: #4B5563; font-weight: bold;">
                     Total Ridership Preserved: ${totalSales.toLocaleString()} passengers
                 </div>
                 <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
@@ -341,12 +341,12 @@ function renderDataCubeFunnel(level) {
 
         container.innerHTML += `
             <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 1.2em; color: #6B2C91; font-weight: bold; margin-bottom: 20px;">
+                <div style="font-size: 1.2em; color: #000000; font-weight: bold; margin-bottom: 20px;">
                     YEARLY LEVEL: 1 Record (${reduction}% Reduction)
                 </div>
                 <div style="display: flex; justify-content: center; max-width: 900px; margin: 0 auto;">
                     <div style="
-                        background: linear-gradient(135deg, #27ae60, #229954);
+                        background: linear-gradient(135deg, #000000, #1F2937);
                         padding: 50px 80px;
                         border-radius: 16px;
                         color: white;
@@ -364,7 +364,7 @@ function renderDataCubeFunnel(level) {
                         <div style="font-size: 1.1em; margin-top: 8px; opacity: 0.95;">4 quarters</div>
                     </div>
                 </div>
-                <div style="margin-top: 20px; font-size: 1.1em; color: #00A676; font-weight: bold;">
+                <div style="margin-top: 20px; font-size: 1.1em; color: #4B5563; font-weight: bold;">
                     Total Ridership Preserved: ${totalSales.toLocaleString()} passengers
                 </div>
                 <div style="margin-top: 10px; font-size: 0.95em; color: #666;">
@@ -473,16 +473,16 @@ function renderAttributeCards() {
                         <div style="
                             width: ${corrAbs * 100}%;
                             height: 100%;
-                            background: ${isRelevant ? 'linear-gradient(90deg, #27ae60, #2ecc71)' : 'linear-gradient(90deg, #e74c3c, #c0392b)'};
+                            background: ${isRelevant ? 'linear-gradient(90deg, #000000, #2ecc71)' : 'linear-gradient(90deg, #6B7280, #c0392b)'};
                             border-radius: 10px;
                             transition: all 0.3s;
                         "></div>
                     </div>
-                    <div style="text-align: center; font-weight: bold; margin-top: 5px; color: ${isRelevant ? '#27ae60' : '#e74c3c'};">
+                    <div style="text-align: center; font-weight: bold; margin-top: 5px; color: ${isRelevant ? '#000000' : '#6B7280'};">
                         ${attr.correlation.toFixed(2)}
                     </div>
                 </div>
-                <div style="text-align: center; padding: 8px; border-radius: 4px; background: ${isRelevant ? '#d5f4e6' : '#fadbd8'}; color: ${isRelevant ? '#27ae60' : '#e74c3c'}; font-weight: bold; margin-top: 10px;">
+                <div style="text-align: center; padding: 8px; border-radius: 4px; background: ${isRelevant ? '#d5f4e6' : '#fadbd8'}; color: ${isRelevant ? '#000000' : '#6B7280'}; font-weight: bold; margin-top: 10px;">
                     ${isRelevant ? '✓ KEEP' : '✗ REMOVE'}
                 </div>
             `;
@@ -613,15 +613,15 @@ function showCorrelationMatrix() {
                 <div style="font-weight: bold; margin-bottom: 10px; text-align: center;">Correlation Strength Legend</div>
                 <div style="display: flex; justify-content: center; gap: 15px; align-items: center; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 20px; height: 20px; background: rgb(39, 174, 96); border-radius: 3px;"></span>
+                        <span style="width: 20px; height: 20px; background: rgb(0, 0, 0); border-radius: 3px;"></span>
                         <span>Strong (≥0.70)</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 20px; height: 20px; background: rgb(243, 156, 18); border-radius: 3px;"></span>
+                        <span style="width: 20px; height: 20px; background: rgb(156, 163, 175); border-radius: 3px;"></span>
                         <span>Medium (0.30-0.69)</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 20px; height: 20px; background: rgb(231, 76, 60); border-radius: 3px;"></span>
+                        <span style="width: 20px; height: 20px; background: rgb(107, 114, 128); border-radius: 3px;"></span>
                         <span>Weak (<0.30)</span>
                     </div>
                 </div>
@@ -663,7 +663,7 @@ function renderForwardSelection() {
                 </p>
                 <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 8px; display: inline-block;">
                     <strong>Current Step ${forwardSelectionStep}:</strong>
-                    Selected: <span style="color: #27ae60; font-size: 1.2em; font-weight: bold;">${selectedCount}</span> |
+                    Selected: <span style="color: #000000; font-size: 1.2em; font-weight: bold;">${selectedCount}</span> |
                     Remaining: <span style="color: #666; font-size: 1.2em; font-weight: bold;">${remaining}</span>
                 </div>
             </div>
@@ -683,7 +683,7 @@ function renderForwardSelection() {
                             return `
                                 <div style="
                                     background: ${isNext ? 'linear-gradient(135deg, #fff3cd, #ffeaa7)' : 'white'};
-                                    border: 2px solid ${isNext ? '#f39c12' : '#e0e0e0'};
+                                    border: 2px solid ${isNext ? '#9CA3AF' : '#e0e0e0'};
                                     padding: 12px;
                                     border-radius: 8px;
                                     display: flex;
@@ -697,7 +697,7 @@ function renderForwardSelection() {
                                         <div style="font-size: 0.85em; color: #666;">|r| = ${corrAbs.toFixed(3)}</div>
                                     </div>
                                     <div style="
-                                        background: ${corrAbs >= 0.7 ? '#27ae60' : corrAbs >= 0.3 ? '#f39c12' : '#e74c3c'};
+                                        background: ${corrAbs >= 0.7 ? '#000000' : corrAbs >= 0.3 ? '#9CA3AF' : '#6B7280'};
                                         color: white;
                                         padding: 5px 12px;
                                         border-radius: 20px;
@@ -714,8 +714,8 @@ function renderForwardSelection() {
                 </div>
 
                 <!-- Selected Attributes Set -->
-                <div style="background: #d4edda; border: 3px solid #27ae60; border-radius: 12px; padding: 20px;">
-                    <h4 style="text-align: center; color: #27ae60; margin-bottom: 15px;">
+                <div style="background: #d4edda; border: 3px solid #000000; border-radius: 12px; padding: 20px;">
+                    <h4 style="text-align: center; color: #000000; margin-bottom: 15px;">
                         ✅ Selected Attributes Set
                     </h4>
                     <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px;">
@@ -728,8 +728,8 @@ function renderForwardSelection() {
                             const corrAbs = Math.abs(attr.correlation);
                             return `
                                 <div style="
-                                    background: linear-gradient(135deg, #27ae60, #2ecc71);
-                                    border: 2px solid #229954;
+                                    background: linear-gradient(135deg, #000000, #2ecc71);
+                                    border: 2px solid #1F2937;
                                     padding: 12px;
                                     border-radius: 8px;
                                     color: white;
@@ -769,7 +769,7 @@ function renderForwardSelection() {
                     <li>Add to selected set and remove from available pool</li>
                     <li>Repeat until threshold is met or desired number reached</li>
                 </ol>
-                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #3498db; border-radius: 4px;">
+                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #000000; border-radius: 4px;">
                     <strong>Current Rule:</strong> Select attributes with |correlation| ≥ 0.30
                 </div>
             </div>
@@ -854,15 +854,15 @@ function renderBackwardElimination() {
                 </p>
                 <div style="margin-top: 15px; padding: 15px; background: #ffebee; border-radius: 8px; display: inline-block;">
                     <strong>Current Step ${backwardEliminationStep}:</strong>
-                    Remaining: <span style="color: #27ae60; font-size: 1.2em; font-weight: bold;">${remainingCount}</span> |
-                    Removed: <span style="color: #e74c3c; font-size: 1.2em; font-weight: bold;">${removedCount}</span>
+                    Remaining: <span style="color: #000000; font-size: 1.2em; font-weight: bold;">${remainingCount}</span> |
+                    Removed: <span style="color: #6B7280; font-size: 1.2em; font-weight: bold;">${removedCount}</span>
                 </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                 <!-- Current Feature Set -->
-                <div style="background: #d4edda; border: 3px solid #27ae60; border-radius: 12px; padding: 20px;">
-                    <h4 style="text-align: center; color: #27ae60; margin-bottom: 15px;">
+                <div style="background: #d4edda; border: 3px solid #000000; border-radius: 12px; padding: 20px;">
+                    <h4 style="text-align: center; color: #000000; margin-bottom: 15px;">
                         ✅ Current Feature Set
                     </h4>
                     <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px;">
@@ -874,7 +874,7 @@ function renderBackwardElimination() {
                             return `
                                 <div style="
                                     background: ${isWorst ? 'linear-gradient(135deg, #ffebee, #ffcdd2)' : 'white'};
-                                    border: 2px solid ${isWorst ? '#e74c3c' : '#27ae60'};
+                                    border: 2px solid ${isWorst ? '#6B7280' : '#000000'};
                                     padding: 12px;
                                     border-radius: 8px;
                                     display: flex;
@@ -888,7 +888,7 @@ function renderBackwardElimination() {
                                         <div style="font-size: 0.85em; color: #666;">|r| = ${corrAbs.toFixed(3)}</div>
                                     </div>
                                     <div style="
-                                        background: ${corrAbs >= 0.7 ? '#27ae60' : corrAbs >= 0.3 ? '#f39c12' : '#e74c3c'};
+                                        background: ${corrAbs >= 0.7 ? '#000000' : corrAbs >= 0.3 ? '#9CA3AF' : '#6B7280'};
                                         color: white;
                                         padding: 5px 12px;
                                         border-radius: 20px;
@@ -905,8 +905,8 @@ function renderBackwardElimination() {
                 </div>
 
                 <!-- Removed Attributes -->
-                <div style="background: #fff; border: 3px solid #e74c3c; border-radius: 12px; padding: 20px;">
-                    <h4 style="text-align: center; color: #e74c3c; margin-bottom: 15px;">
+                <div style="background: #fff; border: 3px solid #6B7280; border-radius: 12px; padding: 20px;">
+                    <h4 style="text-align: center; color: #6B7280; margin-bottom: 15px;">
                         🗑️ Removed Attributes
                     </h4>
                     <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px;">
@@ -919,7 +919,7 @@ function renderBackwardElimination() {
                             const corrAbs = Math.abs(attr.correlation);
                             return `
                                 <div style="
-                                    background: linear-gradient(135deg, #e74c3c, #c0392b);
+                                    background: linear-gradient(135deg, #6B7280, #c0392b);
                                     border: 2px solid #a93226;
                                     padding: 12px;
                                     border-radius: 8px;
@@ -961,7 +961,7 @@ function renderBackwardElimination() {
                     <li>Move to removed set and continue</li>
                     <li>Repeat until only strong predictors remain (|correlation| ≥ 0.30)</li>
                 </ol>
-                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #e74c3c; border-radius: 4px;">
+                <div style="margin-top: 15px; padding: 10px; background: white; border-left: 4px solid #6B7280; border-radius: 4px;">
                     <strong>Current Rule:</strong> Remove attributes with |correlation| < 0.30
                 </div>
             </div>
@@ -1051,7 +1051,7 @@ function generatePCAData() {
             bar.style.cssText = `
                 width: 30px;
                 height: ${dim.variance * 1.5}px;
-                background: linear-gradient(to top, #3498db, #2980b9);
+                background: linear-gradient(to top, #000000, #2980b9);
                 border-radius: 4px 4px 0 0;
                 position: relative;
                 animation: growUp 0.5s;
@@ -1077,7 +1077,7 @@ function applyPCA() {
     const top2 = sorted.slice(0, 2);
 
     const container = document.getElementById('pcaReduced');
-    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 15px; color: #27ae60;">2 Principal Components</div>';
+    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 15px; color: #000000;">2 Principal Components</div>';
 
     const barsContainer = document.createElement('div');
     barsContainer.style.cssText = 'display: flex; justify-content: center; align-items: flex-end; height: 200px; gap: 60px; padding: 0 20px;';
@@ -1088,13 +1088,13 @@ function applyPCA() {
             bar.style.cssText = `
                 width: 80px;
                 height: ${dim.variance * 1.5}px;
-                background: linear-gradient(to top, #27ae60, #229954);
+                background: linear-gradient(to top, #000000, #1F2937);
                 border-radius: 4px 4px 0 0;
                 position: relative;
                 animation: scaleIn 0.6s;
             `;
             bar.innerHTML = `
-                <div style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-weight: bold; color: #27ae60;">PC${index + 1}</div>
+                <div style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-weight: bold; color: #000000;">PC${index + 1}</div>
                 <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.9em; color: #666;">${(dim.variance).toFixed(1)}%</div>
             `;
             barsContainer.appendChild(bar);
@@ -1144,7 +1144,7 @@ function renderNumerosityOriginal() {
         dot.style.cssText = `
             width: 4px;
             height: 4px;
-            background: #3498db;
+            background: #000000;
             border-radius: 50%;
             position: absolute;
             left: ${Math.random() * 95}%;
@@ -1158,10 +1158,10 @@ function renderNumerosityOriginal() {
 
 function showSampling() {
     const container = document.getElementById('numerosityReduced');
-    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #27ae60;">Random Sampling: 100 Points (10%)</div>';
+    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #000000;">Random Sampling: 100 Points (10%)</div>';
 
     const canvas = document.createElement('div');
-    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #27ae60; position: relative; border-radius: 4px;';
+    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #000000; position: relative; border-radius: 4px;';
 
     // Sparse sampling
     for (let i = 0; i < 20; i++) {
@@ -1170,7 +1170,7 @@ function showSampling() {
             dot.style.cssText = `
                 width: 8px;
                 height: 8px;
-                background: #27ae60;
+                background: #000000;
                 border-radius: 50%;
                 position: absolute;
                 left: ${Math.random() * 95}%;
@@ -1187,10 +1187,10 @@ function showSampling() {
 
 function showHistogram() {
     const container = document.getElementById('numerosityReduced');
-    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #e67e22;">Histogram: 25 Bins</div>';
+    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #4B5563;">Histogram: 25 Bins</div>';
 
     const canvas = document.createElement('div');
-    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #e67e22; position: relative; border-radius: 4px; display: flex; align-items: flex-end; padding: 10px; gap: 2px;';
+    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #4B5563; position: relative; border-radius: 4px; display: flex; align-items: flex-end; padding: 10px; gap: 2px;';
 
     // Create histogram bars
     for (let i = 0; i < 25; i++) {
@@ -1200,7 +1200,7 @@ function showHistogram() {
             bar.style.cssText = `
                 flex: 1;
                 height: ${height}%;
-                background: linear-gradient(to top, #e67e22, #f39c12);
+                background: linear-gradient(to top, #4B5563, #9CA3AF);
                 border-radius: 2px 2px 0 0;
                 animation: growUp 0.4s;
             `;
@@ -1214,10 +1214,10 @@ function showHistogram() {
 
 function showClustering() {
     const container = document.getElementById('numerosityReduced');
-    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #9b59b6;">Clustering: 50 Centroids</div>';
+    container.innerHTML = '<div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #9CA3AF;">Clustering: 50 Centroids</div>';
 
     const canvas = document.createElement('div');
-    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #9b59b6; position: relative; border-radius: 4px;';
+    canvas.style.cssText = 'width: 100%; height: 250px; background: #f8f9fa; border: 2px solid #9CA3AF; position: relative; border-radius: 4px;';
 
     // Create clusters
     for (let i = 0; i < 12; i++) {
@@ -1230,7 +1230,7 @@ function showClustering() {
             centroid.style.cssText = `
                 width: 12px;
                 height: 12px;
-                background: #9b59b6;
+                background: #9CA3AF;
                 border: 2px solid #fff;
                 border-radius: 50%;
                 position: absolute;
@@ -1272,11 +1272,11 @@ function updateNumerosityStats(method, original, reduced, percentage) {
             </div>
             <div style="text-align: center;">
                 <div style="font-size: 0.9em; color: #666;">Data Points</div>
-                <div style="font-size: 1.2em; font-weight: bold; color: #3498db;">${original} → ${reduced}</div>
+                <div style="font-size: 1.2em; font-weight: bold; color: #000000;">${original} → ${reduced}</div>
             </div>
             <div style="text-align: center;">
                 <div style="font-size: 0.9em; color: #666;">Reduction</div>
-                <div style="font-size: 1.2em; font-weight: bold; color: #27ae60;">${percentage}%</div>
+                <div style="font-size: 1.2em; font-weight: bold; color: #000000;">${percentage}%</div>
             </div>
         </div>
     `;
@@ -1309,7 +1309,7 @@ function renderContinuousData() {
                     <div style="
                         width: 15px;
                         height: ${(age / 75) * 100}%;
-                        background: #6B2C91;
+                        background: #000000;
                         border: 2px solid #000;
                         position: relative;
                         animation: growUp 0.5s;
@@ -1328,9 +1328,9 @@ function discretizeEqualWidth() {
     const binWidth = (max - min) / 3;
 
     const bins = [
-        { label: 'Youth (18-41)', min: min, max: min + binWidth, color: '#3498db', count: 0 },
-        { label: 'Adult (42-59)', min: min + binWidth, max: min + 2 * binWidth, color: '#e67e22', count: 0 },
-        { label: 'Senior (60+)', min: min + 2 * binWidth, max: max, color: '#9b59b6', count: 0 }
+        { label: 'Youth (18-41)', min: min, max: min + binWidth, color: '#000000', count: 0 },
+        { label: 'Adult (42-59)', min: min + binWidth, max: min + 2 * binWidth, color: '#4B5563', count: 0 },
+        { label: 'Senior (60+)', min: min + 2 * binWidth, max: max, color: '#9CA3AF', count: 0 }
     ];
 
     ageData.forEach(age => {
@@ -1347,9 +1347,9 @@ function discretizeEqualFreq() {
     const binSize = Math.floor(sorted.length / 3);
 
     const bins = [
-        { label: 'Group 1', color: '#3498db', count: binSize, range: `${sorted[0]}-${sorted[binSize - 1]}` },
-        { label: 'Group 2', color: '#e67e22', count: binSize, range: `${sorted[binSize]}-${sorted[2 * binSize - 1]}` },
-        { label: 'Group 3', color: '#9b59b6', count: sorted.length - 2 * binSize, range: `${sorted[2 * binSize]}-${sorted[sorted.length - 1]}` }
+        { label: 'Group 1', color: '#000000', count: binSize, range: `${sorted[0]}-${sorted[binSize - 1]}` },
+        { label: 'Group 2', color: '#4B5563', count: binSize, range: `${sorted[binSize]}-${sorted[2 * binSize - 1]}` },
+        { label: 'Group 3', color: '#9CA3AF', count: sorted.length - 2 * binSize, range: `${sorted[2 * binSize]}-${sorted[sorted.length - 1]}` }
     ];
 
     renderDiscretizedBinsFreq(bins, 'Equal-Frequency Binning');
@@ -1357,9 +1357,9 @@ function discretizeEqualFreq() {
 
 function discretizeEntropy() {
     const bins = [
-        { label: 'Youth (≤25)', color: '#3498db', count: ageData.filter(a => a <= 25).length },
-        { label: 'Adult (26-60)', color: '#e67e22', count: ageData.filter(a => a > 25 && a <= 60).length },
-        { label: 'Senior (>60)', color: '#9b59b6', count: ageData.filter(a => a > 60).length }
+        { label: 'Youth (≤25)', color: '#000000', count: ageData.filter(a => a <= 25).length },
+        { label: 'Adult (26-60)', color: '#4B5563', count: ageData.filter(a => a > 25 && a <= 60).length },
+        { label: 'Senior (>60)', color: '#9CA3AF', count: ageData.filter(a => a > 60).length }
     ];
 
     renderDiscretizedBinsSimple(bins, 'Entropy-Based Discretization');
@@ -1547,7 +1547,7 @@ function renderContinuousDataForMethod(container, methodName) {
                         <div style="
                             width: 15px;
                             height: ${(age / 75) * 100}%;
-                            background: linear-gradient(to top, #3498db, #5dade2);
+                            background: linear-gradient(to top, #000000, #5dade2);
                             border-radius: 2px 2px 0 0;
                             position: relative;
                             animation: growUp 0.5s ${idx * 0.02}s both;
@@ -1576,9 +1576,9 @@ function stepEqualWidth() {
     const binWidth = (max - min) / 3;
 
     const bins = [
-        { label: 'Bin 1: Youth', min: min, max: min + binWidth, color: '#3498db', count: 0, range: `${min.toFixed(0)}-${(min + binWidth).toFixed(0)}` },
-        { label: 'Bin 2: Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#e67e22', count: 0, range: `${(min + binWidth).toFixed(0)}-${(min + 2 * binWidth).toFixed(0)}` },
-        { label: 'Bin 3: Senior', min: min + 2 * binWidth, max: max, color: '#9b59b6', count: 0, range: `${(min + 2 * binWidth).toFixed(0)}-${max.toFixed(0)}` }
+        { label: 'Bin 1: Youth', min: min, max: min + binWidth, color: '#000000', count: 0, range: `${min.toFixed(0)}-${(min + binWidth).toFixed(0)}` },
+        { label: 'Bin 2: Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#4B5563', count: 0, range: `${(min + binWidth).toFixed(0)}-${(min + 2 * binWidth).toFixed(0)}` },
+        { label: 'Bin 3: Senior', min: min + 2 * binWidth, max: max, color: '#9CA3AF', count: 0, range: `${(min + 2 * binWidth).toFixed(0)}-${max.toFixed(0)}` }
     ];
 
     ageData.forEach(age => {
@@ -1596,9 +1596,9 @@ function stepEqualFreq() {
     const binSize = Math.floor(sorted.length / 3);
 
     const bins = [
-        { label: 'Bin 1: Low Range', color: '#3498db', count: binSize, range: `${sorted[0]}-${sorted[binSize - 1]}` },
-        { label: 'Bin 2: Mid Range', color: '#e67e22', count: binSize, range: `${sorted[binSize]}-${sorted[2 * binSize - 1]}` },
-        { label: 'Bin 3: High Range', color: '#9b59b6', count: sorted.length - 2 * binSize, range: `${sorted[2 * binSize]}-${sorted[sorted.length - 1]}` }
+        { label: 'Bin 1: Low Range', color: '#000000', count: binSize, range: `${sorted[0]}-${sorted[binSize - 1]}` },
+        { label: 'Bin 2: Mid Range', color: '#4B5563', count: binSize, range: `${sorted[binSize]}-${sorted[2 * binSize - 1]}` },
+        { label: 'Bin 3: High Range', color: '#9CA3AF', count: sorted.length - 2 * binSize, range: `${sorted[2 * binSize]}-${sorted[sorted.length - 1]}` }
     ];
 
     const container = document.getElementById('equalFreqViz');
@@ -1608,9 +1608,9 @@ function stepEqualFreq() {
 function stepEntropy() {
     discretizeEntropy();
     const bins = [
-        { label: 'Bin 1: Youth (≤25)', color: '#3498db', count: ageData.filter(a => a <= 25).length, range: '≤25' },
-        { label: 'Bin 2: Adult (26-60)', color: '#e67e22', count: ageData.filter(a => a > 25 && a <= 60).length, range: '26-60' },
-        { label: 'Bin 3: Senior (>60)', color: '#9b59b6', count: ageData.filter(a => a > 60).length, range: '>60' }
+        { label: 'Bin 1: Youth (≤25)', color: '#000000', count: ageData.filter(a => a <= 25).length, range: '≤25' },
+        { label: 'Bin 2: Adult (26-60)', color: '#4B5563', count: ageData.filter(a => a > 25 && a <= 60).length, range: '26-60' },
+        { label: 'Bin 3: Senior (>60)', color: '#9CA3AF', count: ageData.filter(a => a > 60).length, range: '>60' }
     ];
 
     const container = document.getElementById('entropyViz');
@@ -1622,8 +1622,8 @@ function renderEnhancedDiscretization(container, bins, methodName, param) {
 
     container.innerHTML = `
         <div style="margin-bottom: 20px;">
-            <h4 style="text-align: center; color: #27ae60; margin-bottom: 15px;">✓ Step 2: Discretized Data (3 bins)</h4>
-            <div style="background: #f8f9fa; padding: 30px; border: 2px solid #27ae60; border-radius: 8px;">
+            <h4 style="text-align: center; color: #000000; margin-bottom: 15px;">✓ Step 2: Discretized Data (3 bins)</h4>
+            <div style="background: #f8f9fa; padding: 30px; border: 2px solid #000000; border-radius: 8px;">
                 <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 250px; gap: 20px; margin-bottom: 20px;">
                     ${bins.map((bin, index) => `
                         <div style="flex: 1; text-align: center; animation: scaleIn ${0.5 + index * 0.2}s both;">
@@ -1653,15 +1653,15 @@ function renderEnhancedDiscretization(container, bins, methodName, param) {
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
                     <div style="text-align: center; padding: 15px; background: white; border-radius: 4px;">
                         <div style="font-size: 0.85em; color: #666;">Original Values</div>
-                        <div style="font-size: 1.3em; font-weight: bold; color: #3498db;">${ageData.length}</div>
+                        <div style="font-size: 1.3em; font-weight: bold; color: #000000;">${ageData.length}</div>
                     </div>
                     <div style="text-align: center; padding: 15px; background: white; border-radius: 4px;">
                         <div style="font-size: 0.85em; color: #666;">Bins Created</div>
-                        <div style="font-size: 1.3em; font-weight: bold; color: #27ae60;">${bins.length}</div>
+                        <div style="font-size: 1.3em; font-weight: bold; color: #000000;">${bins.length}</div>
                     </div>
                     <div style="text-align: center; padding: 15px; background: white; border-radius: 4px;">
                         <div style="font-size: 0.85em; color: #666;">Parameter</div>
-                        <div style="font-size: 1.3em; font-weight: bold; color: #9b59b6;">${param}</div>
+                        <div style="font-size: 1.3em; font-weight: bold; color: #9CA3AF;">${param}</div>
                     </div>
                 </div>
             </div>
@@ -1679,9 +1679,9 @@ function compareAllMethods() {
 
     // Equal-Width
     const equalWidthBins = [
-        { label: 'Youth', min: min, max: min + binWidth, color: '#3498db', count: 0 },
-        { label: 'Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#e67e22', count: 0 },
-        { label: 'Senior', min: min + 2 * binWidth, max: max, color: '#9b59b6', count: 0 }
+        { label: 'Youth', min: min, max: min + binWidth, color: '#000000', count: 0 },
+        { label: 'Adult', min: min + binWidth, max: min + 2 * binWidth, color: '#4B5563', count: 0 },
+        { label: 'Senior', min: min + 2 * binWidth, max: max, color: '#9CA3AF', count: 0 }
     ];
     ageData.forEach(age => {
         equalWidthBins.forEach(bin => {
@@ -1693,16 +1693,16 @@ function compareAllMethods() {
     const sorted = [...ageData].sort((a, b) => a - b);
     const binSize = Math.floor(sorted.length / 3);
     const equalFreqBins = [
-        { label: 'Group 1', color: '#3498db', count: binSize },
-        { label: 'Group 2', color: '#e67e22', count: binSize },
-        { label: 'Group 3', color: '#9b59b6', count: sorted.length - 2 * binSize }
+        { label: 'Group 1', color: '#000000', count: binSize },
+        { label: 'Group 2', color: '#4B5563', count: binSize },
+        { label: 'Group 3', color: '#9CA3AF', count: sorted.length - 2 * binSize }
     ];
 
     // Entropy-Based
     const entropyBins = [
-        { label: 'Youth', color: '#3498db', count: ageData.filter(a => a <= 25).length },
-        { label: 'Adult', color: '#e67e22', count: ageData.filter(a => a > 25 && a <= 60).length },
-        { label: 'Senior', color: '#9b59b6', count: ageData.filter(a => a > 60).length }
+        { label: 'Youth', color: '#000000', count: ageData.filter(a => a <= 25).length },
+        { label: 'Adult', color: '#4B5563', count: ageData.filter(a => a > 25 && a <= 60).length },
+        { label: 'Senior', color: '#9CA3AF', count: ageData.filter(a => a > 60).length }
     ];
 
     container.innerHTML = `
@@ -1793,12 +1793,12 @@ function renderWaveletViz() {
                         const x = 50 + (i / (waveletData.length - 1)) * 600;
                         const y = 180 - ((val - min) / range) * 150;
                         return `
-                            <circle cx="${x}" cy="${y}" r="4" fill="#3498db" opacity="0.8"/>
+                            <circle cx="${x}" cy="${y}" r="4" fill="#000000" opacity="0.8"/>
                             ${i < waveletData.length - 1 ? `
                                 <line x1="${x}" y1="${y}"
                                       x2="${50 + ((i + 1) / (waveletData.length - 1)) * 600}"
                                       y2="${180 - ((waveletData[i + 1] - min) / range) * 150}"
-                                      stroke="#3498db" stroke-width="2"/>
+                                      stroke="#000000" stroke-width="2"/>
                             ` : ''}
                         `;
                     }).join('')}
@@ -1859,7 +1859,7 @@ function renderPopulation() {
         <div style="background: #f8f9fa; border: 2px solid #ddd; padding: 20px; border-radius: 4px; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
             ${population.map(p => `
                 <div class="pop-point" data-id="${p.id}" style="
-                    width: 8px; height: 8px; background: #3498db; border-radius: 50%;
+                    width: 8px; height: 8px; background: #000000; border-radius: 50%;
                     animation: popIn 0.2s ${p.id * 0.005}s both;
                 "></div>
             `).join('')}
@@ -1911,15 +1911,15 @@ function renderSampleResult(method, sample, description) {
     const sampleIds = new Set(sample.map(s => s.id));
 
     container.innerHTML = `
-        <div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #27ae60;">
+        <div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #000000;">
             ${method}: ${sample.length} Points Selected
         </div>
-        <div style="background: #f8f9fa; border: 2px solid #27ae60; padding: 20px; border-radius: 4px;">
+        <div style="background: #f8f9fa; border: 2px solid #000000; padding: 20px; border-radius: 4px;">
             <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-bottom: 15px;">
                 ${population.map(p => `
                     <div style="
                         width: 8px; height: 8px; border-radius: 50%;
-                        background: ${sampleIds.has(p.id) ? '#27ae60' : 'rgba(52, 152, 219, 0.2)'};
+                        background: ${sampleIds.has(p.id) ? '#000000' : 'rgba(52, 152, 219, 0.2)'};
                         transform: ${sampleIds.has(p.id) ? 'scale(1.4)' : 'scale(1)'};
                         transition: all 0.3s;
                     "></div>
@@ -1972,8 +1972,8 @@ function renderHistogramComparison() {
 
     container.innerHTML = `
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            ${renderHistogramType('Equal-Width Histogram', equalWidth, 'Uniform bin width = ' + binWidth.toFixed(1), '#3498db')}
-            ${renderHistogramType('Equal-Frequency Histogram', equalFreq, 'Uniform frequency ≈ ' + perBin + ' items/bin', '#e67e22')}
+            ${renderHistogramType('Equal-Width Histogram', equalWidth, 'Uniform bin width = ' + binWidth.toFixed(1), '#000000')}
+            ${renderHistogramType('Equal-Frequency Histogram', equalFreq, 'Uniform frequency ≈ ' + perBin + ' items/bin', '#4B5563')}
         </div>
         <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 4px;">
             <strong>Original Data:</strong> ${histogramData.length} values → <strong>Reduced:</strong> 3 bins<br>
@@ -2067,13 +2067,13 @@ function renderRegressionViz() {
                       y1="${250 - (y1-minY)/(maxY-minY)*190}"
                       x2="${80 + (x2-minX)/(maxX-minX)*560}"
                       y2="${250 - (y2-minY)/(maxY-minY)*190}"
-                      stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"/>
+                      stroke="#6B7280" stroke-width="3" stroke-dasharray="5,5"/>
 
                 <!-- Data Points -->
                 ${regressionData.map(p => {
                     const px = 80 + (p.x-minX)/(maxX-minX)*560;
                     const py = 250 - (p.y-minY)/(maxY-minY)*190;
-                    return `<circle cx="${px}" cy="${py}" r="6" fill="#3498db" stroke="white" stroke-width="2"/>`;
+                    return `<circle cx="${px}" cy="${py}" r="6" fill="#000000" stroke="white" stroke-width="2"/>`;
                 }).join('')}
 
                 <text x="350" y="290" text-anchor="middle" font-size="14" fill="#666">X values</text>

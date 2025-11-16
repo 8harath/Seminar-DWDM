@@ -14,41 +14,54 @@
         :root {
             --primary-blue: #6B2C91;
             --secondary-blue: #00A676;
-            --light-blue: #f0e6f6;
-            --text-dark: #1a1a1a;
-            --text-gray: #4a4a4a;
-            --border-gray: #d0d0d0;
-            --bg-light: #f8f9fa;
-            --highlight-yellow: #fffacd;
+            --light-blue: #E8D5F2;
+            --text-dark: #000000;
+            --text-gray: #2a2a2a;
+            --border-black: #000000;
+            --bg-light: #FFFFFF;
+            --highlight-yellow: #FFD700;
             --accent-orange: #FF6B35;
             --metro-purple: #6B2C91;
             --tech-green: #00A676;
             --traffic-orange: #FF6B35;
-            --keep-green: #27ae60;
-            --remove-red: #e74c3c;
-            --warning-yellow: #f39c12;
+            --keep-green: #2D7A4F;
+            --remove-red: #C41E3A;
+            --warning-yellow: #FFA500;
         }
 
         body {
-            font-family: Georgia, 'Times New Roman', Times, serif;
-            background: #ffffff;
+            font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif;
+            background: #F5F5F5;
             color: var(--text-dark);
-            line-height: 1.8;
+            line-height: 1.6;
+            font-weight: 700;
         }
 
         .main-container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 20px auto;
             background: white;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border: 5px solid var(--border-black);
+            box-shadow: 12px 12px 0 var(--border-black);
         }
 
-        /* Header - Academic Style */
+        /* Header - Neo Brutalism Style */
         header {
-            background: var(--primary-blue);
+            background: var(--metro-purple);
             color: white;
             padding: 40px 60px;
-            border-bottom: 4px solid var(--secondary-blue);
+            border-bottom: 5px solid var(--border-black);
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: var(--tech-green);
         }
 
         .university-info {
@@ -60,9 +73,10 @@
 
         h1 {
             font-size: 2.5em;
-            font-weight: normal;
+            font-weight: 900;
             margin: 15px 0;
-            letter-spacing: 1px;
+            letter-spacing: -1px;
+            text-transform: uppercase;
         }
 
         .course-info {
@@ -77,28 +91,36 @@
             padding: 60px;
         }
 
-        /* Chapter/Section Headers */
+        /* Chapter/Section Headers - Neo Brutalism */
         h2 {
             font-size: 1.8em;
-            color: var(--primary-blue);
+            color: var(--text-dark);
             margin: 40px 0 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-blue);
-            font-weight: normal;
+            padding: 15px 20px;
+            background: var(--metro-purple);
+            color: white;
+            border: 4px solid var(--border-black);
+            box-shadow: 6px 6px 0 var(--border-black);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
         }
 
         h3 {
             font-size: 1.4em;
-            color: var(--secondary-blue);
+            color: var(--text-dark);
             margin: 30px 0 15px 0;
-            font-weight: normal;
+            font-weight: 900;
+            border-left: 6px solid var(--tech-green);
+            padding-left: 15px;
         }
 
         h4 {
             font-size: 1.1em;
             color: var(--text-dark);
             margin: 20px 0 10px 0;
-            font-weight: 600;
+            font-weight: 900;
+            text-transform: uppercase;
         }
 
         /* Paragraph styling */
@@ -108,18 +130,22 @@
             color: var(--text-gray);
         }
 
-        /* Definition Box - Textbook Style */
+        /* Definition Box - Neo Brutalism */
         .definition-box {
             background: var(--light-blue);
-            border-left: 5px solid var(--secondary-blue);
+            border: 5px solid var(--border-black);
             padding: 25px 30px;
             margin: 25px 0;
-            font-size: 1.05em;
+            font-size: 1em;
+            box-shadow: 8px 8px 0 var(--border-black);
+            font-weight: 700;
         }
 
         .definition-box strong {
-            color: var(--primary-blue);
-            font-size: 1.1em;
+            color: var(--metro-purple);
+            font-size: 1.2em;
+            font-weight: 900;
+            text-transform: uppercase;
         }
 
         /* Objective Box */
@@ -145,57 +171,78 @@
             color: var(--text-gray);
         }
 
-        /* Technique Sections */
+        /* Technique Sections - Neo Brutalism */
         .technique-section {
             margin: 50px 0;
-            padding: 30px;
-            background: var(--bg-light);
-            border: 1px solid var(--border-gray);
+            padding: 0;
+            background: white;
+            border: 5px solid var(--border-black);
+            box-shadow: 10px 10px 0 var(--border-black);
         }
 
         .technique-header {
-            background: var(--primary-blue);
+            background: var(--metro-purple);
             color: white;
-            padding: 20px 30px;
-            margin: -30px -30px 25px -30px;
+            padding: 25px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 5px solid var(--border-black);
         }
 
         .technique-number {
-            background: white;
-            color: var(--primary-blue);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            background: var(--tech-green);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border-black);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
-            font-weight: bold;
+            font-size: 1.8em;
+            font-weight: 900;
         }
 
         .technique-title {
             font-size: 1.6em;
-            font-weight: normal;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
         }
 
-        /* Interactive Demo Button - Academic Style */
+        .technique-section > :not(.technique-header) {
+            padding: 0 30px 30px 30px;
+        }
+
+        .technique-section h4:first-of-type {
+            margin-top: 30px;
+        }
+
+        /* Interactive Demo Button - Neo Brutalism */
         .demo-button {
-            background: var(--secondary-blue);
+            background: var(--tech-green);
             color: white;
-            border: none;
-            padding: 12px 30px;
+            border: 4px solid var(--border-black);
+            padding: 15px 35px;
             font-size: 1em;
-            font-family: Georgia, serif;
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-weight: 900;
             cursor: pointer;
             margin: 20px 0;
-            transition: background 0.3s;
+            transition: all 0.15s;
+            box-shadow: 5px 5px 0 var(--border-black);
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
         }
 
         .demo-button:hover {
-            background: var(--primary-blue);
+            transform: translate(2px, 2px);
+            box-shadow: 3px 3px 0 var(--border-black);
+        }
+
+        .demo-button:active {
+            transform: translate(5px, 5px);
+            box-shadow: 0 0 0 var(--border-black);
         }
 
         /* Lists */
@@ -247,7 +294,7 @@
             text-decoration: underline;
         }
 
-        /* Modal - Academic Paper Style */
+        /* Modal - Neo Brutalism */
         .modal {
             display: none;
             position: fixed;
@@ -256,7 +303,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.85);
             overflow-y: auto;
         }
 
@@ -264,25 +311,30 @@
             background: white;
             margin: 30px auto;
             max-width: 1100px;
-            border: 2px solid var(--primary-blue);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border: 6px solid var(--border-black);
+            box-shadow: 15px 15px 0 rgba(0,0,0,0.5);
         }
 
         .modal-header {
-            background: var(--primary-blue);
+            background: var(--metro-purple);
             color: white;
             padding: 25px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 3px solid var(--secondary-blue);
+            border-bottom: 5px solid var(--border-black);
         }
 
         .modal-header h2 {
             color: white;
             border: none;
             margin: 0;
+            padding: 0;
             font-size: 1.8em;
+            font-weight: 900;
+            text-transform: uppercase;
+            box-shadow: none;
+            background: transparent;
         }
 
         .close {
@@ -333,59 +385,80 @@
 
         .control-btn {
             background: white;
-            color: var(--primary-blue);
-            border: 2px solid var(--primary-blue);
-            padding: 10px 25px;
-            font-size: 1em;
-            font-family: Georgia, serif;
+            color: var(--border-black);
+            border: 3px solid var(--border-black);
+            padding: 12px 25px;
+            font-size: 0.95em;
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-weight: 900;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.15s;
+            box-shadow: 4px 4px 0 var(--border-black);
+            text-transform: uppercase;
         }
 
         .control-btn:hover {
-            background: var(--primary-blue);
-            color: white;
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--border-black);
         }
 
         .control-btn.primary {
-            background: var(--secondary-blue);
+            background: var(--metro-purple);
             color: white;
-            border-color: var(--secondary-blue);
+            border-color: var(--border-black);
         }
 
         .control-btn.primary:hover {
-            background: var(--primary-blue);
-            border-color: var(--primary-blue);
+            background: var(--tech-green);
         }
 
-        /* Data Table - Academic */
+        /* Data Table - Neo Brutalism */
         .data-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin: 20px 0;
             font-size: 0.95em;
+            border: 4px solid var(--border-black);
+            font-weight: 700;
         }
 
         .data-table th {
-            background: var(--primary-blue);
+            background: var(--metro-purple);
             color: white;
-            padding: 12px;
+            padding: 15px;
             text-align: left;
-            font-weight: normal;
-            border: 1px solid var(--primary-blue);
+            font-weight: 900;
+            border-right: 3px solid var(--border-black);
+            border-bottom: 3px solid var(--border-black);
+            text-transform: uppercase;
+        }
+
+        .data-table th:last-child {
+            border-right: none;
         }
 
         .data-table td {
-            padding: 10px 12px;
-            border: 1px solid var(--border-gray);
-            color: var(--text-gray);
+            padding: 12px 15px;
+            border-right: 3px solid var(--border-black);
+            border-bottom: 3px solid var(--border-black);
+            background: white;
+            color: var(--text-dark);
         }
 
-        .data-table tr:nth-child(even) {
-            background: var(--bg-light);
+        .data-table td:last-child {
+            border-right: none;
         }
 
-        .data-table tr:hover {
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:nth-child(even) td {
+            background: #F5F5F5;
+        }
+
+        .data-table tr:hover td {
             background: var(--light-blue);
         }
 
@@ -449,21 +522,28 @@
             font-weight: normal;
         }
 
-        /* Key Points Box */
+        /* Key Points Box - Neo Brutalism */
         .key-points-box {
-            background: white;
-            border: 2px solid var(--secondary-blue);
+            background: var(--light-blue);
+            border: 4px solid var(--border-black);
             padding: 25px;
             margin: 25px 0;
+            box-shadow: 6px 6px 0 var(--border-black);
         }
 
         .key-points-box h4 {
-            color: var(--primary-blue);
+            color: var(--metro-purple);
             margin-bottom: 15px;
+            margin-top: 0;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-left: 6px solid var(--tech-green);
+            padding-left: 15px;
         }
 
         .key-points-box ul {
             margin-left: 25px;
+            font-weight: 700;
         }
 
         /* Comparison Layout */
@@ -714,12 +794,13 @@
                 </ul>
             </div>
 
-            <!-- Unified Metrics Dashboard -->
-            <div style="background: linear-gradient(135deg, var(--metro-purple), var(--tech-green)); padding: 30px; border-radius: 12px; margin: 30px 0; box-shadow: 0 8px 20px rgba(107, 44, 145, 0.2);">
-                <h3 style="color: white; text-align: center; margin: 0 0 25px 0; font-size: 1.6em; border: none;">
+            <!-- Unified Metrics Dashboard - Neo Brutalism -->
+            <div style="background: var(--metro-purple); padding: 30px; border: 5px solid var(--border-black); margin: 30px 0; box-shadow: 10px 10px 0 var(--border-black); position: relative;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 8px; background: var(--tech-green);"></div>
+                <h3 style="color: white; text-align: center; margin: 0 0 25px 0; font-size: 1.6em; border: none; font-weight: 900; text-transform: uppercase;">
                     📊 Reduction Metrics Comparison Dashboard
                 </h3>
-                <div style="background: white; border-radius: 8px; overflow: hidden;">
+                <div style="background: white; border: 4px solid var(--border-black); overflow: hidden;">
                     <table class="data-table" id="metricsTable" style="margin: 0;">
                         <thead>
                             <tr>

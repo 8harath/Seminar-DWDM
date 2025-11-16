@@ -1300,21 +1300,21 @@ function initDiscretization() {
 function renderContinuousData() {
     const container = document.getElementById('discretizationViz');
     container.innerHTML = `
-        <div style="text-align: center; font-weight: bold; margin-bottom: 15px; color: #003366;">
+        <div style="text-align: center; font-weight: 900; margin-bottom: 15px; color: #000; text-transform: uppercase;">
             Continuous Age Values (30 data points)
         </div>
-        <div style="background: #f8f9fa; padding: 20px; border: 2px solid #ddd; border-radius: 4px; min-height: 200px; position: relative;">
+        <div style="background: white; padding: 20px; border: 4px solid #000; box-shadow: 6px 6px 0 #000; min-height: 200px; position: relative;">
             <div style="display: flex; align-items: flex-end; justify-content: center; height: 180px; gap: 3px;">
                 ${ageData.map(age => `
                     <div style="
                         width: 15px;
                         height: ${(age / 75) * 100}%;
-                        background: linear-gradient(to top, #3498db, #5dade2);
-                        border-radius: 2px 2px 0 0;
+                        background: #6B2C91;
+                        border: 2px solid #000;
                         position: relative;
                         animation: growUp 0.5s;
                     " title="${age} years">
-                        <div style="position: absolute; bottom: -18px; font-size: 0.7em; color: #666; left: 50%; transform: translateX(-50%) rotate(-45deg); width: 30px;">${age}</div>
+                        <div style="position: absolute; bottom: -18px; font-size: 0.7em; color: #000; font-weight: 700; left: 50%; transform: translateX(-50%) rotate(-45deg); width: 30px;">${age}</div>
                     </div>
                 `).join('')}
             </div>
@@ -1370,31 +1370,31 @@ function renderDiscretizedBins(bins, methodName) {
     const maxCount = Math.max(...bins.map(b => b.count));
 
     container.innerHTML = `
-        <div style="text-align: center; font-weight: bold; margin-bottom: 15px; color: #27ae60;">
+        <div style="text-align: center; font-weight: 900; margin-bottom: 15px; color: #000; text-transform: uppercase;">
             ${methodName} - 3 Discrete Bins
         </div>
-        <div style="background: #f8f9fa; padding: 30px; border: 2px solid #27ae60; border-radius: 4px;">
+        <div style="background: white; padding: 30px; border: 4px solid #000; box-shadow: 6px 6px 0 #000;">
             <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 200px; gap: 20px;">
                 ${bins.map((bin, index) => `
                     <div style="flex: 1; text-align: center; animation: scaleIn ${0.5 + index * 0.2}s;">
                         <div style="
                             height: ${(bin.count / maxCount) * 180}px;
-                            background: linear-gradient(to top, ${bin.color}, ${bin.color}dd);
-                            border-radius: 8px;
+                            background: ${bin.color};
+                            border: 3px solid #000;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             color: white;
                             font-size: 1.5em;
-                            font-weight: bold;
+                            font-weight: 900;
                             margin-bottom: 10px;
                             position: relative;
                             animation: growUp 0.6s;
                         ">
                             ${bin.count}
                         </div>
-                        <div style="font-weight: bold; color: #003366; margin-bottom: 5px;">${bin.label}</div>
-                        <div style="font-size: 0.9em; color: #666;">${bin.min.toFixed(0)} - ${bin.max.toFixed(0)} years</div>
+                        <div style="font-weight: 900; color: #000; margin-bottom: 5px;">${bin.label}</div>
+                        <div style="font-size: 0.9em; color: #2a2a2a; font-weight: 700;">${bin.min.toFixed(0)} - ${bin.max.toFixed(0)} years</div>
                     </div>
                 `).join('')}
             </div>
@@ -1407,30 +1407,30 @@ function renderDiscretizedBinsFreq(bins, methodName) {
     const container = document.getElementById('discretizationViz');
 
     container.innerHTML = `
-        <div style="text-align: center; font-weight: bold; margin-bottom: 15px; color: #27ae60;">
+        <div style="text-align: center; font-weight: 900; margin-bottom: 15px; color: #000; text-transform: uppercase;">
             ${methodName} - 3 Bins with Equal Frequencies
         </div>
-        <div style="background: #f8f9fa; padding: 30px; border: 2px solid #27ae60; border-radius: 4px;">
+        <div style="background: white; padding: 30px; border: 4px solid #000; box-shadow: 6px 6px 0 #000;">
             <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 200px; gap: 20px;">
                 ${bins.map((bin, index) => `
                     <div style="flex: 1; text-align: center; animation: scaleIn ${0.5 + index * 0.2}s;">
                         <div style="
                             height: ${(bin.count / maxCount) * 180}px;
-                            background: linear-gradient(to top, ${bin.color}, ${bin.color}dd);
-                            border-radius: 8px;
+                            background: ${bin.color};
+                            border: 3px solid #000;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             color: white;
                             font-size: 1.5em;
-                            font-weight: bold;
+                            font-weight: 900;
                             margin-bottom: 10px;
                             animation: growUp 0.6s;
                         ">
                             ${bin.count}
                         </div>
-                        <div style="font-weight: bold; color: #003366; margin-bottom: 5px;">${bin.label}</div>
-                        <div style="font-size: 0.9em; color: #666;">Ages: ${bin.range}</div>
+                        <div style="font-weight: 900; color: #000; margin-bottom: 5px;">${bin.label}</div>
+                        <div style="font-size: 0.9em; color: #2a2a2a; font-weight: 700;">Ages: ${bin.range}</div>
                     </div>
                 `).join('')}
             </div>
@@ -1443,30 +1443,30 @@ function renderDiscretizedBinsSimple(bins, methodName) {
     const container = document.getElementById('discretizationViz');
 
     container.innerHTML = `
-        <div style="text-align: center; font-weight: bold; margin-bottom: 15px; color: #27ae60;">
+        <div style="text-align: center; font-weight: 900; margin-bottom: 15px; color: #000; text-transform: uppercase;">
             ${methodName} - 3 Optimized Bins
         </div>
-        <div style="background: #f8f9fa; padding: 30px; border: 2px solid #27ae60; border-radius: 4px;">
+        <div style="background: white; padding: 30px; border: 4px solid #000; box-shadow: 6px 6px 0 #000;">
             <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 200px; gap: 20px;">
                 ${bins.map((bin, index) => `
                     <div style="flex: 1; text-align: center; animation: scaleIn ${0.5 + index * 0.2}s;">
                         <div style="
                             height: ${(bin.count / maxCount) * 180}px;
-                            background: linear-gradient(to top, ${bin.color}, ${bin.color}dd);
-                            border-radius: 8px;
+                            background: ${bin.color};
+                            border: 3px solid #000;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             color: white;
                             font-size: 1.5em;
-                            font-weight: bold;
+                            font-weight: 900;
                             margin-bottom: 10px;
                             animation: growUp 0.6s;
                         ">
                             ${bin.count}
                         </div>
-                        <div style="font-weight: bold; color: #003366; margin-bottom: 5px;">${bin.label}</div>
-                        <div style="font-size: 0.9em; color: #666;">${bin.count} people</div>
+                        <div style="font-weight: 900; color: #000; margin-bottom: 5px;">${bin.label}</div>
+                        <div style="font-size: 0.9em; color: #2a2a2a; font-weight: 700;">${bin.count} people</div>
                     </div>
                 `).join('')}
             </div>
